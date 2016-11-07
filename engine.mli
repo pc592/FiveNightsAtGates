@@ -34,21 +34,31 @@ type map
   DoorStatus [bool * bool] - a tuple controlling the status of the two doors
   that lead into the main room
   view [string]: The current view the camera is taking
-  Level [int]: The current level (night) the character is in
+  Level [int]: The current level (night) the character is in. can be between
+  1 and 5 inclusiv
 * *)
 type state
 
+(* (*[insert_monster lev state] .*)
+  val insert_monster : monster -> state -> state *)
 
+(*[init_state lev] gives an initial state that is based on the current level.*)
   val init_state : int -> state
 
-  val insert_monster : monster -> state -> state
-
+(*[update_time stat] Updates the time of the state [stat] by 1. One is equivalent to
+* an hour of in game state time. Returns an updated state*)
   val update_time : state -> state
 
-  val update_monster_location : state -> state
+(*[update_monster_location ma] Updates location of each monster inside of
+* type map [ma]*)
+  val update_monster_location : map -> map
 
-  val update_door_status : bool -> string -> state
+(*[update_door_status open which] Updates the door status [open] of either the
+first or second [int] door in the main room.*)
+  val update_door_status : bool -> int -> state
 
+(*[update_battery_power num stat] Updates the batter level of the state [stat] by
+* subtracting by an integer [num]. One is equivalent *)
   val update_battery_power : int -> state -> state
 
 
