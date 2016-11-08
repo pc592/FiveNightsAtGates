@@ -38,13 +38,13 @@ type map
  *)
 type state
 
-(* [insert_monster lev state] *)
-  val insert_monster : monster -> state -> state
+(* [insert_monster level state] *)
+  val insert_monster : int -> state -> monster -> state -> state
 
 (* [init_state lev] gives an initial state that is based on the current level.*)
   val init_state : int -> state
 
-(* [update_time stat] Updates the time of the state [stat] by 1. One is equivalent to
+(* [update_time state] Updates the time of the state [state] by 1. One is equivalent to
  * an hour of in game state time. Returns an updated state*)
   val update_time : state -> state
 
@@ -56,7 +56,7 @@ type state
  * first or second [int] door in the main room.*)
   val update_door_status : bool -> int -> state
 
-(* [update_battery_power num stat] Updates the batter level of the state [stat] by
+(* [update_battery_power num stat] Updates the batter level of the state [state] by
  * subtracting by an integer [num]. One is equivalent *)
   val update_battery_power : int -> state -> state
 
