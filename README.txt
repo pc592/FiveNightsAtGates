@@ -1,5 +1,5 @@
 (*
-engine.ml is essentially the updateState
+engine.ml is essentially the updateState from the design doc
 userInput.ml is userInput
 AIs holds AI algorithms
 
