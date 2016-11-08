@@ -12,13 +12,18 @@ module type GameEngine = sig
  *  - timeToMove: how long before the monster moves to the next room *)
 type monster
 
-(* The type of the game map, storing rooms and their details.
- * Each room stores:
+(* The type of the game map, storing rooms and their details. *)
+type map
+
+
+(* The type of a room in the map.
+ * stores:
  *  - name: the name of the room
  *  - image: the image(s) stored for the location
  *  - exits: the exits associated with the room
  *  - monster: type Monster if one is in the room *)
-type map
+type room
+
 
 (* The type of the game state.
  * stores:
