@@ -3,49 +3,47 @@
  * and interface. *)
 module type GameEngine = sig
 
-(* The type of a game monster.
+(* The type of a game monster. [record]
  * stores:
- *  - name: the identifier for the monster
- *  - image: image location for the monster
- *  - startingRoom: where the monster will first appear
- *  - modusOperandi: the algorithm used by the monster for movement
- *  - timeToMove: how long before the monster moves to the next room *)
+ *  - name [string]: the identifier for the monster
+ *  - image [string]: image location for the monster
+ *  - currentRoom [room]: where the monster is currently located.
+ *  - modusOperandi [module]: the algorithm used by the monster for movement
+ *  - timeToMove [int]: how long before the monster moves to the next room *)
 type monster
 
-(* The type of the game map, storing rooms and their details. *)
+(* The type of the game map [(string*record) list]. stores rooms and their record. *)
 type map
 
-
-(* The type of a room in the map.
+(* The type of a room in the map. [record]
  * stores:
- *  - name: the name of the room
- *  - image: the image(s) stored for the location
- *  - exits: the exits associated with the room
- *  - monster: type Monster if one is in the room *)
+ *  - name [string]: the name of the room
+ *  - image [string]: the image(s) location for the location
+ *  - exits [list]: the exits associated with the room
+ *  - monster [monster]: type Monster if one is in the room *)
 type room
 
-
-(* The type of the game state.
+(* The type of the game state. [record]
  * stores:
- *  - monsters: the possible monsters in play, multiples of type Monster
- *  - player: player's name
- *  - map: game map, of type Map
- *  - time: the time elapsed during a level
- *  - battery: the battery left since the beginning of the level
- *  - doorStatus: maintains statuses of the two doors leading into main room
- *  - view: The current view the camera is watching
- *  - level: The current level (1..5), aka night, the character is playing *)
+ *  - monsters [monster list]: the possible monsters in play
+ *  - player [string]: player's name
+ *  - map [Map]: game map
+ *  - time [int]: the time elapsed during a level
+ *  - battery [int]: the battery left since the beginning of the level
+ *  - doorStatus [(bool*bool)]: statuses of the two doors leading to main room
+ *  - view [room]: The current view the camera is watching
+ *  - level [int]: The current level (1..5), aka night, the player is on *)
 type state
 
-(* The type of the level. *)
-type level
+(* The type of the two doors leading to the main room. [int] *)
+type door
 
 (* [insert_monster lvl state] returns the state with the possible monsters,
  * as corresponding to the level of the game *)
-  val insert_monster : level -> state -> state
+  val insert_monster : int -> state -> state
 
 (* [init_state lvl] returns an initial state based on the current level.*)
-  val init_state : level -> state
+  val init_state : int -> state
 
 (* [update_time state] returns the state with the time increased. One night is
  * 24 minutes, ie 1 game time hour is 2.5 real time minutes. *)
@@ -62,12 +60,12 @@ type level
  * each monster in play. *)
   val update_monsters_location : map -> map
 
-(* [update_door_status open which] returns the state with the door status of
- * [which] updated to [open].
+(* [update_door_status open door] returns the state with the door status of
+ * [door] updated to [open].
  * requires:
  *  - [open] is whether or not the door is open
- *  - [which] is which door is to be updated *)
-  val update_door_status : bool -> int -> state
+ *  - [door] is which door is to be updated *)
+  val update_door_status : bool -> door -> state
 
 end
 
