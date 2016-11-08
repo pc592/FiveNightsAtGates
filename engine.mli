@@ -20,23 +20,21 @@ type map
  *  - name [string]: the name of the room
  *  - image [string]: the image(s) location for the location
  *  - exits [list]: the exits associated with the room
- *  - monster [monster]: type Monster if one is in the room *)
+ *  - monster [monster]: type monster if one is in the room *)
 type room
 
 (* The type of the game state. [record]
  * stores:
  *  - monsters [monster list]: the possible monsters in play
  *  - player [string]: player's name
- *  - map [Map]: game map
+ *  - map [map]: game map
  *  - time [int]: the time elapsed during a level
  *  - battery [int]: the battery left since the beginning of the level
  *  - doorStatus [(bool*bool)]: statuses of the two doors leading to main room
- *  - view [room]: The current view the camera is watching
- *  - level [int]: The current level (1..5), aka night, the player is on *)
+ *  - room [room]: The current room the camera is viewing
+ *  - level [int]: The current level (1..5), aka night, the player is on
+ *)
 type state
-
-(* The type of the two doors leading to the main room. [int] *)
-type door
 
 (* [insert_monster lvl state] returns the state with the possible monsters,
  * as corresponding to the level of the game *)
@@ -59,13 +57,6 @@ type door
 (* [update_monsters_location map] returns the map with updated location(s) of
  * each monster in play. *)
   val update_monsters_location : map -> map
-
-(* [update_door_status open door] returns the state with the door status of
- * [door] updated to [open].
- * requires:
- *  - [open] is whether or not the door is open
- *  - [door] is which door is to be updated *)
-  val update_door_status : bool -> door -> state
 
 end
 

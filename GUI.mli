@@ -1,49 +1,54 @@
-(* An [Gui] regulates the positions of the buttons for the guis
-* The state can be used by other parts to set up the graphics
-* and interface. *)
-module type Gui = sig
+(* A [gui] regulates the positions of the buttons for the gui
+ * The state can be used by other parts to set up graphics and interface. *)
+module type GUI = sig
 
-(*[presslocation] stores the location of mouse*)
- type presslocation = int * int
+(* [click] stores the location of mouse in coordinates (x,y) *)
+type click = (int * int)
 
-(*[door_one state] Updates the door status [open] of the
-first door to either open or closed.*)
- val door_one : state -> state
 
-(*[door_two state] Updates the door status [open] of the
-seond door to either open or closed.*)
- val door_two : state -> state
+(* The type of the two doors leading to the main room. [int] *)
+type door
 
-(*[right_map state] shifts to right adjacent room in camera view.*)
- val right_map : state -> state
+(* The type of camera view shift, either left or right. *)
+type dir
 
-(*[right_map state] shifts to left adjacent room in camera view.*)
- val left_map : state -> state
+(* [update_door_status open door] returns the state with the door status of
+ * [door] updated to [open].
+ * requires:
+ *  - [open] is whether or not the door is open
+ *  - [door] is which door is to be updated *)
+  val update_door_status : bool -> door -> state
 
-(*[exit state] Exits the game.*)
- val exit : state -> state
+(* [shift_view state dir] returns the state with a shifted camera view to
+ * [dir] if player is viewing cameras.
+ * requires:
+ *  - [dir] is direction to shift the current camera view. *)
+  val shift_view : state -> dir -> state
 
- (*[quit state] quits the level and enters the main screen.*)
- val quit : state -> state
+(* [camera_view state] enters the player view to that of the camera(s). *)
+  val camera_view : state -> state
 
-(*[resume state] resumes the game after it is in menu mode.*)
- val resume : state -> state
+(* [main_view state] enters the player view to that of the main room. *)
+  val main_view : state -> state
 
- (*[next_level state] allows the player to enter the next level after a victory.*)
- val next_level : state -> state
+(* [start] starts a new game. *)
+  val start : unit -> state
 
-(*[camera_view state] enters the player into camera_view state.*)
- val camera_view : state -> state
+(* [quit] quits the level and enters the start screen. *)
+  val quit : state
 
- (*[main_view state] enters the player into main_view state.*)
- val main_view : state -> state
+(* [exit state] exits the game. *)
+  val exit : state -> unit
 
-  (*[menu state] pauses the game and displays the menu*)
- val menu : state -> state
+(* [next_level state] allows player to go to the next level if survived. *)
+  val next_level : state -> state
 
-(*[update_gui loc state] The master function that takes in a button location
-*and matchs it to the appropriate button on the gui.*)
- val update_gui : presslocation -> state -> state
+(* [game_over state] allows player to restart or quit if lost. *)
+  val game_over : state -> state
 
+(* [update_gui loc state] returns the state after determining what, if any,
+ * button was clicked by mapping the click location to the buttons on the gui.
+ * Updates state if necessary. *)
+  val update_gui : click -> state -> state
 
 end
