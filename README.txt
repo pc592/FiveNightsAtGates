@@ -7,4 +7,11 @@ convention:
 use snake case for functions.
 use camel case for variables and types.
 
+notes:
+doorStatus in state should be (bool*bool)
+time should be (int)
+battery should be (int)
+view should be (string) of room
+level should be (int)
+
 *)
