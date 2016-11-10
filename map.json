@@ -1,0 +1,148 @@
+{
+"rooms": [{
+	"name": "main",
+	"image": "directorystring",
+	"exits": [{
+		"direction": "left",
+		"room_id": "Gimme!"
+		}, {
+		"direction": "right",
+		"room_id": "kitchen"
+		}],
+	"monsters": []
+	}, {
+	"name": "kitchen",
+	"image": "directorystring",
+	"exits": [{
+		"direction": "left",
+		"room_id": "main"
+		}, {
+		"direction": "down",
+		"room_id": "bathroom"
+		}, {
+		"direction": "up",
+		"room_id": "Gimme!"
+		}],
+		"monsters": []
+	}, {
+	"name": "bathroom",
+	"image": "directorystring",
+	"exits": [{
+		"direction": "up",
+		"room_id": "kitchen"
+		}, {
+		"direction": "left",
+		"room_id": "CSOffices"
+		}, {
+		"direction": "down",
+		"room_id": "lectureHall"
+		}],
+	"monsters": []
+	}, {
+	"name": "lectureHall",
+	"image": "directorystring",
+	"exits": [{
+		"direction": "up",
+		"room_id": "bathroom"
+		}, {
+		"direction": "down",
+		"room_id": "CSOffices"
+		}],
+	"monsters": []
+	}, {
+	"name": "CSOffices",
+	"image": "directorystring",
+	"exits": [{
+		"direction": "right",
+		"room_id": "lectureHall"
+		}, {
+		"direction": "up",
+		"room_id": "bathroom"
+		}, {
+		"direction": "left",
+		"room_id": "studySpaces"
+		}],
+	"monsters": []
+	}, {
+	"name": "studySpaces",
+	"image": "directorystring",
+	"exits": [{
+		"direction": "right",
+		"room_id": "CSOffices"
+		}, {
+		"direction": "up",
+		"room_id": "copyRoom"
+		}, {
+		"direction": "left",
+		"room_id": "CSUGLab"
+		}],
+	"monsters": []
+	}, {
+	"name": "CSUGLab",
+	"image": "directorystring",
+	"exits": [{
+		"direction": "down",
+		"room_id": "studySpaces"
+		}, {
+		"direction": "right",
+		"room_id": "copyRoom"
+		}],
+	"monsters": []
+	}, {
+	"name": "copyRoom",
+	"image": "directorystring",
+	"exits": [{
+		"direction": "right",
+		"room_id": "studySpaces"
+		}, {
+		"direction": "up",
+		"room_id": "gradLounge"
+		}, {
+		"direction": "left",
+		"room_id": "CSUGLab"
+		}],
+	"monsters": []
+	}, {
+	"name": "gradLounge",
+	"image": "directorystring",
+	"exits": [{
+		"direction": "right",
+		"room_id": "Gimme!"
+		}, {
+		"direction": "up",
+		"room_id": "profOffice"
+		}, {
+		"direction": "down",
+		"room_id": "copyRoom"
+		}],
+	"monsters": []
+	}, {
+	"name": "profOffice",
+	"image": "directorystring",
+	"exits": [{
+		"direction": "right",
+		"room_id": "Gimme!"
+		}, {
+		"direction": "down",
+		"room_id": "gradLounge"
+		}],
+	"monsters": []
+	}, {
+	"name": "Gimme!",
+	"image": "directorystring",
+	"exits": [{
+		"direction": "right",
+		"room_id": "main"
+		}, {
+		"direction": "up",
+		"room_id": "kitchen"
+		}, {
+		"direction": "left",
+		"room_id": "profOffice"
+		}, {
+		"direction": "down",
+		"room_id": "gradLounge"
+		}],
+	"monsters": []
+	}]
+}
