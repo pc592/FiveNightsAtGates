@@ -1,0 +1,47 @@
+{
+"rooms": [{
+	"name": "main",
+	"image": "directorystring",
+	"exits": [{
+		"direction": "right",
+		"room_id": "Gimme!"
+		}, {
+		"direction": "down",
+		"room_id": "kitchen"
+		}],
+	"monsters": []
+	}, {
+	"name": "kitchen",
+	"image": "directorystring",
+	"exits": [{
+		"direction": "up",
+		"room_id": "main"
+		}, {
+		"direction": "right",
+		"room_id": "bathroom"
+		}],
+		"monsters": []
+	}, {
+	"name": "bathroom",
+	"image": "directorystring",
+	"exits": [{
+		"direction": "up",
+		"room_id": "Gimme!"
+		}, {
+		"direction": "left",
+		"room_id": "kitchen"
+		}],
+	"monsters": []
+	}, {
+	"name": "Gimme!",
+	"image": "directorystring",
+	"exits": [{
+		"direction": "left",
+		"room_id": "main"
+		}, {
+		"direction": "down",
+		"room_id": "bathroom"
+		}],
+	"monsters": []
+	}]
+}
