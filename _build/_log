@@ -1,0 +1,12 @@
+### Starting build.
+# Target: engine_test.ml.depends, tags: { extension:ml, file:engine_test.ml, ocaml, ocamldep, quiet }
+/Users/ruoyanqin/.opam/4.03.0/bin/ocamldep.opt -modules engine_test.ml > engine_test.ml.depends # cached
+# Target: engine.ml.depends, tags: { extension:ml, file:engine.ml, ocaml, ocamldep, quiet }
+/Users/ruoyanqin/.opam/4.03.0/bin/ocamldep.opt -modules engine.ml > engine.ml.depends
+# Target: engine.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:engine.cmo, file:engine.ml, implem, ocaml, quiet }
+/Users/ruoyanqin/.opam/4.03.0/bin/ocamlc.opt -c -I /Users/ruoyanqin/.opam/4.03.0/lib/ANSITerminal -I /Users/ruoyanqin/.opam/4.03.0/lib/biniou -I /Users/ruoyanqin/.opam/4.03.0/lib/bytes -I /Users/ruoyanqin/.opam/4.03.0/lib/easy-format -I /Users/ruoyanqin/.opam/4.03.0/lib/oUnit -I /Users/ruoyanqin/.opam/4.03.0/lib/ocaml -I /Users/ruoyanqin/.opam/4.03.0/lib/yojson -o engine.cmo engine.ml
+# Target: engine_test.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:engine_test.cmo, file:engine_test.ml, implem, ocaml, quiet }
+/Users/ruoyanqin/.opam/4.03.0/bin/ocamlc.opt -c -I /Users/ruoyanqin/.opam/4.03.0/lib/ANSITerminal -I /Users/ruoyanqin/.opam/4.03.0/lib/biniou -I /Users/ruoyanqin/.opam/4.03.0/lib/bytes -I /Users/ruoyanqin/.opam/4.03.0/lib/easy-format -I /Users/ruoyanqin/.opam/4.03.0/lib/oUnit -I /Users/ruoyanqin/.opam/4.03.0/lib/ocaml -I /Users/ruoyanqin/.opam/4.03.0/lib/yojson -o engine_test.cmo engine_test.ml # cached
+# Target: engine_test.byte, tags: { byte, dont_link_with, extension:byte, file:engine_test.byte, link, ocaml, program, quiet }
+/Users/ruoyanqin/.opam/4.03.0/bin/ocamlc.opt -I /Users/ruoyanqin/.opam/4.03.0/lib/ANSITerminal -I /Users/ruoyanqin/.opam/4.03.0/lib/biniou -I /Users/ruoyanqin/.opam/4.03.0/lib/bytes -I /Users/ruoyanqin/.opam/4.03.0/lib/easy-format -I /Users/ruoyanqin/.opam/4.03.0/lib/oUnit -I /Users/ruoyanqin/.opam/4.03.0/lib/ocaml -I /Users/ruoyanqin/.opam/4.03.0/lib/yojson unix.cma oUnitAdvanced.cma oUnit.cma easy_format.cmo biniou.cma yojson.cmo str.cma ANSITerminal.cma engine.cmo engine_test.cmo -o engine_test.byte
+# Compilation successful.

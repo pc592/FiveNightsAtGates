@@ -10,3 +10,12 @@ Connie : Graphics
 Pui Lam : Engine
 Jovan : Async
 Ruoyan : AI
+
+
+
+IMPORTANT NOTE:
+I(Ruoyan) deleted/renamed the engine mli file tempararily just because it's easier to test without that annoying <abstr> thing. We can add it back after finish testing
+
+added makefile, testfile. Those are still basically based on the solution I had for the text adventure game before(they should be mostly correct/working). But should be easy to change into our desired format(without AI, async and graphics). 
+
+also changed the engine mli (have some syntax errors)
