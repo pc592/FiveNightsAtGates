@@ -12,10 +12,16 @@ Jovan : Async
 Ruoyan : AI
 
 
+Nov 23:
+No idea what's up with .mli's or anything, but created engine2.ml to select just
+the functions that we want/need. Also ended up having to change the types of
+some things and adding fields, etc. Still need to continue adding to engine2.ml
+to get everything else we need, eg 'do.
+
 
 IMPORTANT NOTE:
 I(Ruoyan) deleted/renamed the engine mli file tempararily just because it's easier to test without that annoying <abstr> thing. We can add it back after finish testing
 
-added makefile, testfile. Those are still basically based on the solution I had for the text adventure game before(they should be mostly correct/working). But should be easy to change into our desired format(without AI, async and graphics). 
+added makefile, testfile. Those are still basically based on the solution I had for the text adventure game before(they should be mostly correct/working). But should be easy to change into our desired format(without AI, async and graphics).
 
 also changed the engine mli (have some syntax errors)

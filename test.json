@@ -43,5 +43,13 @@
 		"room_id": "bathroom"
 		}],
 	"monsters": []
+	}],
+"monsters": [{
+	"name": "Camel",
+	"level": "0",
+	"image": "directorystring",
+	"startRoom": "CSUGLab",
+	"modusOperandi": "randomly goal oriented",
+	"timeToMove": "500"
 	}]
 }

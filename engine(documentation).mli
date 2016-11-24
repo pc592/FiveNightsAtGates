@@ -5,28 +5,30 @@
 (* The type of a game monster. [record]
  * stores:
  *  - name [string]: the identifier for the monster
+ *  - level [int]: the level the monster enters the game
  *  - image [string]: image location for the monster
- *  - currentRoom [room]: where the monster is currently located.
- *  - modusOperandi [module]: the algorithm used by the monster for movement
+ *  - currentRoom [string]: where the monster is currently located.
+ *  - modusOperandi [string]: the algorithm used by the monster for movement
  *  - timeToMove [int]: how long before the monster moves to the next room *)
 type monster
 
-(* The type of the game map [(string*record) list]. stores rooms and their record. *)
-type map
+(* The type of the two doors leading to the main room, left/right, one/two *)
+type door
+
+(* The type of camera view shift, either left, right, up, or down. *)
+type dir
 
 (* The type of a room in the map. [record]
  * stores:
  *  - name [string]: the name of the room
  *  - image [string]: the image(s) location for the location
- *  - exits [list]: the exits associated with the room
+ *  - exits [(dir*string) list]: the exits associated with the room
  *  - monster [monster]: type monster if one is in the room *)
 type room
 
-(* The type of the two doors leading to the main room. [int] *)
-type door
-
-(* The type of camera view shift, either left, right, up, or down. *)
-type dir
+(* The type of the game map [(string*record) list].
+ * stores: rooms and their record. *)
+type map
 
 (* The type of the game state. [record]
  * stores:
@@ -87,14 +89,14 @@ val random_walk : room -> map -> room
 
 (* [get_map yojson] returns a valid map. *)
 val get_map : yojson -> map
-(* Open Yojson.Basic.Util*)
+(* open Yojson.Basic.Util*)
 
-(* [insert_monster lvl state] returns the state with the possible monsters,
+(* [insert_monster j lvl] returns the state with the possible monsters,
  * as corresponding to the level of the game *)
-val insert_monster : int -> state -> state
+val insert_monster : yojson -> int -> monster list
 
-(* [init_state lvl] returns an initial state based on the current level.*)
-val init_state : int -> state
+(* [init_state j lvl] returns an initial state based on the current level.*)
+val init_state : yojson -> int -> state
 
 (*****************************************************************************
 ******************************************************************************
@@ -109,7 +111,7 @@ val main_view : state -> state
 val start : unit -> state
 
 (* [quit] quits the level and enters the start screen. *)
-val quit : state
+val quit : state -> state
 
 (* [exit state] exits the game. *)
 val exit : state -> unit
