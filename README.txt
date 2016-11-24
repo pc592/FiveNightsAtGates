@@ -19,8 +19,6 @@ some things and adding fields, etc. Still need to continue adding to engine2.ml
 to get everything else we need, eg 'do. Will work on it when possible, or maybe
 one of you guys will get to it. Put failwiths on functions that need to be
 implemented.
-ALSO dunno how make works because make just gives me an error. -shrugs- maybe
-I'm missing something? But it isn't working.
 
 
 IMPORTANT NOTE:

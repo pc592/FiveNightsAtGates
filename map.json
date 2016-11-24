@@ -147,10 +147,10 @@
 	}],
 "monsters": [{
 	"name": "Camel",
-	"level": "0",
+	"level": 0,
 	"image": "directorystring",
 	"currentRoom": "CSUGLab",
 	"modusOperandi": "randomly goal oriented",
-	"timeToMove": "500"
+	"timeToMove": 500
 	}]
 }

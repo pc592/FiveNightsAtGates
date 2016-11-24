@@ -1,4 +1,5 @@
 #require "yojson";;
+#require "ANSITerminal";;
 #use "engine2.ml";;
 let j = Yojson.Basic.from_file "test.json";;
 let s = init_state j 0;;
