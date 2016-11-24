@@ -20,6 +20,23 @@ to get everything else we need, eg 'do. Will work on it when possible, or maybe
 one of you guys will get to it. Put failwiths on functions that need to be
 implemented.
 
+NOTE:
+IF you want to check more types with make check, open checktypes.sh and add
+to where it says "EDIT HERE TO CHECK TYPES". Make sure you use Engine.* and
+not Game.* as what shipped with A2 has Game.* and had to be modified.
+Here is what shipped with A2:
+let e:exn = Game.Illegal
+let check_init_state : Yojson.Basic.json -> Game.state = Game.init_state
+let check_max_score : Game.state -> int = Game.max_score
+let check_score : Game.state -> int = Game.score
+let check_turns : Game.state -> int = Game.turns
+let check_current_room_id : Game.state -> string = Game.current_room_id
+let check_inv : Game.state -> string list = Game.inv
+let check_visited : Game.state -> string list = Game.visited
+let check_locations : Game.state -> (string*string) list = Game.locations
+let check_do' : string -> Game.state -> Game.state = Game.do'
+
+**** MAKE SURE TO MAKE CLEAN BEFORE YOU ADD COMMIT AND PUSH. ****
 
 IMPORTANT NOTE:
 I(Ruoyan) deleted/renamed the engine mli file tempararily just because it's easier to test without that annoying <abstr> thing. We can add it back after finish testing

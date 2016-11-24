@@ -109,6 +109,7 @@ let getExits room =
         | "right" -> Right
         | "up" -> Up
         | "down" -> Down
+        | _ -> raise Illegal
       in
       let exitid exit = exit |> member "room_id" |> to_string in
       (direction exit,exitid exit)
@@ -264,3 +265,73 @@ let camera_view st =
 val update_door_status : bool -> door -> state *)
 let update_door_status op door =
   failwith "unimplemented"
+
+
+(*****************************************************************************
+******************************************************************************
+**********************************INTERFACE***********************************
+******************************************************************************
+******************************************************************************)
+
+
+(* [room_view s] is the name of the room the player is viewing. *)
+let room_view s =
+  s.room
+
+
+(* ========================== helpers for do' ===============================*)
+let go dir st =
+  (* update current room *)
+  try
+    let room = List.assoc st.room.nameR st.map in
+    let exit = List.assoc dir room.exitsR in
+    {st with room = List.assoc exit st.map;}
+  with
+  | Not_found -> raise Illegal
+
+(* [do' c st] is [st'] if it is possible to do command [c] in
+ * state [st] and the resulting new state would be [st'].  The
+ * function name [do'] is used because [do] is a reserved keyword.
+ *   - The only allowed commands are left/right/up/down.
+ *   - All other commands are invalid in state [st] hence they raise [Illegal].
+ *)
+let do' c st =
+  if c = "left" || "right" || "up" || "down" then eval st
+  else raise Illegal
+
+(* ============================== EVAL LOOP =============================== *)
+let show_room r st =
+  let (desc, _) = List.assoc st.current_room st.rooms_info in desc
+let show_inv st =
+  List.fold_left (fun acc x -> if acc = "" then x else x ^ "\n" ^ acc) "" st.inv
+
+
+(* [main f] is the main entry point from outside this module
+ * to load a game from file [f] and start playing it
+ *)
+let main file_name =
+  let rec eval st =
+    (* get cmd *)
+    let () = print_string "> " in
+    let cmd = read_line () in
+    let cmd = String.lowercase_ascii cmd in
+      let dir =
+        match cmd with
+        | "left" -> Left
+        | "right" -> Right
+        | "up" -> Up
+        | "down" -> Down
+        | _ -> raise Illegal
+      in
+        let st = try do' cmd st with Illegal ->
+                let () = print_string "Illegal command!" in go cmd st
+
+        let () = print_string "You did: " in
+        let () = print_endline cmd in
+        eval st
+      else raise Illegal
+  in
+  let st = Yojson.Basic.from_file file_name |> init_state in
+  (* display room *)
+  let () = print_endline "You took a turn." in
+  eval st
