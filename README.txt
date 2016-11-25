@@ -15,10 +15,13 @@ Ruoyan : AI
 Nov 23:
 No idea what's up with .mli's or anything, but created engine2.ml to select just
 the functions that we want/need. Also ended up having to change the types of
-some things and adding fields, etc. Still need to continue adding to engine2.ml
-to get everything else we need, eg 'do. Will work on it when possible, or maybe
-one of you guys will get to it. Put failwiths on functions that need to be
+some things and adding fields, etc. Put failwiths on functions that need to be
 implemented.
+
+Nov 24: Attempted make play and ran into system error, not sure why.... Also
+not 100% certain interface is correct. Will need to implement async soon,
+probably, if the game itself will run without problems, as the next step in the
+game would be monsters/time/battery, which all need to be asynced in.
 
 NOTE:
 IF you want to check more types with make check, open checktypes.sh and add

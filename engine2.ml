@@ -83,8 +83,7 @@ let random_walk room map =
   failwith "unimplemented"
 
 
-(* [Illegal] is raised by [do'] to indicate that a command is illegal;
- * see the documentation of [do'] below. *)
+(* [Illegal] is raised by the game to indicate that a command is illegal. *)
 exception Illegal
 
 (*****************************************************************************
@@ -279,7 +278,7 @@ let room_view s =
   s.room
 
 
-(* ========================== helpers for do' ===============================*)
+(* ========================== function for go ===============================*)
 let go dir st =
   (* update current room *)
   try
@@ -289,21 +288,9 @@ let go dir st =
   with
   | Not_found -> raise Illegal
 
-(* [do' c st] is [st'] if it is possible to do command [c] in
- * state [st] and the resulting new state would be [st'].  The
- * function name [do'] is used because [do] is a reserved keyword.
- *   - The only allowed commands are left/right/up/down.
- *   - All other commands are invalid in state [st] hence they raise [Illegal].
- *)
-let do' c st =
-  if c = "left" || "right" || "up" || "down" then eval st
-  else raise Illegal
 
 (* ============================== EVAL LOOP =============================== *)
-let show_room r st =
-  let (desc, _) = List.assoc st.current_room st.rooms_info in desc
-let show_inv st =
-  List.fold_left (fun acc x -> if acc = "" then x else x ^ "\n" ^ acc) "" st.inv
+let show_room r st = (List.assoc r st.map).nameR
 
 
 (* [main f] is the main entry point from outside this module
@@ -323,15 +310,14 @@ let main file_name =
         | "down" -> Down
         | _ -> raise Illegal
       in
-        let st = try do' cmd st with Illegal ->
-                let () = print_string "Illegal command!" in go cmd st
-
+      let st = try go dir st with
+      | Illegal -> let () = print_string "Illegal command!" in eval st
+      in
         let () = print_string "You did: " in
         let () = print_endline cmd in
-        eval st
-      else raise Illegal
+          eval st
   in
-  let st = Yojson.Basic.from_file file_name |> init_state in
-  (* display room *)
-  let () = print_endline "You took a turn." in
-  eval st
+  let j = Yojson.Basic.from_file file_name in
+  let st = init_state j 0 in
+  let () = print_endline (show_room st.room.nameR st) in
+    eval st
