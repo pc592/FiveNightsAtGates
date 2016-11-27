@@ -158,12 +158,12 @@ val shift_view : state -> dir -> state
 (* [camera_view state] enters the player view to that of the camera(s). *)
 val camera_view : state -> state
 
-(* [update_door_status open door] returns the state with the door status of
+(* [update_door_status state open door] returns the state with the door status of
  * [door] updated to [open].
  * requires:
  *  - [open] is whether or not the door is open
  *  - [door] is which door is to be updated *)
-val update_door_status : bool -> door -> state
+val update_door_status : state -> bool -> door -> state
 
 (*****************************************************************************
 ******************************************************************************

@@ -229,7 +229,7 @@ let update_time st =
  *  - checking cameras has a cost of 0.1% / sec while in use.
 val update_battery : int -> state -> state *)
 let update_battery num st =
-  failwith "unimplemented"
+  {st with battery = st.battery - num  }
 
 (* [update_monsters_location map] returns the map with updated location(s) of
  * each monster in play.
@@ -256,14 +256,11 @@ val camera_view : state -> state *)
 let camera_view st =
   failwith "unimplemented"
 
-(* [update_door_status open door] returns the state with the door status of
- * [door] updated to [open].
- * requires:
- *  - [open] is whether or not the door is open
- *  - [door] is which door is to be updated
-val update_door_status : bool -> door -> state *)
-let update_door_status op door =
-  failwith "unimplemented"
+let update_door_status st op door =
+  match door with
+  | One -> {st with doorStatus = ((One, op), (snd st.doorStatus))}
+  | Two -> {st with doorStatus = ((fst st.doorStatus),(Two, op))}
+  | _ -> failwith "that is not a door"
 
 
 (*****************************************************************************
