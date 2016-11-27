@@ -164,3 +164,16 @@ val camera_view : state -> state
  *  - [open] is whether or not the door is open
  *  - [door] is which door is to be updated *)
 val update_door_status : bool -> door -> state
+
+(*****************************************************************************
+******************************************************************************
+**********************************INTERFACE***********************************
+******************************************************************************
+******************************************************************************)
+
+(* go loop *)
+val go : dir -> state -> state
+
+(* [main f] is the main entry point from outside this module
+ * to load a game from file [f] and start playing it. *)
+val main : string -> unit

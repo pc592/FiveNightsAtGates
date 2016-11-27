@@ -1,138 +1,39 @@
-type state = {
-  current_room: string; 
-  score: int; 
-  inv: string list; 
-  turns: int; 
-  visited: string list;
-  locations: (string * string) list;
-  (* [(room_id, [(direction, exit)])] *)
-  map: (string * ((string * string) list)) list;
-  (* [(room_id, (description, points))] *)
-  rooms_info: (string * (string * int)) list; 
-  (* [(item_id, (description, points))] *)
-  items_info: (string * (string * int)) list; 
-  (* [(item_id, room_id)] *)
-  treasure_info: (string * string) list;
+(* A [GameEngine] regulates and updates the state of a FNAG game state.
+ * The updated state is used by other parts to set up the graphics
+ * and interface. *)
+
+type monster = {
+  nameM: string;
+  levelM: int;
+  imageM: string;
+  currentRoomM: string;
+  modusOperandiM: string;
+  timeToMoveM: int
 }
 
-(* [Illegal] is raised by [do'] to indicate that a command is illegal;
- * see the documentation of [do'] below. *)
-exception Illegal
+type door = | One | Two
 
-(*****************************************************************************
-******************************************************************************
-*******************************START GAME/LEVEL*******************************
-******************************************************************************
-******************************************************************************)
-(* 
-  store item info as (item_id, (description, points)) in a list
- *)
-let init_item_info j =
-  let open Yojson.Basic.Util in
-  let items = j |> member "items" |> to_list in
-  List.map 
-    (fun subj -> 
-      (member "id" subj |> to_string, 
-      (member "description" subj |> to_string, member "points" subj |> to_int))
-    )
-    items
+type dir = | Left | Right | Up | Down | Elsewhere
 
-let get_item_point i st = let (_, points) = List.assoc i st.items_info in points
+type room = {
+  nameR: string;
+  imageR: string;
+  exitsR: (dir*string) list;
+  monstersR: monster list
+}
 
-(* 
-  store room info as (room_id, (description, points)) in a list
- *)
-let init_room_info j =
-  let open Yojson.Basic.Util in
-  let rooms = j |> member "rooms" |> to_list in
-  List.map 
-    (fun subj -> 
-      (member "id" subj |> to_string, 
-      (member "description" subj |> to_string, member "points" subj |> to_int)))
-    rooms
+type map = (string*room) list
 
-let get_room_point r st = let (_, points) = List.assoc r st.rooms_info in points
-
-(* 
-  store (item_id, room_id) in a list
- *)
-let init_treasure_info j =
-  let open Yojson.Basic.Util in
-  let rooms = j |> member "rooms" |> to_list in
-  let rec helper l = 
-    match l with
-    | [] -> []
-    | r::rs -> 
-      List.map 
-        (fun item -> (item, member "id" r |> to_string)) 
-        (member "treasure" r |> to_list |> filter_string) 
-      @ (helper rs)
-  in
-  helper rooms
-
-(* 
-  store (room_id, [(direction, exit)]) in a list - uses adjacency list approach
- *)
-let init_map j =
-  let open Yojson.Basic.Util in
-  let rooms = j |> member "rooms" |> to_list in
-  let rec helper l = 
-    match l with
-    | [] -> []
-    | r::rs -> 
-      (member "id" r |> to_string, 
-      List.map 
-        (fun exit -> (member "direction" exit |> to_string, 
-                      member "room_id" exit |> to_string)) 
-        (member "exits" r |> to_list))
-      :: 
-      (helper rs)
-  in
-  helper rooms
-
-(* get score from items being in their treasure room *)
-let init_treasure_score st =
-  List.fold_left 
-    (fun acc (item, loc) -> 
-      match List.assoc item st.treasure_info with
-      | exception Not_found -> 0 
-      | treasure_loc -> 
-        acc + if treasure_loc = loc 
-              then get_item_point item st 
-              else 0
-    ) 
-    st.score st.locations
-
-
-(* [init_state j] is the initial state of the game as
- * determined by JSON object [j] *)
-let init_state j =
-  let open Yojson.Basic.Util in
-  let start_room = j |> member "start_room" |> to_string in
-  let inv = j |> member "start_inv" |> to_list |> filter_string in
-  (* let pages = j |> member "pages" |> to_int in *)
-  let locations = j |> member "start_locations" |> to_list in
-  let locations = List.map 
-    (fun subj -> (member "item" subj |> to_string, 
-                  member "room" subj |> to_string))
-    locations in
-  let st = 
-        {current_room=start_room; 
-        score=0; 
-        inv=inv; 
-        turns=0; 
-        visited=[start_room]; 
-        locations=locations; 
-        map=init_map j; 
-        rooms_info=init_room_info j; 
-        treasure_info=init_treasure_info j;
-        items_info=init_item_info j
-        }
-  in
-  let score = get_room_point start_room st + init_treasure_score st
-  in {st with score=score}
-
-
+type state = {
+  monsters: (string*monster) list;
+  player: string;
+  map: map;
+  time: int;
+  battery: int;
+  doorStatus: (door*bool)*(door*bool);
+  room: room;
+  level: int
+}
 
 (*****************************************************************************
 ******************************************************************************
@@ -140,181 +41,276 @@ let init_state j =
 ******************************************************************************
 ******************************************************************************)
 
+(* [random_goal room map] returns the next room using random goal oriented
+ * traversal. Random goal oriented traversal randomly chooses a room and moves
+ * there as directly as possible, briefly pausing in each room. When goal is
+ * reached, pauses for a longer amount of time. Chooses a new random goal when
+ * goal is reached.
+ * requires:
+ *  - [room] is the details of the current room
+ *  - [map] is the map of the game for the AI to traverse
+val random_goal : room -> map -> room *)
+let random_goal room map =
+  failwith "unimplemented"
+
+(* [weighted_movement room map] returns the next room using weighted
+ * movement traversal. Weighted movement traversal weights each path between
+ * rooms as a 2-way edge and favors moving along higher weighted edges. In
+ * general, paths leaing towards the main room are higher weighted than paths
+ * leading away. If the current room is next to the main room and a new room
+ * must be selected, the new room is randomly selected and reached before
+ * algorithm is restarted.
+ * requires:
+ *  - [room] is the details of the current room
+ *  - [map] is the map of the game for the AI to traverse
+val weighted_movement : room -> map -> room *)
+let weighted_movement room map =
+  failwith "unimplemented"
+
+(* [preset_path room map] returns the next room on a selected random path. If
+ * the room is reached, select a new random path.
+ * (Paths will have to be determined and preset.)
+val preset_path : room -> map -> room *)
+let preset_path room map =
+  failwith "uniimplemented"
+
+(* [random_walk room map] returns the next room using random walk.
+ * requires:
+ *  - [room] is the details of the current room
+ *  - [map] is the map of the game for the AI to traverse
+val random_walk : room -> map -> room *)
+let random_walk room map =
+  failwith "unimplemented"
+
+
+(* [Illegal] is raised by the game to indicate that a command is illegal. *)
+exception Illegal
 
 (*****************************************************************************
 ******************************************************************************
-**************************INTERFACE(GUI should use this)*************************
+*******************************START GAME/LEVEL*******************************
 ******************************************************************************
 ******************************************************************************)
-(* this section should include NON-GAME SCREENS, REQUIRED STTAE UPDATE, INGAME UPDATE *)
 
-(* [max_score s] is the maximum score for the adventure whose current
- * state is represented by [s]. *)
-let max_score s =
-  let f acc (_,(_,points)) = acc+points in
-  let room_score = List.fold_left f 0 s.rooms_info in
-  let item_score = List.fold_left f 0 s.items_info in
-  room_score + item_score
+open Yojson.Basic.Util
 
-(* [score s] is the player's current score. *)
-let score s =
-  s.score
+(* Helper functions to get room record fields from json file. *)
+let getName room =
+  room |> member "name" |> to_string
+let getImage room =
+  room |> member "image" |> to_string
+let getExits room =
+  let exitsList = room |> member "exits" |> to_list in
+    let makeExit exit =
+      let direction exit = let e = (exit |> member "direction" |> to_string) in
+        match e with
+        | "left" -> Left
+        | "right" -> Right
+        | "up" -> Up
+        | "down" -> Down
+        | _ -> failwith "not a valid exit direction"
+      in
+      let exitid exit = exit |> member "room_id" |> to_string in
+      (direction exit,exitid exit)
+    in List.map makeExit exitsList
+let getMonsters room = []
 
-(* [turns s] is the number of turns the player has taken so far. *)
-let turns s =
-  s.turns
+(* Helper function to make room record. *)
+let makeRoom room = {
+  nameR = getName room;
+  imageR = getImage room;
+  exitsR = getExits room;
+  monstersR = getMonsters room;
+}
 
-(* [current_room_id s] is the id of the room in which the adventurer
- * currently is. *)
-let current_room_id s =
-  s.current_room
+(* [get_map yojson] returns a valid map.
+val get_map : yojson -> map *)
+let get_map j =
+  (j |> member "rooms" |> to_list) |> List.map makeRoom |>
+  List.map (fun roomRec -> (roomRec.nameR, roomRec))
 
-(* [inv s] is the list of item id's in the adventurer's current inventory.
- * No item may appear more than once in the list.  Order is irrelevant. *)
-let inv s =
-  s.inv
+(* Helper functions to get monster record fields from json file. *)
+let getNameM monster =
+  monster |> member "name" |> to_string
+let getLevelM monster =
+  monster |> member "level" |> to_int
+let getImageM monster =
+  monster |> member "image" |> to_string
+let getStartRoom monster =
+  monster |> member "startRoom" |> to_string
+let getModusOp monster =
+  monster |> member "modusOperandi" |> to_string
+let getTime monster =
+  monster |> member "timeToMove" |> to_int
 
-(* [visited s] is the list of id's of rooms the adventurer has visited.
- * No room may appear more than once in the list.  Order is irrelevant. *)
-let visited s =
-  s.visited
+(* Helper function to make monster record. *)
+let makeMonster monster = {
+  nameM = getNameM monster;
+  levelM = getLevelM monster;
+  imageM = getImageM monster;
+  currentRoomM = getStartRoom monster;
+  modusOperandiM = getModusOp monster;
+  timeToMoveM = getTime monster;
+}
 
-(* [locations s] is an association list mapping item id's to the
- * id of the room in which they are currently located.  Items
- * in the adventurer's inventory are not located in any room.
- * No item may appear more than once in the list.  The relative order
- * of list elements is irrelevant, but the order of pair components
- * is essential:  it must be [(item id, room id)]. *)
-let locations s =
-  s.locations
+(* [insert_monster lvl state] returns the state with the possible monsters,
+ * as corresponding to the level of the game
+val insert_monster : yojson -> int -> monster list *)
+let insert_monster j lvl =
+  (j |> member "monsters" |> to_list) |> List.map makeMonster
+  |> List.filter (fun monstRec -> (monstRec.levelM < lvl))
+  |> List.map (fun monstRec -> (monstRec.nameM, monstRec))
+
+(* [init_state lvl] returns an initial state based on the current level.
+val init_state : yojson -> int -> state *)
+let init_state j lvl = {
+  monsters = (insert_monster j lvl);
+  player = "Student";
+  map = (get_map j);
+  time = 0;
+  battery = 100;
+  doorStatus = ((One,true),(Two,true));
+  room = List.assoc "main" (get_map j);
+  level = lvl
+}
+
+(*****************************************************************************
+******************************************************************************
+*******************************NON-GAME SCREENS*******************************
+******************************************************************************
+******************************************************************************)
+
+(* [main_view state] enters the player view to that of the main room.
+val main_view : state -> state *)
+let main_view st =
+  failwith "unimplemented"
+
+(* [start] starts a new game.
+val start : unit -> state *)
+let start () =
+  failwith "unimplemented"
+
+(* [quit] quits the level and enters the start screen.
+val quit : state *)
+let quit st =
+  failwith "unimplemented"
+
+(* [exit state] exits the game.
+val exit : state -> unit *)
+let exit st =
+  failwith "unimplemented"
+
+(* [next_level state] allows player to go to the next level if survived.
+val next_level : state -> state *)
+let next_level st =
+  failwith "unimplemented"
+
+(* [game_over state] allows player to restart or quit if lost.
+val game_over : state -> state *)
+let game_over st =
+  failwith "unimplemented"
+
+(*****************************************************************************
+******************************************************************************
+*************************REQUIRED STATE UPDATE********************************
+******************************************************************************
+******************************************************************************)
+
+(* [update_time state] returns the state with the time increased. One night is
+ * 24 minutes, ie 1 game time hour is 2.5 real time minutes.
+val update_time : state -> state *)
+let update_time st =
+  failwith "unimplemented"
+
+(* [update_battery num state] returns the state with the battery level
+ * decreased by a given num of type [int]. Begins at 100% for each level.
+ * costs:
+ *  - closing door has an initial cost of 5% and 0.2% / sec door stays closed.
+ *  - checking cameras has a cost of 0.1% / sec while in use.
+val update_battery : int -> state -> state *)
+let update_battery num st =
+  failwith "unimplemented"
+
+(* [update_monsters_location map] returns the map with updated location(s) of
+ * each monster in play.
+val update_monsters_location : map -> map *)
+let update_monsters map =
+  failwith "unimplemented"
+
+(*****************************************************************************
+******************************************************************************
+******************************IN-GAME UPDATES*********************************
+******************************************************************************
+******************************************************************************)
+
+(* [shift_view state dir] returns the state with a shifted camera view to
+ * [dir] if player is viewing cameras.
+ * requires:
+ *  - [dir] is direction to shift the current camera view.
+val shift_view : state -> dir -> state *)
+let shift_view st dr =
+  failwith "unimplemented"
+
+(* [camera_view state] enters the player view to that of the camera(s).
+val camera_view : state -> state *)
+let camera_view st =
+  failwith "unimplemented"
+
+(* [update_door_status open door] returns the state with the door status of
+ * [door] updated to [open].
+ * requires:
+ *  - [open] is whether or not the door is open
+ *  - [door] is which door is to be updated
+val update_door_status : bool -> door -> state *)
+let update_door_status op door =
+  failwith "unimplemented"
 
 
-(* ================ helpers for do' =========================================*)
-let go d st = 
+(*****************************************************************************
+******************************************************************************
+**********************************INTERFACE***********************************
+******************************************************************************
+******************************************************************************)
+
+(* ========================== function for go ===============================*)
+let go dir st =
   (* update current room *)
-  match List.assoc d (List.assoc st.current_room st.map) with
-  | exception Not_found -> raise Illegal
-  | exit -> 
-    let st = {st with current_room=exit; turns = st.turns+1} in
-    (* update turns, visited and score *)
-    if List.mem exit st.visited then st 
-    else {st with 
-          visited = exit::st.visited; 
-          score = st.score+get_room_point exit st; }
-            
-let take o st = 
-  match List.assoc o st.locations with
-  | exception Not_found -> raise Illegal
-  | loc_room -> if loc_room <> st.current_room then raise Illegal else
-      let locations = List.remove_assoc o st.locations in
-      let inv = if List.exists (fun x -> x=o) st.inv then st.inv 
-                else o::st.inv in
-      let treasure_room = List.assoc o st.treasure_info in
-      let score = if treasure_room = st.current_room
-                  then st.score - get_item_point o st 
-                  else st.score
-      in 
-      {st with locations = locations; score = score; inv=inv; turns=st.turns+1}
-
-let drop o st = 
-  if List.exists (fun x -> x=o) st.inv then
-    match List.assoc o st.treasure_info with
-    | exception Not_found -> raise Illegal
-    | treasure_room -> 
-        let locations = (o, st.current_room)::st.locations in
-        let inv = List.filter (fun x -> x <> o) st.inv in
-        let score = if treasure_room = st.current_room
-                    then st.score + get_item_point o st 
-                    else st.score
-        in
-    {st with locations = locations; score = score; inv=inv; turns=st.turns+1}
-  else raise Illegal
+  try
+    let room = List.assoc st.room.nameR st.map in
+    let exit = List.assoc dir room.exitsR in
+    {st with room = List.assoc exit st.map;}
+  with
+  | Not_found -> raise Illegal
 
 
-(* [do' c st] is [st'] if it is possible to do command [c] in
- * state [st] and the resulting new state would be [st'].  The
- * function name [do'] is used because [do] is a reserved keyword.
- *   - The "go" (and its shortcuts), "take" and "drop" commands
- *     either result in a new state, or are not possible because
- *     their object is not valid in state [st] hence they raise [Illegal].
- *       + the object of "go" is valid if it is a direction by which
- *         the current room may be exited
- *       + the object of "take" is valid if it is an item in the
- *         current room
- *       + the object of "drop" is valid if it is an item in the
- *         current inventory
- *       + if no object is provided (i.e., the command is simply
- *         the bare word "go", "take", or "drop") the behavior
- *         is unspecified
- *   - The "quit", "look", "inventory", "inv", "score", and "turns"
- *     commands are always possible and leave the state unchanged.
- *   - The behavior of [do'] is unspecified if the command is
- *     not one of the commands given in the assignment writeup.
- * The underspecification above is in order to enable karma
- * implementations that provide new commands. *)
-let do' c st =
-  let open Str in
-  if c="quit" || c="look" || c="inventory" || c="inv" || c="score" || c="turns" 
-  then st 
-  else
-  (* Not shorthand. split into VERB OBJECT *)
-  match bounded_split (regexp " ") c 2 with 
-    | v::o::[] -> if v="go" then go o st 
-      else if v="take" then take o st
-      else if v="drop" then drop o st
-      else st (* unspecified behavior = return unchanged *)
-    | d::[] -> if (* check direction shorthand *)
-        match List.assoc d (List.assoc st.current_room st.map) with
-        | exception Not_found ->  false
-        | _ -> true
-        then go d st 
-        else st (* unspecified behavior = return unchanged *)
-    | _ -> st (* unspecified behavior = return unchanged *)
-
-
-
-(* ================= EVAL LOOP ============================================ *)
-let show_room r st = 
-  let (desc, _) = List.assoc st.current_room st.rooms_info in desc
-let show_inv st = 
-  List.fold_left (fun acc x -> if acc = "" then x else x ^ "\n" ^ acc) "" st.inv
-
+(* ============================== EVAL LOOP =============================== *)
 
 (* [main f] is the main entry point from outside this module
- * to load a game from file [f] and start playing it
- *)
+ * to load a game from file [f] and start playing it. *)
 let main file_name =
-  let rec eval st = 
+  let rec eval st =
     (* get cmd *)
     let () = print_string "> " in
-    let cmd = read_line () in 
+    let cmd = read_line () in
     let cmd = String.lowercase_ascii cmd in
-      if cmd = "quit" then () 
-      else if cmd = "look" then 
-        let () = print_endline (show_room st.current_room st) in
-        eval st
-      else if cmd = "inventory" || cmd = "inv" then 
-        let () = print_endline (show_inv st) in
-        eval st
-      else if cmd = "score" then 
-        let () = print_endline (string_of_int (score st)) in
-        eval st
-      else if cmd = "turns" then 
-        let () = print_endline (string_of_int (turns st))in
-        eval st
-      else 
-        let st = try do' cmd st with Illegal -> 
-                let () = print_string "Illegal command!" in st 
-        in
+      let dir =
+        match cmd with
+        | "left" -> Left
+        | "right" -> Right
+        | "up" -> Up
+        | "down" -> Down
+        | _ -> Elsewhere
+      in
+      let st = try go dir st with
+      | Illegal -> let () = print_endline "Illegal command!" in st
+      in
         let () = print_string "You did: " in
         let () = print_endline cmd in
-        let () = print_endline (show_room st.current_room st) in
-        eval st
+        let () = print_string "You are currently in: " in
+        let () = print_endline (st.room.nameR) in
+          eval st
   in
-  let st = Yojson.Basic.from_file file_name |> init_state in
-  (* display room *)
-  let () = print_endline (show_room st.current_room st) in
-  eval st
-
-
-
+  let j = Yojson.Basic.from_file file_name in
+  let st = init_state j 0 in
+  let () = print_endline (st.room.nameR) in
+    eval st

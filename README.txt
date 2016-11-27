@@ -18,26 +18,15 @@ the functions that we want/need. Also ended up having to change the types of
 some things and adding fields, etc. Put failwiths on functions that need to be
 implemented.
 
-Nov 24: Attempted make play and ran into system error, not sure why.... Also
-not 100% certain interface is correct. Will need to implement async soon,
-probably, if the game itself will run without problems, as the next step in the
-game would be monsters/time/battery, which all need to be asynced in.
+Nov 24: Also not 100% certain interface is correct. Will need to implement
+async soon, probably, if the game itself will run without problems, as the next
+step in the game would be monsters/time/battery, which all need to be asynced in.
 
 NOTE:
 IF you want to check more types with make check, open checktypes.sh and add
 to where it says "EDIT HERE TO CHECK TYPES". Make sure you use Engine.* and
-not Game.* as what shipped with A2 has Game.* and had to be modified.
-Here is what shipped with A2:
-let e:exn = Game.Illegal
-let check_init_state : Yojson.Basic.json -> Game.state = Game.init_state
-let check_max_score : Game.state -> int = Game.max_score
-let check_score : Game.state -> int = Game.score
-let check_turns : Game.state -> int = Game.turns
-let check_current_room_id : Game.state -> string = Game.current_room_id
-let check_inv : Game.state -> string list = Game.inv
-let check_visited : Game.state -> string list = Game.visited
-let check_locations : Game.state -> (string*string) list = Game.locations
-let check_do' : string -> Game.state -> Game.state = Game.do'
+not Game.* as what shipped with A2 has Game.* and had to be modified. Follow
+the format of the given type checks.
 
 **** MAKE SURE TO MAKE CLEAN BEFORE YOU ADD COMMIT AND PUSH. ****
 
