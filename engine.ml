@@ -438,9 +438,20 @@ let process_cmd cmd j st =
  *)
 let stdin : Reader.t = Lazy.force Reader.stdin
 
+let rec update st : unit = 
+  upon (after (Core.Std.sec 1.)) (fun _ ->
+    let st = update_time_and_battery st in
+    match Deferred.peek(update_state_monster_move st) with 
+    | None -> () 
+    | Some st' -> 
+      printf "%s\n" "updated";
+      update st'
+  )
 
-let rec eval j st =
-  let st = update_time_and_battery st in
+
+let rec eval j st : unit =
+  let r = Reader.read_line stdin in
+  upon r (fun cmd -> 
     let hours = floor (st.time/.3600.) in
     let minutes = floor ((st.time -. (hours*.3600.))/.60.) in
     let seconds = st.time -. hours*.3600. -. minutes*.60. in
@@ -451,17 +462,9 @@ let rec eval j st =
     Pervasives.print_endline ("Battery level is: " ^ (string_of_float st.battery) ^ "%");
     Pervasives.print_endline ("You are currently in: " ^ (st.room.nameR) ^ "\n");
     Pervasives.print_string "> ";
-  let st = match Deferred.peek(update_state_monster_move st) with 
-  | None -> st 
-  | Some st' -> st'
-  in
-  try (* so doesnt get reader in use error *)
-    let r = Reader.read_line stdin in
-    (* TODO *)
-    let _ = upon r (fun cmd -> process_cmd "left" j global_state) 
-    in eval j st
-  with 
-    _ -> eval j st
+    process_cmd "left" j global_state
+  );
+  update st
 
 
 (* [main f] is the main entry point from outside this module
@@ -477,6 +480,4 @@ let rec main fileName =
     Pervasives.print_endline "Please enter the name of the game file you want to load.\n";
     Pervasives.print_string  "> ";
     let fileName = Pervasives.read_line () in main fileName
-
-
 

@@ -1,5 +1,5 @@
 (* Author: CS 3110 course staff *)
-
+open Async.Std
 
 (* IMPORTANT NOTE:
  * You should not need to modify this file, though perhaps for karma
@@ -17,4 +17,4 @@ let () =
   let file_name = Pervasives.read_line () in
   Engine.main file_name
 
-(* let _ = Scheduler.go()  *)
+let _ = Scheduler.go ()
