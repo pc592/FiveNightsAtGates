@@ -48,8 +48,15 @@
 	"name": "Camel",
 	"level": 0,
 	"image": "Camel",
-	"startRoom": "CSUGLab",
+	"startRoom": "Gimme!",
 	"modusOperandi": "randomly goal oriented",
+	"timeToMove": 500
+	}, {
+	"name": "Bed",
+	"level": 1,
+	"image": "Bed",
+	"startRoom": "bathroom",
+	"modusOperandi": "random walk",
 	"timeToMove": 500
 	}]
 }

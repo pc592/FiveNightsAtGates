@@ -1,5 +1,4 @@
 open Async.Std
-
 (* A [GameEngine] regulates and updates the state of a FNAG game state.
  * The updated state is used by other parts to set up the graphics
  * and interface. *)
@@ -81,6 +80,35 @@ let random_goal room map : room Deferred.t =
   in
   move room map goal
 
+(*
+(* [random_goal room map monster] guides a monster's movement. The monster goes
+  chooses a random room and goes there. Stops in each room on its way random seconds
+  of time up to LONGEST PAUSE TIME. Returns goal room after it finished moving
+ * LONGEST PAUSE TIME is 5 seconds in a room
+ * requires:
+ *  - [room] is the details of the current room
+ *  - [map] is the map of the game for the AI to traverse
+val random_goal : room -> map -> room Deferred.t *)
+let random_goal room map monster: room Deferred.t =
+  let _, goal = random_element map in
+  let rec move room map goal =
+    (* choose exit, stay seconds randomly *)
+    (* TODO: ignore direction now *)
+    if goal.nameR = room.nameR then return room else
+    let dir, exit = random_element room.exitsR in
+    let next_room = List.assoc exit map in
+    let stay = random_time 5 in
+
+    (* wait random seconds using [after] *)
+    after (Core.Std.sec stay) >>= fun () ->
+    (* print out "done" using [printf] *)
+    printf "%s%s\n" "monster randomly moved to" next_room.nameR;
+    (* move to next room *)
+    move next_room map goal
+  in
+  move room map goal
+*)
+
 (* [weighted_movement room map] returns the next room using weighted
  * movement traversal. Weighted movement traversal weights each path between
  * rooms as a 2-way edge and favors moving along higher weighted edges. In
@@ -107,14 +135,8 @@ let preset_path room map =
  *  - [room] is the details of the current room
  *  - [map] is the map of the game for the AI to traverse
 val random_walk : room -> map -> room *)
-let rec random_walk room map monster =
-  let current = List.assoc room.nameR map in
-  let exits = current.exitsR in
-  let numExits = List.length exits in
-  let random = Random.int numExits in
-  let (dir,name) = List.nth exits random in
-    if name = "main" then random_walk room map monster else
-    List.assoc name map
+let random_walk room map =
+  failwith "unimplemented"
 
 
 (* [Illegal] is raised by the game to indicate that a command is illegal. *)
@@ -195,7 +217,7 @@ let insert_monster j lvl =
   |> List.filter (fun monstRec -> (monstRec.levelM < lvl))
   |> List.map (fun monstRec -> (monstRec.nameM, monstRec))
 
-let get_map_with_monsters j lvl map =
+let new_map j lvl map =
   let monsters = insert_monster j lvl in
   let rec nextMonster mons map' =
     match mons with
@@ -214,7 +236,7 @@ val init_state : yojson -> int -> state *)
 let init_state j lvl = {
   monsters = (insert_monster j lvl);
   player = "Student";
-  map = get_map_with_monsters j lvl (get_map j);
+  map = (get_map j);
   startTime = Unix.time();
   time = 0.;
   battery = 100.;
@@ -268,42 +290,23 @@ let update_time_and_battery st =
       else 0.2
     in
   let newBatt = st.battery -. cameraPenalty -. doorPenalty in
-  {st with time = (now -. st.startTime)*.20.;
+  {st with time = (now -. st.startTime)*.24.;
            battery = if newBatt < 0. then 0. else newBatt;}
 
+(* [update_battery num state] returns the state with the battery level
+ * decreased by a given num of type [int]. Begins at 100% for each level.
+ * costs:
+ *  - closing door has an initial cost of 5% and 0.2% / sec door stays closed.
+ *  - checking cameras has a cost of 0.1% / sec while in use.
+val update_battery : int -> state -> state *)
 let update_battery_close_door st =
   {st with battery = st.battery -. 2.;}
 
-(*update map after monster move*)
-let update_map_monster_move oldRoom newRoom map monster =
-  let midMap = List.map (fun (roomName,roomRec) ->
-                if oldRoom.nameR = roomName then
-                  let noMons = {roomRec with monsterR = None} in
-                    (roomName,noMons)
-                else (roomName,roomRec)) map
-    in
-  let newMap = List.map (fun (roomName,roomRec) ->
-                if newRoom.nameR = roomName then
-                  let someMons = {roomRec with monsterR = Some monster} in
-                    (roomName,someMons)
-                else (roomName,roomRec)) midMap
-    in newMap
-
-(*update monsters after monster move*)
-let update_monsters_monster_move newRoom mons monsters =
-  List.map (fun (monsName,monsRec) ->
-    if mons.nameM = monsName then
-      let newMons = {mons with currentRoomM = newRoom.nameR} in
-        (monsName, newMons)
-    else (monsName,monsRec)) monsters
-
-(*update state after monster move *)
-let update_state_monster_move mons newRoom st =
-  let upd_room = if st.room.nameR = newRoom.nameR then newRoom else st.room in
-  let mons_room = List.assoc mons.currentRoomM st.map in
-  {st with monsters = update_monsters_monster_move newRoom mons st.monsters;
-           map = update_map_monster_move mons_room newRoom st.map mons;
-           room = upd_room;}
+(* [update_monsters_location map] returns the map with updated location(s) of
+ * each monster in play.
+val update_monsters_location : map -> map *)
+let update_monsters map =
+  failwith "unimplemented"
 
 (*****************************************************************************
 ******************************************************************************
@@ -354,44 +357,29 @@ let update_door_status st op door =
 ******************************************************************************
 ******************************************************************************)
 
-let pretty_string num =
-  if int_of_float num = 0 then "00"
-  else if int_of_float num < 10 then "0" ^ (string_of_int (int_of_float num))
-  else string_of_int (int_of_float num)
-
 (* ============================== EVAL LOOP =============================== *)
 
 let rec eval j st =
   let st = update_time_and_battery st in
-    let hours = floor (st.time/.3600.) in
-    let minutes = floor ((st.time -. (hours*.3600.))/.60.) in
-    let seconds = st.time -. hours*.3600. -. minutes*.60. in
-    print_endline ("Time elapsed is: "
-                  ^ pretty_string hours ^ ":"
-                  ^ pretty_string minutes ^ ":"
-                  ^ pretty_string seconds);
-    print_endline ("Battery level is: " ^ (string_of_float st.battery) ^ "%");
-    print_endline ("You are currently in: " ^ (st.room.nameR)) ^ "\n";
-    print_string "> ";
-  let cmd = read_line () in
+    print_endline ("Time elapsed is: " ^ (string_of_float st.time));
+    print_endline ("Battery level is: " ^ (string_of_float st.battery));
+    print_endline ("You are currently in: " ^ (st.room.nameR));
+  let () =
+    if (st.time >= 34560.) then
+      print_endline "You've survived the night! Next night? (Next/Quit)"
+    else if (st.battery <= 0.) then
+      print_endline "You're out of battery.... (Quit/Restart)"
+  in
+  print_string "\n> ";
+  let cmd = Pervasives.read_line () in
   let cmd = String.lowercase_ascii cmd in
   let st =
-    if (st.time >= 28800. && st.level = 2) then
-      let () = print_endline "You've survived all the projects. "
-        ^ "Congratulations? (Quit/Restart)" in
-      match cmd with
-      | "quit" -> quit st
-      | "restart" -> start j
-      | _ -> print_endline ("Illegal command '" ^ cmd ^ "'"); st
-    else if st.time >= 2800. then
-      let () = print_endline "You've survived the night! "
-        ^ "Next night? (Next/Quit)" in
+    if st.time >= 34560. then
       match cmd with
       | "next" -> next_level j st
       | "quit" -> quit st
       | _ -> print_endline ("Illegal command '" ^ cmd ^ "'"); st
     else if st.battery <= 0. then
-      let () = print_endline "You're out of battery.... (Quit/Restart)" in
       match cmd with
       | "quit" -> quit st
       | "restart" -> start j
@@ -433,4 +421,4 @@ let rec main fileName =
     print_endline "\nThat's not a valid .json file.";
     print_endline "Please enter the name of the game file you want to load.\n";
     print_string  "> ";
-    let fileName = read_line () in main fileName
+    let fileName = Pervasives.read_line () in main fileName

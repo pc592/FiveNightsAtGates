@@ -152,5 +152,12 @@
 	"currentRoom": "CSUGLab",
 	"modusOperandi": "randomly goal oriented",
 	"timeToMove": 500
+	}, {
+	"name": "Bed",
+	"level": 1,
+	"image": "Bed",
+	"startRoom": "CSOffices",
+	"modusOperandi": "random walk",
+	"timeToMove": 500
 	}]
 }
