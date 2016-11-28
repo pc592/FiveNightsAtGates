@@ -28,10 +28,7 @@ run without problems, as the next step in the game would be
 monsters/time/battery, which all need to be asynced in.
 
 Nov 23:
-No idea what's up with .mli's or anything, but created engine2.ml to select just
-the functions that we want/need. Also ended up having to change the types of
-some things and adding fields, etc. Put failwiths on functions that need to be
-implemented.
+.mli will need updating. Put failwiths on functions that need to be implemented.
 
 IMPORTANT NOTE:
 I(Ruoyan) deleted/renamed the engine mli file tempararily just because it's easier to test without that annoying <abstr> thing. We can add it back after finish testing

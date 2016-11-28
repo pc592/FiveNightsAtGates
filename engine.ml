@@ -212,14 +212,9 @@ val next_level : state -> state *)
 let next_level j st =
   init_state j (st.level +1)
 
-(* [exit state] exits the game.
-val exit : state -> unit *)
-let exit st =
-  failwith "unimplemented"
-
-(* [game_over state] allows player to restart or quit if lost.
-val game_over : state -> state *)
-let game_over st =
+(* [quit state] quits the game.
+val quit : state -> unit *)
+let quit st =
   failwith "unimplemented"
 
 (*****************************************************************************
@@ -239,8 +234,9 @@ let update_time_and_battery st =
       else if not ((snd (fst doors)) || (snd (snd doors))) then 0.4
       else 0.2
     in
+  let newBatt = st.battery -. cameraPenalty -. doorPenalty in
   {st with time = (now -. st.startTime)*.24.;
-           battery = st.battery -. cameraPenalty -. doorPenalty }
+           battery = if newBatt < 0. then 0. else newBatt;}
 
 (* [update_battery num state] returns the state with the battery level
  * decreased by a given num of type [int]. Begins at 100% for each level.
@@ -287,7 +283,7 @@ let camera_view st =
     let exit = List.assoc Down st.room.exitsR in
     {st with room = List.assoc exit st.map;}
   with
-  | Not_found -> print_endline "There are no other rooms, you are trapped."; game_over st
+  | Not_found -> print_endline "There are no other rooms, you are trapped."; quit st
 
 let update_door_status st op door =
   match door with
@@ -309,16 +305,31 @@ let update_door_status st op door =
 (* ============================== EVAL LOOP =============================== *)
 
 let rec eval j st =
-    (* get cmd *)
-    let st = update_time_and_battery st in
-    let () = print_string "Time elapsed is: " in
-    let () = print_endline (string_of_float st.time) in
-    let () = print_string "Battery level is: " in
-    let () = print_endline (string_of_float st.battery) in
-    let () = print_string "\n> " in
-    let cmd = read_line () in
-    let cmd = String.lowercase_ascii cmd in
-    if (st.room.nameR <> "main") &&
+  let st = update_time_and_battery st in
+    print_endline ("Time elapsed is: " ^ (string_of_float st.time));
+    print_endline ("Battery level is: " ^ (string_of_float st.battery));
+    print_endline ("You are currently in: " ^ (st.room.nameR));
+  let () =
+    if (st.time >= 34560.) then
+      print_endline "You've survived the night! Next night? (Next/Quit)"
+    else if (st.battery <= 0.) then
+      print_endline "You're out of battery.... (Quit/Restart)"
+  in
+  print_string "\n> ";
+  let cmd = read_line () in
+  let cmd = String.lowercase_ascii cmd in
+  let st =
+    if st.time >= 34560. then
+      match cmd with
+      | "next" -> next_level j st
+      | "quit" -> quit st
+      | _ -> print_endline ("Illegal command '" ^ cmd ^ "'"); st
+    else if st.battery <= 0. then
+      match cmd with
+      | "quit" -> quit st
+      | "restart" -> start j
+      | _ -> print_endline ("Illegal command '" ^ cmd ^ "'"); st
+    else if (st.room.nameR <> "main") &&
       (cmd = "left" || cmd = "right" || cmd = "up" || cmd = "down") then
       let dir =
         match cmd with
@@ -328,36 +339,20 @@ let rec eval j st =
         | "down" -> Down
         | _ -> Elsewhere
       in
-      let st = try shift_view st dir with
-      | Illegal -> let () = print_endline "Illegal command!" in st
-      in
-        let () = print_string "You did: " in
-        let () = print_endline cmd in
-        let () = print_string "You are currently in: " in
-        let () = print_endline (st.room.nameR) in
-          eval j st
+      try shift_view st dir with
+        | Illegal -> print_endline ("Illegal command '" ^ cmd ^ "'"); st
     else
       match cmd with
-      | "main" ->  let st = main_view st in
-                    let () = print_string "You are currently in: " in
-                    let () = print_endline (st.room.nameR) in
-                    eval j st
-      | "camera" -> let st = camera_view st in
-                    let () = print_string "You are currently in: " in
-                    let () = print_endline (st.room.nameR) in
-                    eval j st
-      | "close one" -> let st = update_door_status st false One in eval j st
-      | "close two" -> let st = update_door_status st false Two in eval j st
-      | "open one" -> let st = update_door_status st true One in eval j st
-      | "open two" -> let st = update_door_status st true Two in eval j st
-      | "start" -> eval j (start j)
-      | "exit" -> eval j (exit st)
-      | "nextLevel" -> eval j (next_level j st)
-      | "gameOver" -> eval j (game_over st)
-      | _ -> let () = print_endline "Illegal command!" in
-             let () = print_string "You are currently in: " in
-             let () = print_endline (st.room.nameR) in
-             eval j st
+      | "main" ->  main_view st
+      | "camera" -> camera_view st
+      | "close one" -> update_door_status st false One
+      | "close two" -> update_door_status st false Two
+      | "open one"  -> update_door_status st true One
+      | "open two"  -> update_door_status st true Two
+      | "restart" -> start j
+      | "quit" -> quit st
+      | _ -> print_endline ("Illegal command '" ^ cmd ^ "'"); st
+  in eval j st
 
 (* [main f] is the main entry point from outside this module
  * to load a game from file [f] and start playing it. *)
