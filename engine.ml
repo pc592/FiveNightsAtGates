@@ -73,41 +73,13 @@ let random_goal room map : room Deferred.t =
     let stay = random_time 5 in
     (* wait random seconds using [after] *)
     after (Core.Std.sec stay) >>= fun () ->
-    (* print out "done" using [printf] *)
-    printf "%s\n" "monster randomly moved!";
-    (* move to next room *)
-    move next_room map goal
-  in
-  move room map goal
-
-(*
-(* [random_goal room map monster] guides a monster's movement. The monster goes
-  chooses a random room and goes there. Stops in each room on its way random seconds
-  of time up to LONGEST PAUSE TIME. Returns goal room after it finished moving
- * LONGEST PAUSE TIME is 5 seconds in a room
- * requires:
- *  - [room] is the details of the current room
- *  - [map] is the map of the game for the AI to traverse
-val random_goal : room -> map -> room Deferred.t *)
-let random_goal room map monster: room Deferred.t =
-  let _, goal = random_element map in
-  let rec move room map goal =
-    (* choose exit, stay seconds randomly *)
-    (* TODO: ignore direction now *)
-    if goal.nameR = room.nameR then return room else
-    let dir, exit = random_element room.exitsR in
-    let next_room = List.assoc exit map in
-    let stay = random_time 5 in
-
-    (* wait random seconds using [after] *)
-    after (Core.Std.sec stay) >>= fun () ->
-    (* print out "done" using [printf] *)
+    (* Pervasives.print out "done" using [printf] *)
     printf "%s%s\n" "monster randomly moved to" next_room.nameR;
     (* move to next room *)
     move next_room map goal
   in
   move room map goal
-*)
+
 
 (* [weighted_movement room map] returns the next room using weighted
  * movement traversal. Weighted movement traversal weights each path between
@@ -169,7 +141,7 @@ let getExits room =
         | "right" -> Right
         | "up" -> Up
         | "down" -> Down
-        | _ -> print_endline "Not a valid exit direction in this .json."; raise Illegal
+        | _ -> Pervasives.print_endline "Not a valid exit direction in this .json."; raise Illegal
       in
       let exitid exit = exit |> member "room_id" |> to_string in
       (direction exit,exitid exit)
@@ -368,7 +340,7 @@ let camera_view st =
     let exit = List.assoc Down st.room.exitsR in
     {st with room = List.assoc exit st.map;}
   with
-  | Not_found -> print_endline "There are no other rooms, you are trapped."; quit st
+  | Not_found -> Pervasives.print_endline "There are no other rooms, you are trapped."; quit st
 
 let update_door_status st op door =
   match door with
@@ -399,36 +371,36 @@ let rec eval j st =
     let hours = floor (st.time/.3600.) in
     let minutes = floor ((st.time -. (hours*.3600.))/.60.) in
     let seconds = st.time -. hours*.3600. -. minutes*.60. in
-    print_endline ("Time elapsed is: "
+    Pervasives.print_endline ("Time elapsed is: "
                   ^ pretty_string hours ^ ":"
                   ^ pretty_string minutes ^ ":"
                   ^ pretty_string seconds);
-    print_endline ("Battery level is: " ^ (string_of_float st.battery) ^ "%");
-    print_endline ("You are currently in: " ^ (st.room.nameR) ^ "\n");
-    print_string "> ";
+    Pervasives.print_endline ("Battery level is: " ^ (string_of_float st.battery) ^ "%");
+    Pervasives.print_endline ("You are currently in: " ^ (st.room.nameR) ^ "\n");
+    Pervasives.print_string "> ";
   let cmd = Pervasives.read_line () in
   let cmd = String.lowercase_ascii cmd in
   let st =
     if (st.time >= 28800. && st.level = 2) then
-      let () = print_endline ("You've survived all the projects. "
+      let () = Pervasives.print_endline ("You've survived all the projects. "
         ^ "Congratulations? (Quit/Restart)") in
       match cmd with
       | "quit" -> quit st
       | "restart" -> start j
-      | _ -> print_endline ("Illegal command '" ^ cmd ^ "'"); st
+      | _ -> Pervasives.print_endline ("Illegal command '" ^ cmd ^ "'"); st
     else if st.time >= 2800. then
-      let () = print_endline ("You've survived the night! "
+      let () = Pervasives.print_endline ("You've survived the night! "
         ^ "Next night? (Next/Quit)") in
       match cmd with
       | "next" -> next_level j st
       | "quit" -> quit st
-      | _ -> print_endline ("Illegal command '" ^ cmd ^ "'"); st
+      | _ -> Pervasives.print_endline ("Illegal command '" ^ cmd ^ "'"); st
     else if st.battery <= 0. then
-      let () = print_endline "You're out of battery.... (Quit/Restart)" in
+      let () = Pervasives.print_endline "You're out of battery.... (Quit/Restart)" in
       match cmd with
       | "quit" -> quit st
       | "restart" -> start j
-      | _ -> print_endline ("Illegal command '" ^ cmd ^ "'"); st
+      | _ -> Pervasives.print_endline ("Illegal command '" ^ cmd ^ "'"); st
     else if (st.room.nameR <> "main") &&
       (cmd = "left" || cmd = "right" || cmd = "up" || cmd = "down") then
       let dir =
@@ -440,7 +412,7 @@ let rec eval j st =
         | _ -> Elsewhere
       in
       try shift_view st dir with
-        | Illegal -> print_endline ("Illegal command '" ^ cmd ^ "'"); st
+        | Illegal -> Pervasives.print_endline ("Illegal command '" ^ cmd ^ "'"); st
     else
       match cmd with
       | "main" ->  main_view st
@@ -451,7 +423,7 @@ let rec eval j st =
       | "open two"  -> update_door_status st true Two
       | "restart" -> start j
       | "quit" -> quit st
-      | _ -> print_endline ("Illegal command '" ^ cmd ^ "'"); st
+      | _ -> Pervasives.print_endline ("Illegal command '" ^ cmd ^ "'"); st
   in eval j st
 
 (* [main f] is the main entry point from outside this module
@@ -463,7 +435,7 @@ let rec main fileName =
       eval j st
   in try nest_main fileName with
   | Sys_error(_) | Illegal ->
-    print_endline "\nThat's not a valid .json file.";
-    print_endline "Please enter the name of the game file you want to load.\n";
-    print_string  "> ";
+    Pervasives.print_endline "\nThat's not a valid .json file.";
+    Pervasives.print_endline "Please enter the name of the game file you want to load.\n";
+    Pervasives.print_string  "> ";
     let fileName = Pervasives.read_line () in main fileName
