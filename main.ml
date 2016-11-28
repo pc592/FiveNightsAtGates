@@ -12,8 +12,8 @@ open Async.Std
 let () =
   ANSITerminal.(print_string [red]
     "\n\nWelcome to the 3110 Text Adventure Game engine.\n");
-  print_endline "Please enter the name of the game file you want to load.\n";
-  print_string  "> ";
+  Pervasives.print_endline "Please enter the name of the game file you want to load.\n";
+  Pervasives.print_string  "> ";
   let file_name = Pervasives.read_line () in
   Engine.main file_name
 
