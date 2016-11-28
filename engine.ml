@@ -109,7 +109,7 @@ let getExits room =
         | "right" -> Right
         | "up" -> Up
         | "down" -> Down
-        | _ -> failwith "not a valid exit direction"
+        | _ -> print_endline "Not a valid exit direction in this .json."; raise Illegal
       in
       let exitid exit = exit |> member "room_id" |> to_string in
       (direction exit,exitid exit)
@@ -367,7 +367,7 @@ let rec main fileName =
     let st = start j in
       eval j st
   in try nest_main fileName with
-  | Sys_error(_) ->
+  | Sys_error(_) | Illegal ->
     print_endline "\nThat's not a valid .json file.";
     print_endline "Please enter the name of the game file you want to load.\n";
     print_string  "> ";
