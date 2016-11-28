@@ -1,3 +1,4 @@
+open Async.Std
 (* A [GameEngine] regulates and updates the state of a FNAG game state.
  * The updated state is used by other parts to set up the graphics
  * and interface. *)
@@ -42,17 +43,71 @@ type state = {
 ******************************************************************************
 ******************************************************************************)
 
+(* select random element from list *)
+let random_element lst =
+    let n = Random.int (List.length lst) in
+    List.nth lst n
+
+(* select random element from list *)
+let random_time max =
+    float_of_int (Random.int max)
+
 (* [random_goal room map] returns the next room using random goal oriented
  * traversal. Random goal oriented traversal randomly chooses a room and moves
  * there as directly as possible, briefly pausing in each room. When goal is
  * reached, pauses for a longer amount of time. Chooses a new random goal when
  * goal is reached.
+ * TODO: LONGEST PAUSE TIME is 5 seconds
  * requires:
  *  - [room] is the details of the current room
  *  - [map] is the map of the game for the AI to traverse
-val random_goal : room -> map -> room *)
-let random_goal room map =
-  failwith "unimplemented"
+val random_goal : room -> map -> room Deferred.t *)
+let random_goal room map : room Deferred.t =
+  let _, goal = random_element map in
+  let rec move room map goal =
+    (* choose exit, stay seconds randomly *)
+    (* TODO: ignore direction now *)
+    if goal.nameR = room.nameR then return room else
+    let dir, exit = random_element room.exitsR in
+    let next_room = List.assoc exit map in
+    let stay = random_time 5 in
+    (* wait random seconds using [after] *)
+    after (Core.Std.sec stay) >>= fun () ->
+    (* print out "done" using [printf] *)
+    printf "%s\n" "monster randomly moved!";
+    (* move to next room *)
+    move next_room map goal
+  in
+  move room map goal
+
+(*
+(* [random_goal room map monster] guides a monster's movement. The monster goes
+  chooses a random room and goes there. Stops in each room on its way random seconds
+  of time up to LONGEST PAUSE TIME. Returns goal room after it finished moving
+ * LONGEST PAUSE TIME is 5 seconds in a room
+ * requires:
+ *  - [room] is the details of the current room
+ *  - [map] is the map of the game for the AI to traverse
+val random_goal : room -> map -> room Deferred.t *)
+let random_goal room map monster: room Deferred.t =
+  let _, goal = random_element map in
+  let rec move room map goal = 
+    (* choose exit, stay seconds randomly *)
+    (* TODO: ignore direction now *)
+    if goal.nameR = room.nameR then return room else
+    let dir, exit = random_element room.exitsR in
+    let next_room = List.assoc exit map in
+    let stay = random_time 5 in
+
+    (* wait random seconds using [after] *)
+    after (Core.Std.sec stay) >>= fun () ->
+    (* print out "done" using [printf] *)
+    printf "%s%s\n" "monster randomly moved to" next_room.nameR;
+    (* move to next room *)
+    move next_room map goal
+  in 
+  move room map goal
+*)
 
 (* [weighted_movement room map] returns the next room using weighted
  * movement traversal. Weighted movement traversal weights each path between
@@ -316,7 +371,7 @@ let rec eval j st =
       print_endline "You're out of battery.... (Quit/Restart)"
   in
   print_string "\n> ";
-  let cmd = read_line () in
+  let cmd = Pervasives.read_line () in
   let cmd = String.lowercase_ascii cmd in
   let st =
     if st.time >= 34560. then
@@ -366,4 +421,4 @@ let rec main fileName =
     print_endline "\nThat's not a valid .json file.";
     print_endline "Please enter the name of the game file you want to load.\n";
     print_string  "> ";
-    let fileName = read_line () in main fileName
+    let fileName = Pervasives.read_line () in main fileName

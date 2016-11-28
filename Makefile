@@ -1,8 +1,8 @@
 test:
-	ocamlbuild -pkgs oUnit,yojson,str,ANSITerminal engine_test.byte && ./engine_test.byte
+	ocamlbuild -pkgs oUnit,yojson,str,ANSITerminal,async -use-ocamlfind -tag thread engine_test.byte && ./engine_test.byte
 
 play:
-	ocamlbuild -pkgs oUnit,yojson,str,ANSITerminal main.byte && ./main.byte
+	ocamlbuild -pkgs oUnit,yojson,str,ANSITerminal,async -use-ocamlfind -tag thread main.byte && ./main.byte
 
 check:
 	bash checkenv.sh && bash checktypes.sh
