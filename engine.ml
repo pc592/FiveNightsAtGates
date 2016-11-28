@@ -384,14 +384,14 @@ let process_cmd cmd j st =
   let st = !global_state in
   let cmd = String.lowercase_ascii cmd in
   let st =
-    if (st.time >= 28800. && st.level = 2) then
+    if (st.time >= 28800. && st.level = 1) then
       let () = Pervasives.print_endline ("You've survived all the projects. "
         ^ "Congratulations? (Quit/Restart)") in
       match cmd with
       | "quit" -> quit st
       | "restart" -> start j
       | _ -> Pervasives.print_endline ("Illegal command '" ^ cmd ^ "'"); st
-    else if st.time >= 2800. then
+    else if st.time >= 28800. then
       let () = Pervasives.print_endline ("You've survived the night! "
         ^ "Next night? (Next/Quit)") in
       match cmd with
