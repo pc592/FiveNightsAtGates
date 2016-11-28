@@ -1,10 +1,6 @@
 #require "yojson";;
 #require "ANSITerminal";;
-<<<<<<< HEAD
 #require "async";;
-=======
-#require "Async";;
->>>>>>> cabe38576542fae1ae3819286b9a06260ea1d084
 #use "engine.ml";;
 let j = Yojson.Basic.from_file "test.json";;
 let s = init_state j 0;;

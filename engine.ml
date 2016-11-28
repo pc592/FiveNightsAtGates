@@ -37,6 +37,7 @@ type state = {
   level: int
 }
 
+
 (*****************************************************************************
 ******************************************************************************
 **************************MONSTER MOVEMENT ALGORITHMS*************************
@@ -52,6 +53,19 @@ let random_element lst =
 let random_time max =
     float_of_int (Random.int max)
 
+let monster_move mons st =
+  (* choose exit, stay seconds randomly *)
+  (* TODO: ignore direction now *)
+  let dir, exit = random_element st.room.exitsR in
+  let next_room = List.assoc exit st.map in
+  let stay = random_time 5 in
+  (* wait random seconds using [after] *)
+  after (Core.Std.sec stay) >>= fun () ->
+  (* Pervasives.print out "done" using [printf] *)
+  printf "%s%s\n" "monster randomly moved to" next_room.nameR;
+  (* move to next room *)
+  return st.room
+
 (* [random_goal room map] returns the next room using random goal oriented
  * traversal. Random goal oriented traversal randomly chooses a room and moves
  * there as directly as possible, briefly pausing in each room. When goal is
@@ -62,23 +76,9 @@ let random_time max =
  *  - [room] is the details of the current room
  *  - [map] is the map of the game for the AI to traverse
 val random_goal : room -> map -> room Deferred.t *)
-let random_goal room map : room Deferred.t =
+(* let random_goal room map : room Deferred.t =
   let _, goal = random_element map in
-  let rec move room map goal =
-    (* choose exit, stay seconds randomly *)
-    (* TODO: ignore direction now *)
-    if goal.nameR = room.nameR then return room else
-    let dir, exit = random_element room.exitsR in
-    let next_room = List.assoc exit map in
-    let stay = random_time 5 in
-    (* wait random seconds using [after] *)
-    after (Core.Std.sec stay) >>= fun () ->
-    (* Pervasives.print out "done" using [printf] *)
-    printf "%s%s\n" "monster randomly moved to" next_room.nameR;
-    (* move to next room *)
-    move next_room map goal
-  in
-  move room map goal
+  move room map goal *)
 
 
 (* [weighted_movement room map] returns the next room using weighted
@@ -270,6 +270,7 @@ let update_time_and_battery st =
   {st with time = (now -. st.startTime)*.20.;
            battery = if newBatt < 0. then 0. else newBatt;}
 
+
 (* [update_battery num state] returns the state with the battery level
  * decreased by a given num of type [int]. Begins at 100% for each level.
  * costs:
@@ -304,11 +305,23 @@ let update_monsters_monster_move newRoom mons monsters =
 
 (*update state after monster move *)
 let update_state_monster_move mons newRoom st =
-  let upd_room = if st.room.nameR = newRoom.nameR then newRoom else st.room in
   let mons_room = List.assoc mons.currentRoomM st.map in
   {st with monsters = update_monsters_monster_move newRoom mons st.monsters;
            map = update_map_monster_move mons_room newRoom st.map mons;
-           room = upd_room;}
+           room = newRoom;}
+
+(*update state after all monsters move. This is used in eval *)
+let update_state_monster_move st : state Deferred.t=
+  (* TODO: list.hd failed *)
+  (* let _, mons = List.hd st.monsters in *)
+  let mons = {nameM="Camel"; levelM=0; imageM="Camel"; currentRoomM="main"; modusOperandiM= "randomly goal oriented"; timeToMoveM=100} in
+  monster_move mons st >>= fun newRoom -> 
+  let mons_room = List.assoc mons.currentRoomM st.map in
+  let st = {st with monsters = update_monsters_monster_move newRoom mons st.monsters;
+           map = update_map_monster_move mons_room newRoom st.map mons;
+           room = newRoom;}
+  in
+  return st
 
 (*****************************************************************************
 ******************************************************************************
@@ -365,20 +378,10 @@ let pretty_string num =
   else string_of_int (int_of_float num)
 
 (* ============================== EVAL LOOP =============================== *)
+let global_state = ref (start (Yojson.Basic.from_file "test.json"))
 
-let rec eval j st =
-  let st = update_time_and_battery st in
-    let hours = floor (st.time/.3600.) in
-    let minutes = floor ((st.time -. (hours*.3600.))/.60.) in
-    let seconds = st.time -. hours*.3600. -. minutes*.60. in
-    Pervasives.print_endline ("Time elapsed is: "
-                  ^ pretty_string hours ^ ":"
-                  ^ pretty_string minutes ^ ":"
-                  ^ pretty_string seconds);
-    Pervasives.print_endline ("Battery level is: " ^ (string_of_float st.battery) ^ "%");
-    Pervasives.print_endline ("You are currently in: " ^ (st.room.nameR) ^ "\n");
-    Pervasives.print_string "> ";
-  let cmd = Pervasives.read_line () in
+let process_cmd cmd j st = 
+  let st = !global_state in
   let cmd = String.lowercase_ascii cmd in
   let st =
     if (st.time >= 28800. && st.level = 2) then
@@ -424,7 +427,42 @@ let rec eval j st =
       | "restart" -> start j
       | "quit" -> quit st
       | _ -> Pervasives.print_endline ("Illegal command '" ^ cmd ^ "'"); st
-  in eval j st
+  in 
+  global_state := st
+  
+
+(**
+ * [stdin] is used to read input from the command line.
+ * [Reader.read_line stdin] will return a deferred that becomes determined
+ * when the user types in a line and presses enter.
+ *)
+let stdin : Reader.t = Lazy.force Reader.stdin
+
+
+let rec eval j st =
+  let st = update_time_and_battery st in
+    let hours = floor (st.time/.3600.) in
+    let minutes = floor ((st.time -. (hours*.3600.))/.60.) in
+    let seconds = st.time -. hours*.3600. -. minutes*.60. in
+    Pervasives.print_endline ("Time elapsed is: "
+                  ^ pretty_string hours ^ ":"
+                  ^ pretty_string minutes ^ ":"
+                  ^ pretty_string seconds);
+    Pervasives.print_endline ("Battery level is: " ^ (string_of_float st.battery) ^ "%");
+    Pervasives.print_endline ("You are currently in: " ^ (st.room.nameR) ^ "\n");
+    Pervasives.print_string "> ";
+  let st = match Deferred.peek(update_state_monster_move st) with 
+  | None -> st 
+  | Some st' -> st'
+  in
+  try (* so doesnt get reader in use error *)
+    let r = Reader.read_line stdin in
+    (* TODO *)
+    let _ = upon r (fun cmd -> process_cmd "left" j global_state) 
+    in eval j st
+  with 
+    _ -> eval j st
+
 
 (* [main f] is the main entry point from outside this module
  * to load a game from file [f] and start playing it. *)
@@ -439,3 +477,6 @@ let rec main fileName =
     Pervasives.print_endline "Please enter the name of the game file you want to load.\n";
     Pervasives.print_string  "> ";
     let fileName = Pervasives.read_line () in main fileName
+
+
+

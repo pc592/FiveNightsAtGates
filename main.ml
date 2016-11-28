@@ -1,5 +1,6 @@
 (* Author: CS 3110 course staff *)
 
+
 (* IMPORTANT NOTE:
  * You should not need to modify this file, though perhaps for karma
  * reasons you might choose to do so.  The reason this file is factored
@@ -13,5 +14,7 @@ let () =
     "\n\nWelcome to the 3110 Text Adventure Game engine.\n");
   print_endline "Please enter the name of the game file you want to load.\n";
   print_string  "> ";
-  let file_name = read_line () in
+  let file_name = Pervasives.read_line () in
   Engine.main file_name
+
+(* let _ = Scheduler.go()  *)
