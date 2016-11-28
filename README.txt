@@ -19,11 +19,13 @@ the format of the given type checks.
 
 **** MAKE SURE TO MAKE CLEAN BEFORE YOU ADD COMMIT AND PUSH. ****
 
-**** seems go is similar to shift_view. will need to reevaluate interface.
+Nov 27: From Jovan:
+When integrating async, remove eval from eval loop, make eval non-recursive.
+When doing graphics, do: st.room.nameR ^ st.room.monsterR.nameM ^ .jpg
 
-Nov 24: Also not 100% certain interface is correct. Will need to implement
-async soon, probably, if the game itself will run without problems, as the next
-step in the game would be monsters/time/battery, which all need to be asynced in.
+Nov 24: Will need to implement async soon, probably, if the game itself will
+run without problems, as the next step in the game would be
+monsters/time/battery, which all need to be asynced in.
 
 Nov 23:
 No idea what's up with .mli's or anything, but created engine2.ml to select just

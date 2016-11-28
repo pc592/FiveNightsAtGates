@@ -24,7 +24,6 @@ let e:exn = Engine.Illegal
 let check_get_map : Yojson.Basic.json -> (string*Engine.room) list = Engine.get_map
 let check_insert_monster : Yojson.Basic.json -> int -> (string * Engine.monster) list = Engine.insert_monster
 let check_init_state : Yojson.Basic.json -> int -> Engine.state = Engine.init_state
-let check_go : Engine.dir -> Engine.state -> Engine.state = Engine.go
 EOF
 
 if ocamlbuild -pkgs oUnit,yojson,str,ANSITerminal checktypes.byte ; then

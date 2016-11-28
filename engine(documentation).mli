@@ -35,6 +35,7 @@ type map
  *  - monsters [monster list]: the possible monsters in play
  *  - player [string]: player's name
  *  - map [map]: game map
+ *  - startTime [int]: time at start of level
  *  - time [int]: the time elapsed during a level
  *  - battery [int]: the battery left since the beginning of the level
  *  - doorStatus [(bool*bool)]: statuses of the two doors leading to main room
@@ -108,10 +109,7 @@ val init_state : yojson -> int -> state
 val main_view : state -> state
 
 (* [start] starts a new game. *)
-val start : unit -> state
-
-(* [quit] quits the level and enters the start screen. *)
-val quit : state -> state
+val start : yojson -> state
 
 (* [exit state] exits the game. *)
 val exit : state -> unit
@@ -137,7 +135,7 @@ val update_time : state -> state
  * costs:
  *  - closing door has an initial cost of 5% and 0.2% / sec door stays closed.
  *  - checking cameras has a cost of 0.1% / sec while in use. *)
-val update_battery : int -> state -> state
+val update_battery : float -> state -> state
 
 (* [update_monsters_location map] returns the map with updated location(s) of
  * each monster in play. *)
@@ -171,8 +169,6 @@ val update_door_status : state -> bool -> door -> state
 ******************************************************************************
 ******************************************************************************)
 
-(* go loop *)
-val go : dir -> state -> state
 
 (* [main f] is the main entry point from outside this module
  * to load a game from file [f] and start playing it. *)

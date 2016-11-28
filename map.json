@@ -1,7 +1,7 @@
 {
 "rooms": [{
 	"name": "main",
-	"image": "directorystring",
+	"image": "main",
 	"exits": [{
 		"direction": "left",
 		"room_id": "Gimme!"
@@ -12,7 +12,7 @@
 	"monsters": []
 	}, {
 	"name": "kitchen",
-	"image": "directorystring",
+	"image": "kitchen",
 	"exits": [{
 		"direction": "left",
 		"room_id": "main"
@@ -26,7 +26,7 @@
 		"monsters": []
 	}, {
 	"name": "bathroom",
-	"image": "directorystring",
+	"image": "bathroom",
 	"exits": [{
 		"direction": "up",
 		"room_id": "kitchen"
@@ -40,7 +40,7 @@
 	"monsters": []
 	}, {
 	"name": "lectureHall",
-	"image": "directorystring",
+	"image": "lectureHall",
 	"exits": [{
 		"direction": "up",
 		"room_id": "bathroom"
@@ -51,7 +51,7 @@
 	"monsters": []
 	}, {
 	"name": "CSOffices",
-	"image": "directorystring",
+	"image": "CSOffices",
 	"exits": [{
 		"direction": "right",
 		"room_id": "lectureHall"
@@ -65,7 +65,7 @@
 	"monsters": []
 	}, {
 	"name": "studySpaces",
-	"image": "directorystring",
+	"image": "studySpaces",
 	"exits": [{
 		"direction": "right",
 		"room_id": "CSOffices"
@@ -79,7 +79,7 @@
 	"monsters": []
 	}, {
 	"name": "CSUGLab",
-	"image": "directorystring",
+	"image": "CSUGLab",
 	"exits": [{
 		"direction": "down",
 		"room_id": "studySpaces"
@@ -90,7 +90,7 @@
 	"monsters": []
 	}, {
 	"name": "copyRoom",
-	"image": "directorystring",
+	"image": "copyRoom",
 	"exits": [{
 		"direction": "right",
 		"room_id": "studySpaces"
@@ -104,7 +104,7 @@
 	"monsters": []
 	}, {
 	"name": "gradLounge",
-	"image": "directorystring",
+	"image": "gradLounge",
 	"exits": [{
 		"direction": "right",
 		"room_id": "Gimme!"
@@ -118,7 +118,7 @@
 	"monsters": []
 	}, {
 	"name": "profOffice",
-	"image": "directorystring",
+	"image": "profOffice",
 	"exits": [{
 		"direction": "right",
 		"room_id": "Gimme!"
@@ -129,7 +129,7 @@
 	"monsters": []
 	}, {
 	"name": "Gimme!",
-	"image": "directorystring",
+	"image": "Gimme",
 	"exits": [{
 		"direction": "right",
 		"room_id": "main"
@@ -148,7 +148,7 @@
 "monsters": [{
 	"name": "Camel",
 	"level": 0,
-	"image": "directorystring",
+	"image": "Camel",
 	"currentRoom": "CSUGLab",
 	"modusOperandi": "randomly goal oriented",
 	"timeToMove": 500

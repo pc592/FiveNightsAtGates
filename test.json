@@ -1,7 +1,7 @@
 {
 "rooms": [{
 	"name": "main",
-	"image": "directorystring",
+	"image": "main",
 	"exits": [{
 		"direction": "right",
 		"room_id": "Gimme!"
@@ -12,7 +12,7 @@
 	"monsters": []
 	}, {
 	"name": "kitchen",
-	"image": "directorystring",
+	"image": "kitchen",
 	"exits": [{
 		"direction": "up",
 		"room_id": "main"
@@ -23,7 +23,7 @@
 		"monsters": []
 	}, {
 	"name": "bathroom",
-	"image": "directorystring",
+	"image": "bathroom",
 	"exits": [{
 		"direction": "up",
 		"room_id": "Gimme!"
@@ -34,7 +34,7 @@
 	"monsters": []
 	}, {
 	"name": "Gimme!",
-	"image": "directorystring",
+	"image": "Gimme",
 	"exits": [{
 		"direction": "left",
 		"room_id": "main"
@@ -47,7 +47,7 @@
 "monsters": [{
 	"name": "Camel",
 	"level": 0,
-	"image": "directorystring",
+	"image": "Camel",
 	"startRoom": "CSUGLab",
 	"modusOperandi": "randomly goal oriented",
 	"timeToMove": 500
