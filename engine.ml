@@ -34,7 +34,8 @@ type state = {
   battery: float;
   doorStatus: (door*bool)*(door*bool);
   room: room;
-  level: int
+  level: int;
+  quit: bool
 }
 
 
@@ -53,6 +54,7 @@ let random_element lst =
 let random_time max =
     float_of_int (Random.int max)
 
+(* make monster move and update state  *)
 let monster_move mons st =
   (* choose exit, stay seconds randomly *)
   (* TODO: ignore direction now *)
@@ -62,7 +64,9 @@ let monster_move mons st =
   (* wait random seconds using [after] *)
   after (Core.Std.sec stay) >>= fun () ->
   (* Pervasives.print out "done" using [printf] *)
-  printf "%s%s\n" "monster randomly moved to" next_room.nameR;
+  printf "%s%s\n" "monster randomly moved to " next_room.nameR;
+  (* update global state *)
+  (* global_state := st; *)
   (* move to next room *)
   return st.room
 
@@ -191,7 +195,7 @@ let makeMonster monster = {
 val insert_monster : yojson -> int -> (string*monster) list *)
 let insert_monster j lvl =
   (j |> member "monsters" |> to_list) |> List.map makeMonster
-  |> List.filter (fun monstRec -> (monstRec.levelM < lvl))
+  |> List.filter (fun monstRec -> (monstRec.levelM <= lvl))
   |> List.map (fun monstRec -> (monstRec.nameM, monstRec))
 
 let get_map_with_monsters j lvl map =
@@ -219,7 +223,8 @@ let init_state j lvl = {
   battery = 100.;
   doorStatus = ((One,true),(Two,true));
   room = List.assoc "main" (get_map j);
-  level = lvl
+  level = lvl;
+  quit = false
 }
 
 (*****************************************************************************
@@ -246,8 +251,7 @@ let next_level j st =
 
 (* [quit state] quits the game.
 val quit : state -> unit *)
-let quit st =
-  failwith "unimplemented"
+let quit st = {st with quit = true;}
 
 (*****************************************************************************
 ******************************************************************************
@@ -278,7 +282,7 @@ let update_time_and_battery st =
  *  - checking cameras has a cost of 0.1% / sec while in use.
 val update_battery : int -> state -> state *)
 let update_battery_close_door st =
-  {st with battery = st.battery -. 2.;}
+  {st with battery = st.battery -. 2. ;}
 
 (*update map after monster move*)
 let update_map_monster_move oldRoom newRoom map monster =
@@ -314,8 +318,8 @@ let update_state_monster_move mons newRoom st =
 let update_state_monster_move st : state Deferred.t=
   (* TODO: list.hd failed *)
   (* let _, mons = List.hd st.monsters in *)
-  let mons = {nameM="Camel"; levelM=0; imageM="Camel"; currentRoomM="main"; modusOperandiM= "randomly goal oriented"; timeToMoveM=100} in
-  monster_move mons st >>= fun newRoom -> 
+  let mons = snd (List.hd st.monsters) in
+  monster_move mons st >>= fun newRoom ->
   let mons_room = List.assoc mons.currentRoomM st.map in
   let st = {st with monsters = update_monsters_monster_move newRoom mons st.monsters;
            map = update_map_monster_move mons_room newRoom st.map mons;
@@ -377,10 +381,18 @@ let pretty_string num =
   else if int_of_float num < 10 then "0" ^ (string_of_int (int_of_float num))
   else string_of_int (int_of_float num)
 
+
+let print_time st =
+  let hours = floor (st.time/.3600.) in
+  let minutes = floor ((st.time -. (hours*.3600.))/.60.) in
+  let seconds = st.time -. hours*.3600. -. minutes*.60. in
+    ("Time elapsed in hh:mm is: " ^
+        pretty_string hours ^ ":" ^ pretty_string minutes)
+
 (* ============================== EVAL LOOP =============================== *)
 let global_state = ref (start (Yojson.Basic.from_file "test.json"))
 
-let process_cmd cmd j st = 
+let process_cmd cmd j st =
   let st = !global_state in
   let cmd = String.lowercase_ascii cmd in
   let st =
@@ -427,9 +439,9 @@ let process_cmd cmd j st =
       | "restart" -> start j
       | "quit" -> quit st
       | _ -> Pervasives.print_endline ("Illegal command '" ^ cmd ^ "'"); st
-  in 
+  in
   global_state := st
-  
+
 
 (**
  * [stdin] is used to read input from the command line.
@@ -438,7 +450,7 @@ let process_cmd cmd j st =
  *)
 let stdin : Reader.t = Lazy.force Reader.stdin
 
-let rec update st : unit = 
+let rec update st : unit =
   upon (after (Core.Std.sec 1.)) (fun _ ->
     let st = update_time_and_battery st in
     match Deferred.peek(update_state_monster_move st) with 
@@ -451,23 +463,18 @@ let rec update st : unit =
       update st'
   )
 
-let rec get_input j st = 
-  let hours = floor (st.time/.3600.) in
-  let minutes = floor ((st.time -. (hours*.3600.))/.60.) in
-  let seconds = st.time -. hours*.3600. -. minutes*.60. in
-  Pervasives.print_endline ("Time elapsed is: "
-                ^ pretty_string hours ^ ":"
-                ^ pretty_string minutes ^ ":"
-                ^ pretty_string seconds);
+let rec get_input j st =
+  Pervasives.print_endline (print_time st);
   Pervasives.print_endline ("Battery level is: " ^ (string_of_float st.battery) ^ "%");
   Pervasives.print_endline ("You are currently in: " ^ (st.room.nameR) ^ "\n");
   Pervasives.print_string "> ";
   let r = Reader.read_line stdin in
-  upon r (fun result -> 
+  upon r (fun result ->
     match result with
     | `Eof -> ()
-    | `Ok cmd -> 
+    | `Ok cmd ->
         process_cmd cmd j global_state;
+        if !global_state.quit then () else
         get_input j st
   )
 
