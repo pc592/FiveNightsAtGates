@@ -191,7 +191,7 @@ let makeMonster monster = {
 val insert_monster : yojson -> int -> (string*monster) list *)
 let insert_monster j lvl =
   (j |> member "monsters" |> to_list) |> List.map makeMonster
-  |> List.filter (fun monstRec -> (monstRec.levelM < lvl))
+  |> List.filter (fun monstRec -> (monstRec.levelM <= lvl))
   |> List.map (fun monstRec -> (monstRec.nameM, monstRec))
 
 let get_map_with_monsters j lvl map =
