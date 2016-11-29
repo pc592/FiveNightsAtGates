@@ -149,7 +149,7 @@
 	"name": "Camel",
 	"level": 0,
 	"image": "Camel",
-	"currentRoom": "CSUGLab",
+	"startRoom": "CSUGLab",
 	"modusOperandi": "randomly goal oriented",
 	"timeToMove": 500
 	}, {
