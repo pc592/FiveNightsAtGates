@@ -444,24 +444,33 @@ let rec update st : unit =
     match Deferred.peek(update_state_monster_move st) with
     | None -> ()
     | Some st' ->
+      global_state := st';
       printf "%s\n" "updated";
       update st'
   )
 
+let rec get_input j st =
+  let hours = floor (st.time/.3600.) in
+  let minutes = floor ((st.time -. (hours*.3600.))/.60.) in
+  let seconds = st.time -. hours*.3600. -. minutes*.60. in
+  Pervasives.print_endline ("Time elapsed is: "
+                ^ pretty_string hours ^ ":"
+                ^ pretty_string minutes ^ ":"
+                ^ pretty_string seconds);
+  Pervasives.print_endline ("Battery level is: " ^ (string_of_float st.battery) ^ "%");
+  Pervasives.print_endline ("You are currently in: " ^ (st.room.nameR) ^ "\n");
+  Pervasives.print_string "> ";
+  let r = Reader.read_line stdin in
+  upon r (fun result ->
+    match result with
+    | `Eof -> ()
+    | `Ok cmd ->
+        process_cmd cmd j global_state;
+        get_input j st
+  )
 
 let rec eval j st : unit =
-  let r = Reader.read_line stdin in
-  upon r (fun cmd ->
-    let hours = floor (st.time/.3600.) in
-    let minutes = floor ((st.time -. (hours*.3600.))/.60.) in
-    Pervasives.print_endline ("Time elapsed is: "
-                  ^ pretty_string hours ^ ":"
-                  ^ pretty_string minutes);
-    Pervasives.print_endline ("Battery level is: " ^ (string_of_float st.battery) ^ "%");
-    Pervasives.print_endline ("You are currently in: " ^ (st.room.nameR) ^ "\n");
-    Pervasives.print_string "> ";
-    process_cmd st.room.nameR j global_state
-  );
+  get_input j st;
   update st
 
 
