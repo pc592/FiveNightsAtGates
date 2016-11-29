@@ -11,6 +11,7 @@ let cmd =
     | KEYDOWN {keysym=KEY_LEFT} -> "left"
     | KEYDOWN {keysym=KEY_SPACE} -> "next"
     | KEYDOWN {keysym=KEY_ESCAPE} -> "quit"
+    | KEYDOWN {keysym=KEY_q} -> "restart"
     | KEYDOWN {keysym=KEY_a} -> "close one"
     | KEYDOWN {keysym=KEY_s} -> "close_two"
     | KEYDOWN {keysym=KEY_d} -> "open one"
