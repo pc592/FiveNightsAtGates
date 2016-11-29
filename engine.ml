@@ -277,7 +277,7 @@ let update_time_and_battery st =
  *  - checking cameras has a cost of 0.1% / sec while in use.
 val update_battery : int -> state -> state *)
 let update_battery_close_door st =
-  {st with battery = st.battery -. 2.;}
+  {st with battery = st.battery -. 2. ;}
 
 (*update map after monster move*)
 let update_map_monster_move oldRoom newRoom map monster =
