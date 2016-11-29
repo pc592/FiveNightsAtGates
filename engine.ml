@@ -34,7 +34,8 @@ type state = {
   battery: float;
   doorStatus: (door*bool)*(door*bool);
   room: room;
-  level: int
+  level: int;
+  quit: bool
 }
 
 
@@ -219,7 +220,8 @@ let init_state j lvl = {
   battery = 100.;
   doorStatus = ((One,true),(Two,true));
   room = List.assoc "main" (get_map j);
-  level = lvl
+  level = lvl;
+  quit = false
 }
 
 (*****************************************************************************
@@ -246,7 +248,7 @@ let next_level j st =
 
 (* [quit state] quits the game.
 val quit : state -> unit *)
-let quit st = {st with map = [];}
+let quit st = {st with quit = true;}
 
 (*****************************************************************************
 ******************************************************************************
@@ -381,7 +383,6 @@ let global_state = ref (start (Yojson.Basic.from_file "test.json"))
 
 let process_cmd cmd j st =
   let st = !global_state in
-  if (cmd = "quit" || st.map = []) then () else
   let cmd = String.lowercase_ascii cmd in
   let st =
     if (st.time >= 28800. && st.level = 1) then
@@ -466,6 +467,7 @@ let rec get_input j st =
     | `Eof -> ()
     | `Ok cmd ->
         process_cmd cmd j global_state;
+        if !global_state.quit then () else
         get_input j st
   )
 
