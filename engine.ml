@@ -62,7 +62,7 @@ let monster_move mons st =
   (* wait random seconds using [after] *)
   after (Core.Std.sec stay) >>= fun () ->
   (* Pervasives.print out "done" using [printf] *)
-  printf "%s%s\n" "monster randomly moved to" next_room.nameR;
+  printf "%s%s\n" "monster randomly moved to " next_room.nameR;
   (* move to next room *)
   return st.room
 
@@ -246,8 +246,7 @@ let next_level j st =
 
 (* [quit state] quits the game.
 val quit : state -> unit *)
-let quit st =
-  failwith "unimplemented"
+let quit st = {st with map = [];}
 
 (*****************************************************************************
 ******************************************************************************
@@ -314,8 +313,8 @@ let update_state_monster_move mons newRoom st =
 let update_state_monster_move st : state Deferred.t=
   (* TODO: list.hd failed *)
   (* let _, mons = List.hd st.monsters in *)
-  let mons = {nameM="Camel"; levelM=0; imageM="Camel"; currentRoomM="main"; modusOperandiM= "randomly goal oriented"; timeToMoveM=100} in
-  monster_move mons st >>= fun newRoom -> 
+  let mons = snd (List.hd st.monsters) in
+  monster_move mons st >>= fun newRoom ->
   let mons_room = List.assoc mons.currentRoomM st.map in
   let st = {st with monsters = update_monsters_monster_move newRoom mons st.monsters;
            map = update_map_monster_move mons_room newRoom st.map mons;
@@ -380,8 +379,9 @@ let pretty_string num =
 (* ============================== EVAL LOOP =============================== *)
 let global_state = ref (start (Yojson.Basic.from_file "test.json"))
 
-let process_cmd cmd j st = 
+let process_cmd cmd j st =
   let st = !global_state in
+  if (cmd = "quit" || st.map = []) then () else
   let cmd = String.lowercase_ascii cmd in
   let st =
     if (st.time >= 28800. && st.level = 1) then
@@ -427,9 +427,9 @@ let process_cmd cmd j st =
       | "restart" -> start j
       | "quit" -> quit st
       | _ -> Pervasives.print_endline ("Illegal command '" ^ cmd ^ "'"); st
-  in 
+  in
   global_state := st
-  
+
 
 (**
  * [stdin] is used to read input from the command line.
@@ -438,12 +438,12 @@ let process_cmd cmd j st =
  *)
 let stdin : Reader.t = Lazy.force Reader.stdin
 
-let rec update st : unit = 
+let rec update st : unit =
   upon (after (Core.Std.sec 1.)) (fun _ ->
     let st = update_time_and_battery st in
-    match Deferred.peek(update_state_monster_move st) with 
-    | None -> () 
-    | Some st' -> 
+    match Deferred.peek(update_state_monster_move st) with
+    | None -> ()
+    | Some st' ->
       printf "%s\n" "updated";
       update st'
   )
@@ -451,18 +451,16 @@ let rec update st : unit =
 
 let rec eval j st : unit =
   let r = Reader.read_line stdin in
-  upon r (fun cmd -> 
+  upon r (fun cmd ->
     let hours = floor (st.time/.3600.) in
     let minutes = floor ((st.time -. (hours*.3600.))/.60.) in
-    let seconds = st.time -. hours*.3600. -. minutes*.60. in
     Pervasives.print_endline ("Time elapsed is: "
                   ^ pretty_string hours ^ ":"
-                  ^ pretty_string minutes ^ ":"
-                  ^ pretty_string seconds);
+                  ^ pretty_string minutes);
     Pervasives.print_endline ("Battery level is: " ^ (string_of_float st.battery) ^ "%");
     Pervasives.print_endline ("You are currently in: " ^ (st.room.nameR) ^ "\n");
     Pervasives.print_string "> ";
-    process_cmd "left" j global_state
+    process_cmd st.room.nameR j global_state
   );
   update st
 
