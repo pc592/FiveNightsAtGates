@@ -442,10 +442,12 @@ let rec update st : unit =
   upon (after (Core.Std.sec 1.)) (fun _ ->
     let st = update_time_and_battery st in
     match Deferred.peek(update_state_monster_move st) with 
-    | None -> () 
+    | None -> 
+      printf "%s\n" "updated time/battery";
+      update st  (* TODO: () or update st *)
     | Some st' -> 
       global_state := st';
-      printf "%s\n" "updated";
+      printf "%s\n" "updated monster and time/battery";
       update st'
   )
 
