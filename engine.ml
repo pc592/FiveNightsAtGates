@@ -378,6 +378,14 @@ let pretty_string num =
   else if int_of_float num < 10 then "0" ^ (string_of_int (int_of_float num))
   else string_of_int (int_of_float num)
 
+
+let print_time st =
+  let hours = floor (st.time/.3600.) in
+  let minutes = floor ((st.time -. (hours*.3600.))/.60.) in
+  let seconds = st.time -. hours*.3600. -. minutes*.60. in
+    ("Time elapsed in hh:mm is: " ^
+        pretty_string hours ^ ":" ^ pretty_string minutes)
+
 (* ============================== EVAL LOOP =============================== *)
 let global_state = ref (start (Yojson.Basic.from_file "test.json"))
 
@@ -451,13 +459,7 @@ let rec update st : unit =
   )
 
 let rec get_input j st =
-  let hours = floor (st.time/.3600.) in
-  let minutes = floor ((st.time -. (hours*.3600.))/.60.) in
-  let seconds = st.time -. hours*.3600. -. minutes*.60. in
-  Pervasives.print_endline ("Time elapsed is: "
-                ^ pretty_string hours ^ ":"
-                ^ pretty_string minutes ^ ":"
-                ^ pretty_string seconds);
+  Pervasives.print_endline (print_time st);
   Pervasives.print_endline ("Battery level is: " ^ (string_of_float st.battery) ^ "%");
   Pervasives.print_endline ("You are currently in: " ^ (st.room.nameR) ^ "\n");
   Pervasives.print_string "> ";
