@@ -323,7 +323,7 @@ let update_state_monster_move st : state Deferred.t=
   monster_move mons st >>= fun newRoom ->
   let mons_room = List.assoc mons.currentRoomM st.map in
   let st = {st with monsters = update_monsters_monster_move newRoom mons st.monsters;
-           map = update_map_monster_move mons_room newRoom st.map mons;
+           map = update_map_monster_move mons_room newRoom st.map {mons with currentRoomM = newRoom.nameR};
            room = newRoom;}
   in
   return st
