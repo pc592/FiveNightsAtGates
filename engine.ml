@@ -314,6 +314,7 @@ let update_state_monster_move mons newRoom st =
            map = update_map_monster_move mons_room newRoom st.map mons;
            room = newRoom;}
 
+
 (*update state after all monsters move. This is used in eval *)
 let update_state_monster_move st : state Deferred.t=
   (* TODO: list.hd failed *)
@@ -450,20 +451,40 @@ let process_cmd cmd j st =
  *)
 let stdin : Reader.t = Lazy.force Reader.stdin
 
+
+(* make monster move and update state  *)
+let rec start_monster_move st : unit =
+  let st = !global_state in
+  (* choose exit, stay seconds randomly *)
+  (* TODO: ignore direction now *)
+  let mons = snd (List.hd st.monsters) in
+  let dir, exit = random_element st.room.exitsR in
+  let next_room = List.assoc exit st.map in
+  let stay = random_time 5 in
+  (* wait random seconds using [after] *)
+  upon (after (Core.Std.sec stay)) (fun _ ->
+    (* Pervasives.print out "done" using [printf] *)
+    printf "%s%s\n" "monster randomly moved to " next_room.nameR;
+    (* update global state *)
+    let mons_room = List.assoc mons.currentRoomM st.map in
+    let st = {st with monsters = update_monsters_monster_move next_room mons st.monsters;
+             map = update_map_monster_move mons_room next_room st.map mons;
+             room = next_room;} in
+    global_state := st;
+    start_monster_move st
+  )
+
 let rec update st : unit =
+  let st = !global_state in
   upon (after (Core.Std.sec 1.)) (fun _ ->
     let st = update_time_and_battery st in
-    match Deferred.peek(update_state_monster_move st) with 
-    | None -> 
-      printf "%s\n" "updated time/battery";
-      update st  (* TODO: () or update st *)
-    | Some st' -> 
-      global_state := st';
-      printf "%s\n" "updated monster and time/battery";
-      update st'
+    global_state := st;
+    printf "%s\n" "updated time/battery";
+    update st
   )
 
 let rec get_input j st =
+  let st = !global_state in
   Pervasives.print_endline (print_time st);
   Pervasives.print_endline ("Battery level is: " ^ (string_of_float st.battery) ^ "%");
   Pervasives.print_endline ("You are currently in: " ^ (st.room.nameR) ^ "\n");
@@ -480,6 +501,7 @@ let rec get_input j st =
 
 let rec eval j st : unit =
   get_input j st;
+  start_monster_move st;
   update st
 
 

@@ -1,7 +1,0 @@
-"Resource: /Users/ruoyanqin/Developer/cs3110/CS3110_Project/main.ml": "G\205\160\011\202B\1607@/\232:)\000jp"
-"Resource: /Users/ruoyanqin/Developer/cs3110/CS3110_Project/engine.ml": "Y\018&\028\023\212\224\133+fN\165\250 \235\016"
-"Rule: ocaml: cmo* -> byte (%=main )": "\030%\155\150\224p-\164H\"+\133MX.\181"
-"Rule: ocaml: ml -> cmo & cmi (%=main )": "\176$\238F1cr\1496\252\0062i\139\031\198"
-"Rule: ocaml dependencies ml (%=engine )": "Q\145s\243\155\249\206\241!\165\149$\000p\223?"
-"Rule: ocaml dependencies ml (%=main )": "\1556\187Ru\011\184\142\244\000\128O\182\190\228\159"
-"Rule: ocaml: ml -> cmo & cmi (%=engine )": "S\185\1701\175\250!\028\240\175\179\176uZ\146A"
