@@ -409,14 +409,18 @@ let rec eval j st cmd=
       in
       try shift_view st dir with
         | Illegal -> Pervasives.print_endline ("Illegal command '" ^ cmd ^ "'"); st
+    else if (st.room.nameR = "main") &&
+      (cmd = "close one" || cmd = "close two" || cmd = "open one" || cmd = "open two") then
+        match cmd with
+        | "close one" -> update_door_status st false One
+        | "close two" -> update_door_status st false Two
+        | "open one"  -> update_door_status st true One
+        | "open two"  -> update_door_status st true Two
+        | _ -> Pervasives.print_endline ("Illegal command '" ^ cmd ^ "'"); st
     else
       match cmd with
       | "main" ->  main_view st
       | "camera" -> camera_view st
-      | "close one" -> update_door_status st false One
-      | "close two" -> update_door_status st false Two
-      | "open one"  -> update_door_status st true One
-      | "open two"  -> update_door_status st true Two
       | "restart" -> start j
       | "quit" -> quit st
       | "" -> st
