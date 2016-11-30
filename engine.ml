@@ -35,7 +35,8 @@ type state = {
   doorStatus: (door*bool)*(door*bool);
   room: room;
   level: int;
-  quit: bool
+  quit: bool;
+  lost: bool
 }
 
 let global_state = ref
@@ -49,7 +50,8 @@ let global_state = ref
   doorStatus = ((One,true),(Two,true));
   room = {nameR="dummy"; imageR="dummy"; exitsR=[]; monsterR=None};
   level = -1;
-  quit = false
+  quit = false;
+  lost = false;
 }
 
 (*****************************************************************************
@@ -63,7 +65,7 @@ let random_element lst =
     let n = Random.int (List.length lst) in
     List.nth lst n
 
-(* select random element from list *)
+(* [random_time max] returns some random time [0..max] *)
 let random_time max =
     float_of_int (Random.int max)
 
@@ -173,7 +175,8 @@ let init_state j lvl : unit =
   doorStatus = ((One,true),(Two,true));
   room = List.assoc "main" (get_map j);
   level = lvl;
-  quit = false
+  quit = false;
+  lost = false
   }
 
 
@@ -404,7 +407,8 @@ let rec start_monster_move (): unit =
   upon (after (Core.Std.sec stay)) (fun _ ->
     let st = !global_state in
     (* choose exit, stay seconds randomly *)
-    (* TODO: need smarter AI, also this is just first monster in state moving now *)
+    (* TODO: need smarter AI, also this is just first monster in state moving now
+     *   check engineText.ml version, it has good movement, just need to modify. *)
     let mons = snd (List.hd st.monsters) in
     let mons_room = List.assoc mons.currentRoomM st.map in
     let dir, exit = random_element mons_room.exitsR in

@@ -4,43 +4,48 @@
 
 (* The type of a game monster. [record]
  * stores:
- *  - name [string]: the identifier for the monster
- *  - level [int]: the level the monster enters the game
- *  - image [string]: image location for the monster
- *  - currentRoom [string]: where the monster is currently located.
- *  - modusOperandi [string]: the algorithm used by the monster for movement
- *  - timeToMove [int]: how long before the monster moves to the next room *)
+ *  - nameM [string]: the identifier for the monster
+ *  - levelM [int]: the level the monster enters the game
+ *  - imageM [string]: image location for the monster
+ *  - currentRoomM [string]: where the monster is currently located.
+ *  - modusOperandiM [string]: the algorithm used by the monster for movement
+ *                             ** has no use in the game itself **
+ *  - timeToMoveM [int]: how long it has been since the monster moved *)
 type monster
 
 (* The type of the two doors leading to the main room, left/right, one/two *)
 type door
 
-(* The type of camera view shift, either left, right, up, or down. *)
+(* The type of camera view shift, either left, right, up, or down.
+ *  elsewhere is used to for non-valid directions *)
 type dir
 
 (* The type of a room in the map. [record]
  * stores:
- *  - name [string]: the name of the room
- *  - image [string]: the image(s) location for the location
- *  - exits [(dir*string) list]: the exits associated with the room
- *  - monster [monster]: type monster if one is in the room *)
+ *  - nameR [string]: the name of the room
+ *  - imageR [string]: the image(s) location for the location
+ *  - exitsR [(dir*string) list]: the exits associated with the room
+ *  - monsterR [monster option]: Some monster if one is in the room or None.
+ *                            ** there can only be one monster in a room **)
 type room
 
-(* The type of the game map [(string*record) list].
+(* The type of the game map [(string*room) list].
  * stores: rooms and their record. *)
 type map
 
 (* The type of the game state. [record]
  * stores:
- *  - monsters [monster list]: the possible monsters in play
+ *  - monsters [(string*monster) list]: the possible monsters in play
  *  - player [string]: player's name
  *  - map [map]: game map
- *  - startTime [int]: time at start of level
- *  - time [int]: the time elapsed during a level
- *  - battery [int]: the battery left since the beginning of the level
- *  - doorStatus [(bool*bool)]: statuses of the two doors leading to main room
+ *  - startTime [float]: time at start of level
+ *  - time [float]: the time elapsed during a level, in game time.
+ *  - battery [float]: the battery left since the beginning of the level
+ *  - doorStatus [((door*bool)*(door*bool))]: statuses of two doors in main room
  *  - room [room]: The current room the camera is viewing
- *  - level [int]: The current level [1..5], aka night, the player is on *)
+ *  - level [int]: The current level [1..5], aka night, the player is on
+ *  - quit [bool]: whether or not the player has quit, ie if game is ongoing
+ *  - lost [bool]: whether or not the player has lost to a monster *)
 type state
 
 (*****************************************************************************
@@ -60,21 +65,16 @@ type state
 val random_goal : room -> map -> room
 
 (* [weighted_movement room map] returns the next room using weighted
- * movement traversal. Weighted movement traversal weights each path between
- * rooms as a 2-way edge and favors moving along higher weighted edges. In
- * general, paths leaing towards the main room are higher weighted than paths
- * leading away. If the current room is next to the main room and a new room
- * must be selected, the new room is randomly selected and reached before
- * algorithm is restarted.
+ * movement traversal. Weighted movement traversal requires that each room
+ * has a value, with movement towards a lower value more likely. In general,
+ * rooms near the main room are lower valued than paths leading away. If the
+ * current room is next to the main room and a new room must be selected,
+ * or the lower valued room has been reached (ie all other rooms are of equal
+ * or higher value) then the rooms will be randomly revalued.
  * requires:
  *  - [room] is the details of the current room
  *  - [map] is the map of the game for the AI to traverse *)
 val weighted_movement : room -> map -> room
-
-(* [preset_path room map] returns the next room on a selected random path. If
- * the room is reached, select a new random path.
- * (Paths will have to be determined and preset.) *)
-val preset_path : room -> map -> room
 
 (* [random_walk room map] returns the next room using random walk.
  * requires:

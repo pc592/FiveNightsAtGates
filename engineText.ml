@@ -39,8 +39,6 @@ type state = {
   lost: bool
 }
 
-open Async.Std
-
 (*****************************************************************************
 ******************************************************************************
 **************************MONSTER MOVEMENT ALGORITHMS*************************
@@ -73,22 +71,15 @@ val weighted_movement : room -> map -> room *)
 let weighted_movement room map =
   failwith "unimplemented"
 
-(* [preset_path room map] returns the next room on a selected random path. If
- * the room is reached, select a new random path.
- * (Paths will have to be determined and preset.)
-val preset_path : room -> map -> room *)
-let preset_path room map =
-  failwith "uniimplemented"
-
 let rec random_walk room map monster =
   let current = List.assoc room.nameR map in
   let exits = current.exitsR in
   let numExits = List.length exits in
   let random = Random.int numExits in
   let (dir,name) = List.nth exits random in
-    if name = "main" then random_walk room map monster else
-    List.assoc name map
-
+    if (name = "main") || ((List.assoc name map).monsterR <> None) then
+      random_walk room map monster
+    else List.assoc name map
 
 (* [Illegal] is raised by the game to indicate that a command is illegal. *)
 exception Illegal
@@ -366,6 +357,8 @@ let rec check_time monsters st =
 
 (* ============================== EVAL LOOP =============================== *)
 
+open Async.Std
+
 let rec eval j st cmd=
   let winTime = 28800. in
   let winLvl = 1 in
@@ -469,7 +462,6 @@ let rec go j st =
         (Pervasives.print_endline ("Day"^(string_of_int (st.level+1)));(next_level j st))
       else (eval j st cmd)
     in go j newSt
-
 
 (* [main f] is the main entry point from outside this module
  * to load a game from file [f] and start playing it. *)
