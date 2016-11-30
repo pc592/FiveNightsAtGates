@@ -161,7 +161,7 @@ let get_map_with_monsters j lvl map =
 
 (* [init_state lvl] returns an initial state based on the current level.
 val init_state : yojson -> int -> state *)
-let init_state j lvl : unit = 
+let init_state j lvl : unit =
   global_state :=
   {
   monsters = (insert_monster j lvl);
@@ -203,7 +203,7 @@ let next_level j : unit =
 
 (* [quit state] quits the game.
 val quit : state -> unit *)
-let quit () : unit = 
+let quit () : unit =
   global_state := {!global_state with quit = true;}
 
 
@@ -215,8 +215,8 @@ let quit () : unit =
 
 (* 1 second real time is 24 seconds game time.*)
 let update_time_and_battery () =
-  let staying_penalty = 0.005 in 
-  let close_penalty = 0.02 in 
+  let staying_penalty = 0.005 in
+  let close_penalty = 0.02 in
   let st = !global_state in
   let now = Unix.time() in
   let cameraPenalty =
@@ -280,7 +280,7 @@ let shift_view dir : unit =
     {st with room = List.assoc exit st.map;}
   with
   | Not_found -> raise Illegal
-  in 
+  in
   global_state := st
 
 let camera_view () : unit =
@@ -307,17 +307,18 @@ let camera_view () : unit =
 
 let update_door_status op door =
   let st = !global_state in
+  let penalty = st.battery -. 2. in
   let st =
   match door with
   | One -> let st = if ((snd (fst st.doorStatus)) <> (op)) then
-                      {st with battery = st.battery -. 2. ;}
+                      {st with battery = (if penalty < 0. then 0. else penalty) ;}
                     else st in
       {st with doorStatus = ((One, op), (snd st.doorStatus));}
   | Two -> let st = if ((snd (snd st.doorStatus)) <> (op)) then
-                      {st with battery = st.battery -. 2. ;}
+                      {st with battery = if penalty < 0. then 0. else penalty ;}
                     else st in
       {st with doorStatus = ((fst st.doorStatus),(Two, op));}
-  in 
+  in
   global_state := st
 
 (*****************************************************************************
@@ -327,8 +328,7 @@ let update_door_status op door =
 ******************************************************************************)
 
 let pretty_string num =
-  if int_of_float num = 0 then "00"
-  else if int_of_float num < 10 then "0" ^ (string_of_int (int_of_float num))
+  if int_of_float num < 10 then "0" ^ (string_of_int (int_of_float num))
   else string_of_int (int_of_float num)
 
 
@@ -336,7 +336,6 @@ let print_time () =
   let st = !global_state in
   let hours = floor (st.time/.3600.) in
   let minutes = floor ((st.time -. (hours*.3600.))/.60.) in
-  let seconds = st.time -. hours*.3600. -. minutes*.60. in
     ("Time elapsed in hh:mm is: " ^
         pretty_string hours ^ ":" ^ pretty_string minutes)
 
@@ -413,7 +412,7 @@ let rec start_monster_move (): unit =
     (* Pervasives.print out "done" using [printf] *)
     printf "%s%s\n" "monster randomly moved to " next_room.nameR;
     (* update global state *)
-    let upd_room = 
+    let upd_room =
       if next_room = st.room then {st.room with monsterR = Some mons} else st.room in
     let mons_room = List.assoc mons.currentRoomM st.map in
     let st = {st with monsters = update_monsters_monster_move next_room mons st.monsters;
@@ -425,7 +424,6 @@ let rec start_monster_move (): unit =
   )
 
 let rec update (): unit =
-  let st = !global_state in
   upon (after (Core.Std.sec 0.05)) (fun _ ->
     update_time_and_battery();
     (* printf "%s\n" "updated time/battery"; *)
