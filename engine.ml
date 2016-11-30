@@ -400,15 +400,16 @@ let stdin : Reader.t = Lazy.force Reader.stdin
 
 (* make monster move and update state  *)
 let rec start_monster_move (): unit =
-  let st = !global_state in
-  (* choose exit, stay seconds randomly *)
-  (* TODO: ignore direction now *)
-  let mons = snd (List.hd st.monsters) in
-  let dir, exit = random_element st.room.exitsR in
-  let next_room = List.assoc exit st.map in
   let stay = random_time 5 in
   (* wait random seconds using [after] *)
   upon (after (Core.Std.sec stay)) (fun _ ->
+    let st = !global_state in
+    (* choose exit, stay seconds randomly *)
+    (* TODO: need smarter AI, also this is just first monster in state moving now *)
+    let mons = snd (List.hd st.monsters) in
+    let mons_room = List.assoc mons.currentRoomM st.map in
+    let dir, exit = random_element mons_room.exitsR in
+    let next_room = List.assoc exit st.map in
     (* Pervasives.print out "done" using [printf] *)
     printf "%s%s\n" "monster randomly moved to " next_room.nameR;
     (* update global state *)
