@@ -1,3 +1,4 @@
+
 (* A [GameEngine] regulates and updates the state of a FNAG game state.
  * The updated state is used by other parts to set up the graphics
  * and interface. *)
@@ -37,6 +38,8 @@ type state = {
   quit: bool;
   lost: bool
 }
+
+open Async.Std
 
 (*****************************************************************************
 ******************************************************************************
@@ -112,7 +115,8 @@ let getExits room =
         | "right" -> Right
         | "up" -> Up
         | "down" -> Down
-        | _ -> print_endline "Not a valid exit direction in this .json."; raise Illegal
+        | _ -> Pervasives.print_endline "Not a valid exit direction in this .json.";
+                 raise Illegal
       in
       let exitid exit = exit |> member "room_id" |> to_string in
       (direction exit,exitid exit)
@@ -246,8 +250,8 @@ let update_map_monster_move oldRoom newRoom map monster =
   let midMap = List.map (fun (roomName,roomRec) ->
                 if oldRoom.nameR = roomName then
                   let noMons = {roomRec with monsterR = None} in
-                    (roomName,noMons
-)                else (roomName,roomRec)) map
+                    (roomName,noMons)
+                else (roomName,roomRec)) map
     in
   let newMap = List.map (fun (roomName,roomRec) ->
                 if newRoom.nameR = roomName then
@@ -303,16 +307,17 @@ let camera_view st =
     let exit = List.assoc Down st.room.exitsR in
     {st with room = List.assoc exit st.map;}
   with
-  | Not_found -> print_endline "There are no other rooms, you are trapped."; quit st
+  | Not_found -> Pervasives.print_endline "There are no other rooms, you are trapped."; quit st
 
 let update_door_status st op door =
+  let penalty = st.battery -. 2. in
   match door with
   | One -> let st = if ((snd (fst st.doorStatus)) <> (op)) then
-                      {st with battery = st.battery -. 2.;}
+                      {st with battery = if penalty < 0. then 0. else penalty;}
                     else st in
       {st with doorStatus = ((One, op), (snd st.doorStatus));}
   | Two -> let st = if ((snd (snd st.doorStatus)) <> (op)) then
-                      {st with battery = st.battery -. 2.;}
+                      {st with battery = if penalty < 0. then 0. else penalty;}
                     else st in
       {st with doorStatus = ((fst st.doorStatus),(Two, op));}
 
@@ -341,7 +346,7 @@ let move_monster monsName st =
     let monster = List.assoc monsName st.monsters in
     let oldMonsR = (List.assoc monster.currentRoomM st.map) in
     let newMonsR = random_walk oldMonsR st.map monster in
-    let () = print_endline ("monster moved to "^newMonsR.nameR) in
+    let () = Pervasives.print_endline (monsName^" moved to "^newMonsR.nameR) in
       update_state_monster_move monster newMonsR st
   else st
 
@@ -361,18 +366,10 @@ let rec check_time monsters st =
 
 (* ============================== EVAL LOOP =============================== *)
 
-let rec eval j st =
+let rec eval j st cmd=
+  let winTime = 28800. in
+  let winLvl = 1 in
   let st = update_time_and_battery st in
-    let hours = floor (st.time/.3600.) in
-    let minutes = floor ((st.time -. (hours*.3600.))/.60.) in
-      Pervasives.print_endline ("Time elapsed in hh:mm is: "
-                  ^ pretty_string hours ^ ":" ^ pretty_string minutes);
-    Pervasives.print_endline ("Battery level is: " ^ (string_of_float st.battery) ^ "%");
-    Pervasives.print_endline ("You are currently in: " ^ (st.room.nameR));
-    Pervasives.print_string "\n> ";
-  let cmd = Pervasives.read_line () in
-  let cmd = String.lowercase_ascii cmd in
-  if (cmd = "quit" || st.quit = true) then () else
   let st =
     if st.lost then st else
       let newSt = move_monsters st.monsters st in
@@ -381,32 +378,32 @@ let rec eval j st =
       else newSt
     in
   let st =
-    if (st.time >= 28800. && st.level = 2) then
+    if (st.time >= winTime && st.level = winLvl) then
       let () = Pervasives.print_endline ("You've survived all the projects. "
         ^ "Congratulations? (Quit/Restart)") in
       match cmd with
       | "quit" -> quit st
       | "restart" -> start j
-      | _ -> Pervasives.print_endline ("Illegal command '" ^ cmd ^ "'"); st
-    else if st.time >= 28800. then
+      | _ -> st
+    else if st.time >= winTime then
       let () = Pervasives.print_endline ("You've survived the night! "
         ^ "Next night? (Next/Quit)") in
       match cmd with
-      | "next" -> next_level j st
+      | "next" -> st
       | "quit" -> quit st
-      | _ -> Pervasives.print_endline ("Illegal command '" ^ cmd ^ "'"); st
+      | _ -> st
     else if st.lost then
       let () = Pervasives.print_endline ("IT'S HERE! (Quit/Restart)") in
       match cmd with
       | "quit" -> quit st
       | "restart" -> start j
-      | _ -> Pervasives.print_endline ("Illegal command '" ^ cmd ^ "'"); st
+      | _ -> st
     else if st.battery <= 0. then
       let () = Pervasives.print_endline ("You're out of battery.... (Quit/Restart)") in
       match cmd with
       | "quit" -> quit st
       | "restart" -> start j
-      | _ -> Pervasives.print_endline ("Illegal command '" ^ cmd ^ "'"); st
+      | _ -> st
     else if (st.room.nameR <> "main") &&
       (cmd = "left" || cmd = "right" || cmd = "up" || cmd = "down") then
       let dir =
@@ -429,16 +426,72 @@ let rec eval j st =
       | "open two"  -> update_door_status st true Two
       | "restart" -> start j
       | "quit" -> quit st
+      | "" -> st
       | _ -> Pervasives.print_endline ("Illegal command '" ^ cmd ^ "'"); st
-  in eval j st
+  in
+    let hours = floor (st.time/.3600.) in
+    let minutes = floor ((st.time -. (hours*.3600.))/.60.) in
+      Pervasives.print_endline ("You are now in: " ^ (st.room.nameR));
+      Pervasives.print_endline ("Time elapsed in hh:mm is: "
+          ^ pretty_string hours ^ ":" ^ pretty_string minutes);
+      Pervasives.print_endline ("Battery level is: "
+          ^ (string_of_float st.battery) ^ "%");
+  st
+
+
+let stdin = Lazy.force Reader.stdin
+(*
+let rec go j st =
+  let winTime = 28800. in
+    let timed max = Clock.with_timeout (Core.Std.sec max) (Reader.read_line stdin) in
+    let t = try timed 2. with | _ -> return `Timeout in
+    Pervasives.print_endline "sigh";
+    upon t (fun r -> (match r with
+      | `Result (`Ok cmd) -> Pervasives.print_endline "cmd"; let cmd = String.lowercase_ascii cmd in
+          Pervasives.print_endline cmd;
+          if (cmd = "quit" || st.quit = true) then ()
+          else if (cmd = "restart") then go j (start j)
+          else if (cmd = "next" && st.time >= winTime) then go j (next_level j st)
+          else go j (eval j st cmd)
+      | `Result (`Eof) | `Timeout -> Pervasives.print_endline "none";go j (eval j st "") ) )
+ *)
+
+let rec go j st =
+  let winTime = 28800. in
+  let cmd =
+    if (* <no input> *) false then ""
+    else let () = Pervasives.print_string "\n> " in Pervasives.read_line()
+  in let cmd = String.lowercase_ascii cmd in
+    if (cmd = "quit" || st.quit = true) then () else
+    let newSt =
+      if (cmd = "restart") then (Pervasives.print_endline "Back to Day 0"; (start j))
+      else if (cmd = "next" && st.time >= winTime) then
+        (Pervasives.print_endline ("Day"^(string_of_int (st.level+1)));(next_level j st))
+      else (eval j st cmd)
+    in go j newSt
+
 
 (* [main f] is the main entry point from outside this module
  * to load a game from file [f] and start playing it. *)
 let rec main fileName =
   let nest_main fileName =
+    if fileName = "quit" then () else
     let j = Yojson.Basic.from_file fileName in
     let st = start j in
-      eval j st
+    Pervasives.print_endline ( "\n" ^
+      "Legal commands you may use:\n" ^
+      " - main: will bring you back to your main room\n" ^
+      " - camera: allows you to move around\n" ^
+      "    + while in camera mode you may also use: up / down / left / right\n" ^
+      " - close one: closes door one\n" ^
+      " - close two: clses door two\n" ^
+      " - open one: opens door one\n" ^
+      " - open two: opens door two\n" ^
+      " - restart: restarts the game\n" ^
+      " - next: starts the next level if you survive\n" ^
+      " - quit: quits the game\n\n" ^
+      "Day 0");
+      go j st
   in try nest_main fileName with
   | Sys_error(_) | Illegal ->
     Pervasives.print_endline "\nThat's not a valid .json file.";
