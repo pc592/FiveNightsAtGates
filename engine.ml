@@ -1,4 +1,4 @@
-open Async.Std
+
 (* A [GameEngine] regulates and updates the state of a FNAG game state.
  * The updated state is used by other parts to set up the graphics
  * and interface. *)
@@ -39,35 +39,36 @@ type state = {
   lost: bool
 }
 
-let global_state = ref
-  {
-  monsters = [];
-  player = "Student";
-  map = [];
-  startTime = Unix.time();
-  time = 0.;
-  battery = 100.;
-  doorStatus = ((One,true),(Two,true));
-  room = {nameR="dummy"; imageR="dummy"; exitsR=[]; monsterR=None};
-  level = -1;
-  quit = false;
-  lost = false;
-}
-
 (*****************************************************************************
 ******************************************************************************
 **************************MONSTER MOVEMENT ALGORITHMS*************************
 ******************************************************************************
 ******************************************************************************)
 
-(* select random element from list *)
-let random_element lst =
-    let n = Random.int (List.length lst) in
-    List.nth lst n
+(* [weighted_movement room map monster] returns the next room using weighted
+ * movement traversal. Weighted movement traversal requires that each room
+ * has a value, with movement towards a lower value more likely. In general,
+ * rooms near the main room are lower valued than paths leading away. If the
+ * current room is next to the main room and a new room must be selected,
+ * or the lower valued room has been reached (ie all other rooms are of equal
+ * or higher value) then the rooms will be randomly revalued. Returned room
+ * will not be main nor have another monster in it already.
+ * requires:
+ *  - [room] is the details of the current room
+ *  - [map] is the map of the game for the AI to traverse *)
+let weighted_movement room map monster =
+  failwith "unimplemented"
 
-(* [random_time max] returns some random time [0..max] *)
-let random_time max =
-    float_of_int (Random.int max)
+(*Bug where sometimes the monster may move despite being right next door. :/*)
+let rec random_walk room map monster =
+  let current = List.assoc room.nameR map in
+  let exits = current.exitsR in
+  let numExits = List.length exits in
+  let random = Random.int numExits in
+  let (dir,name) = List.nth exits random in
+    if (name = "main") || ((List.assoc name map).monsterR <> None) then
+      random_walk room map monster
+    else List.assoc name map
 
 (* [Illegal] is raised by the game to indicate that a command is illegal. *)
 exception Illegal
@@ -94,7 +95,8 @@ let getExits room =
         | "right" -> Right
         | "up" -> Up
         | "down" -> Down
-        | _ -> Pervasives.print_endline "Not a valid exit direction in this .json."; raise Illegal
+        | _ -> Pervasives.print_endline "Not a valid exit direction in this .json.";
+                 raise Illegal
       in
       let exitid exit = exit |> member "room_id" |> to_string in
       (direction exit,exitid exit)
@@ -135,9 +137,6 @@ let makeMonster monster = {
   timeToMoveM = 2.*.Unix.time();
 }
 
-(* [insert_monster lvl state] returns the state with the possible monsters,
- * as corresponding to the level of the game
-val insert_monster : yojson -> int -> (string*monster) list *)
 let insert_monster j lvl =
   (j |> member "monsters" |> to_list) |> List.map makeMonster
   |> List.filter (fun monstRec -> (monstRec.levelM <= lvl))
@@ -157,11 +156,7 @@ let get_map j lvl map =
               in nextMonster t newMap
   in nextMonster monsters map
 
-(* [init_state lvl] returns an initial state based on the current level.
-val init_state : yojson -> int -> state *)
-let init_state j lvl : unit =
-  global_state :=
-  {
+let init_state j lvl = {
   monsters = (insert_monster j lvl);
   player = "Student";
   map = get_map j lvl (get_map_no_monsters j);
@@ -173,8 +168,7 @@ let init_state j lvl : unit =
   level = lvl;
   quit = false;
   lost = false
-  }
-
+}
 
 (*****************************************************************************
 ******************************************************************************
@@ -182,19 +176,16 @@ let init_state j lvl : unit =
 ******************************************************************************
 ******************************************************************************)
 
-let main_view () : unit=
-  let st = !global_state in
-  global_state := {st with room = List.assoc "main" st.map}
+let main_view st =
+  {st with room = List.assoc "main" st.map}
 
-let start j : unit =
+let start j =
   init_state j 0
 
-let next_level j : unit =
-  let st = !global_state in
+let next_level j st =
   init_state j (st.level +1)
 
-let quit () : unit =
-  global_state := {!global_state with quit = true;}
+let quit st = {st with quit = true;}
 
 (*****************************************************************************
 ******************************************************************************
@@ -202,21 +193,21 @@ let quit () : unit =
 ******************************************************************************
 ******************************************************************************)
 
-let update_time_and_battery () =
-  let staying_penalty = 0.005 in
-  let close_penalty = 0.02 in
-  let st = !global_state in
+let update_time_and_battery st =
   let now = Unix.time() in
+  let timeMultiplier = 20. in
+  let camPenalty = 0.1 in
+  let doorPenalty = 0.2 in
   let cameraPenalty =
-    if st.room.nameR <> "main" then staying_penalty else 0. in
+    if st.room.nameR <> "main" then camPenalty else 0. in
   let doorPenalty =
     let doors = st.doorStatus in
       if (snd (fst doors)) && (snd (snd doors)) then 0.
-      else if not ((snd (fst doors)) || (snd (snd doors))) then close_penalty*.2.
-      else close_penalty
+      else if not ((snd (fst doors)) || (snd (snd doors))) then doorPenalty*.2.
+      else doorPenalty
     in
   let newBatt = st.battery -. cameraPenalty -. doorPenalty in
-  global_state := {st with time = (now -. st.startTime)*.20.;
+  {st with time = (now -. st.startTime)*.timeMultiplier;
            battery = if newBatt < 0. then 0. else newBatt;}
 
 (* Helper function to update map after monster move. *)
@@ -238,73 +229,61 @@ let update_map_monster_move oldRoom newRoom map monster =
 let update_monsters_monster_move newRoom mons monsters =
   List.map (fun (monsName,monsRec) ->
     if mons.nameM = monsName then
-      let newMons = {mons with currentRoomM = newRoom.nameR} in
+      let newMons = {mons with currentRoomM = newRoom.nameR;
+                               timeToMoveM = Unix.time()} in
         (monsName, newMons)
     else (monsName,monsRec)) monsters
 
-(*
 let update_state_monster_move mons newRoom st =
   let upd_room = if st.room.nameR = newRoom.nameR then newRoom else st.room in
   let mons_room = List.assoc mons.currentRoomM st.map in
   {st with monsters = update_monsters_monster_move newRoom mons st.monsters;
            map = update_map_monster_move mons_room newRoom st.map {mons with currentRoomM = newRoom.nameR};
            room = upd_room;}
-*)
 
 (*****************************************************************************
 ******************************************************************************
-******************************IN-GAME UPDATES*********************************
+******************************USER IN UPDATES*********************************
 ******************************************************************************
 ******************************************************************************)
 
-let shift_view dir : unit =
-  let st = !global_state in
-  let st =
+let shift_view st dir =
   try
     let exit = List.assoc dir st.room.exitsR in
     {st with room = List.assoc exit st.map;}
   with
   | Not_found -> raise Illegal
-  in
-  global_state := st
 
-let camera_view () : unit =
-  let st = !global_state in
+let camera_view st =
   try
     let exit = List.assoc Right st.room.exitsR in
-    global_state := {st with room = List.assoc exit st.map;}
+    {st with room = List.assoc exit st.map;}
   with
   | Not_found -> try
     let exit = List.assoc Left st.room.exitsR in
-    global_state := {st with room = List.assoc exit st.map;}
+    {st with room = List.assoc exit st.map;}
   with
   | Not_found -> try
     let exit = List.assoc Up st.room.exitsR in
-    global_state := {st with room = List.assoc exit st.map;}
+    {st with room = List.assoc exit st.map;}
   with
   | Not_found -> try
     let exit = List.assoc Down st.room.exitsR in
-    global_state := {st with room = List.assoc exit st.map;}
+    {st with room = List.assoc exit st.map;}
   with
-  | Not_found -> Pervasives.print_endline "There are no other rooms, you are trapped."; quit()
+  | Not_found -> Pervasives.print_endline "There are no other rooms, you are trapped."; quit st
 
-
-
-let update_door_status op door =
-  let st = !global_state in
+let update_door_status st op door =
   let penalty = st.battery -. 2. in
-  let st =
   match door with
   | One -> let st = if ((snd (fst st.doorStatus)) <> (op)) then
-                      {st with battery = (if penalty < 0. then 0. else penalty) ;}
+                      {st with battery = if penalty < 0. then 0. else penalty;}
                     else st in
       {st with doorStatus = ((One, op), (snd st.doorStatus));}
   | Two -> let st = if ((snd (snd st.doorStatus)) <> (op)) then
-                      {st with battery = if penalty < 0. then 0. else penalty ;}
+                      {st with battery = if penalty < 0. then 0. else penalty;}
                     else st in
       {st with doorStatus = ((fst st.doorStatus),(Two, op));}
-  in
-  global_state := st
 
 (*****************************************************************************
 ******************************************************************************
@@ -312,143 +291,185 @@ let update_door_status op door =
 ******************************************************************************
 ******************************************************************************)
 
+(* Helper function to format [num] printed to be a double-digit. *)
 let pretty_string num =
   if int_of_float num < 10 then "0" ^ (string_of_int (int_of_float num))
   else string_of_int (int_of_float num)
 
+(* Helper function to decide whether or not to move the monster, and if yes,
+ * moves the monster. Returns state after monster moved or same state if no move. *)
+let move_monster monsName st =
+  let randN = Random.int 3 in
+  let move = (randN = 0) in
+  if move then
+    let monster = List.assoc monsName st.monsters in
+    let oldMonsR = (List.assoc monster.currentRoomM st.map) in
+    let newMonsR = random_walk oldMonsR st.map monster in
+    let () = Pervasives.print_endline (monsName^" moved to "^newMonsR.nameR) in
+      update_state_monster_move monster newMonsR st
+  else st
 
-let print_time () =
-  let st = !global_state in
-  let hours = floor (st.time/.3600.) in
-  let minutes = floor ((st.time -. (hours*.3600.))/.60.) in
-    ("Time elapsed in hh:mm is: " ^
-        pretty_string hours ^ ":" ^ pretty_string minutes)
+(* Helper function to iterate through monsters and move/not move. *)
+let rec move_monsters monsters st =
+  match monsters with
+  | [] -> st
+  | (monsName,mons)::t -> let movedOneMonsSt = move_monster monsName st in
+                           move_monsters t movedOneMonsSt
+
+(* Helper function to check if there is a monster in a room connecting main. *)
+let is_monster st =
+  let mainExits = (List.assoc "main" st.map).exitsR in
+  let roomOne = List.assoc (snd (List.nth mainExits 0)) st.map in
+  let roomTwo = List.assoc (snd (List.nth mainExits 1)) st.map in
+    if ((roomOne.monsterR <> None) && (snd (fst st.doorStatus))=true) then true
+    else if ((roomTwo.monsterR <> None) && (snd (snd st.doorStatus))=true) then true
+    else false
+
+(* Helper function to check if the monster has been in the room too long. *)
+let rec check_time monsters st =
+  match monsters with
+  | [] -> st
+  | (monsName,mons)::t -> let monsTime = mons.timeToMoveM in
+                          if monsTime -. st.startTime >= 2. then
+                            {st with lost = true}
+                          else check_time t st
 
 (* ============================== EVAL LOOP =============================== *)
 
-let process_cmd cmd j : unit=
-  let st = !global_state in
-  let cmd = String.lowercase_ascii cmd in
-  if (st.time >= 28800. && st.level = 1) then
-    let () = Pervasives.print_endline ("You've survived all the projects. "
-      ^ "Congratulations? (Quit/Restart)") in
-    match cmd with
-    | "quit" -> quit()
-    | "restart" -> start j
-    | _ -> Pervasives.print_endline ("Illegal command '" ^ cmd ^ "'")
-  else if st.time >= 28800. then
-    let () = Pervasives.print_endline ("You've survived the night! "
-      ^ "Next night? (Next/Quit)") in
-    match cmd with
-    | "next" -> next_level j
-    | "quit" -> quit()
-    | _ -> Pervasives.print_endline ("Illegal command '" ^ cmd ^ "'")
-  else if st.battery <= 0. then
-    let () = Pervasives.print_endline "You're out of battery.... (Quit/Restart)" in
-    match cmd with
-    | "quit" -> quit()
-    | "restart" -> start j
-    | _ -> Pervasives.print_endline ("Illegal command '" ^ cmd ^ "'")
-  else if (st.room.nameR <> "main") &&
-    (cmd = "left" || cmd = "right" || cmd = "up" || cmd = "down") then
-    let dir =
-      match cmd with
-      | "left" -> Left
-      | "right" -> Right
-      | "up" -> Up
-      | "down" -> Down
-      | _ -> Elsewhere
+open Async.Std
+
+let rec eval j st cmd =
+  let winTime = 28800. in
+  let winLvl = 1 in
+  let st = update_time_and_battery st in
+  let st =
+    if st.lost then st else
+      let newSt = move_monsters st.monsters st in
+      if is_monster newSt then
+        check_time newSt.monsters newSt
+      else newSt
     in
-    try shift_view dir with
-      | Illegal -> Pervasives.print_endline ("Illegal command '" ^ cmd ^ "'")
-  else
-    match cmd with
-    | "main" ->  main_view()
-    | "camera" -> camera_view()
-    | "close one" -> update_door_status false One
-    | "close two" -> update_door_status false Two
-    | "open one"  -> update_door_status true One
-    | "open two"  -> update_door_status true Two
-    | "restart" -> start j
-    | "quit" -> quit()
-    | _ -> Pervasives.print_endline ("Illegal command '" ^ cmd ^ "'")
+  let st =
+    if (st.time >= winTime && st.level = winLvl) then
+      let () = Pervasives.print_endline ("You've survived all the projects. "
+        ^ "Congratulations? (Quit/Restart)") in
+      match cmd with
+      | "quit" -> quit st
+      | "restart" -> start j
+      | _ -> st
+    else if st.time >= winTime then
+      let () = Pervasives.print_endline ("You've survived the night! "
+        ^ "Next night? (Next/Quit)") in
+      match cmd with
+      | "next" -> st
+      | "quit" -> quit st
+      | _ -> st
+    else if st.lost then
+      let () = Pervasives.print_endline ("IT'S HERE! (Quit/Restart)") in
+      match cmd with
+      | "quit" -> quit st
+      | "restart" -> start j
+      | _ -> st
+    else if st.battery <= 0. then
+      let () = Pervasives.print_endline ("You're out of battery.... (Quit/Restart)") in
+      match cmd with
+      | "quit" -> quit st
+      | "restart" -> start j
+      | _ -> st
+    else if (st.room.nameR <> "main") &&
+      (cmd = "left" || cmd = "right" || cmd = "up" || cmd = "down") then
+      let dir =
+        match cmd with
+        | "left" -> Left
+        | "right" -> Right
+        | "up" -> Up
+        | "down" -> Down
+        | _ -> Elsewhere
+      in
+      try shift_view st dir with
+        | Illegal -> Pervasives.print_endline ("Illegal command '" ^ cmd ^ "'"); st
+    else if (st.room.nameR = "main") &&
+      (cmd = "close one" || cmd = "close two" || cmd = "open one" || cmd = "open two") then
+        match cmd with
+        | "close one" -> update_door_status st false One
+        | "close two" -> update_door_status st false Two
+        | "open one"  -> update_door_status st true One
+        | "open two"  -> update_door_status st true Two
+        | _ -> Pervasives.print_endline ("Illegal command '" ^ cmd ^ "'"); st
+    else
+      match cmd with
+      | "main" ->  main_view st
+      | "camera" -> camera_view st
+      | "restart" -> start j
+      | "quit" -> quit st
+      | "" -> st
+      | _ -> Pervasives.print_endline ("Illegal command '" ^ cmd ^ "'"); st
+  in
+    let hours = floor (st.time/.3600.) in
+    let minutes = floor ((st.time -. (hours*.3600.))/.60.) in
+      Pervasives.print_endline ("You are now in: " ^ (st.room.nameR));
+      Pervasives.print_endline ("Time elapsed in hh:mm is: "
+          ^ pretty_string hours ^ ":" ^ pretty_string minutes);
+      Pervasives.print_endline ("Battery level is: "
+          ^ (string_of_float st.battery) ^ "%");
+  st
 
 
-(**
- * [stdin] is used to read input from the command line.
- * [Reader.read_line stdin] will return a deferred that becomes determined
- * when the user types in a line and presses enter.
+let stdin = Lazy.force Reader.stdin
+(*
+let rec go j st =
+  let winTime = 28800. in
+    let timed max = Clock.with_timeout (Core.Std.sec max) (Reader.read_line stdin) in
+    let t = try timed 2. with | _ -> return `Timeout in
+    Pervasives.print_endline "sigh";
+    upon t (fun r -> (match r with
+      | `Result (`Ok cmd) -> Pervasives.print_endline "cmd"; let cmd = String.lowercase_ascii cmd in
+          Pervasives.print_endline cmd;
+          if (cmd = "quit" || st.quit = true) then ()
+          else if (cmd = "restart") then go j (start j)
+          else if (cmd = "next" && st.time >= winTime) then go j (next_level j st)
+          else go j (eval j st cmd)
+      | `Result (`Eof) | `Timeout -> Pervasives.print_endline "none";go j (eval j st "") ) )
  *)
-let stdin : Reader.t = Lazy.force Reader.stdin
 
-
-(* make monster move and update state  *)
-let rec start_monster_move (): unit =
-  let stay = random_time 5 in
-  (* wait random seconds using [after] *)
-  upon (after (Core.Std.sec stay)) (fun _ ->
-    let st = !global_state in
-    (* choose exit, stay seconds randomly *)
-    (* TODO: need smarter AI, also this is just first monster in state moving now
-     *   check engineText.ml version, it has good movement, just need to modify. *)
-    let mons = snd (List.hd st.monsters) in
-    let mons_room = List.assoc mons.currentRoomM st.map in
-    let dir, exit = random_element mons_room.exitsR in
-    let next_room = List.assoc exit st.map in
-    (* Pervasives.print out "done" using [printf] *)
-    printf "%s%s\n" "monster randomly moved to " next_room.nameR;
-    (* update global state *)
-    let upd_room =
-      if next_room = st.room then {st.room with monsterR = Some mons} else st.room in
-    let mons_room = List.assoc mons.currentRoomM st.map in
-    let st = {st with monsters = update_monsters_monster_move next_room mons st.monsters;
-             map = update_map_monster_move mons_room next_room st.map {mons with currentRoomM=next_room.nameR};
-             room = upd_room} in
-             (* TODO *)
-    global_state := st;
-    start_monster_move()
-  )
-
-let rec update (): unit =
-  upon (after (Core.Std.sec 0.05)) (fun _ ->
-    update_time_and_battery();
-    (* printf "%s\n" "updated time/battery"; *)
-    update()
-  )
-
-let rec get_input j =
-  let st = !global_state in
-  Pervasives.print_endline (print_time());
-  Pervasives.print_endline ("Battery level is: " ^ (string_of_float st.battery) ^ "%");
-  Pervasives.print_endline ("You are currently in: " ^ (st.room.nameR) ^ "\n");
-  Pervasives.print_string "> ";
-  let r = Reader.read_line stdin in
-  upon r (fun result ->
-    match result with
-    | `Eof -> ()
-    | `Ok cmd ->
-        process_cmd cmd j;
-        if !global_state.quit then () else
-        get_input j
-  )
-
-let rec eval j : unit =
-  get_input j;
-  start_monster_move();
-  update()
-
+let rec go j st =
+  let winTime = 28800. in
+  let cmd =
+    if (* <no input> *) false then ""
+    else let () = Pervasives.print_string "\n> " in Pervasives.read_line()
+  in let cmd = String.lowercase_ascii cmd in
+    if (cmd = "quit" || st.quit = true) then () else
+    let newSt =
+      if (cmd = "restart") then (Pervasives.print_endline "Back to Day 0"; (start j))
+      else if (cmd = "next" && st.time >= winTime) then
+        (Pervasives.print_endline ("Day"^(string_of_int (st.level+1)));(next_level j st))
+      else (eval j st cmd)
+    in go j newSt
 
 (* [main f] is the main entry point from outside this module
  * to load a game from file [f] and start playing it. *)
 let rec main fileName =
   let nest_main fileName =
+    if fileName = "quit" then () else
     let j = Yojson.Basic.from_file fileName in
-    start j;
-    eval j
+    let st = start j in
+    Pervasives.print_endline ( "\n" ^
+      "Legal commands you may use:\n" ^
+      " - main: will bring you back to your main room\n" ^
+      " - camera: allows you to move around\n" ^
+      "    + while in camera mode you may also use: up / down / left / right\n" ^
+      " - close one: closes door one\n" ^
+      " - close two: clses door two\n" ^
+      " - open one: opens door one\n" ^
+      " - open two: opens door two\n" ^
+      " - restart: restarts the game\n" ^
+      " - next: starts the next level if you survive\n" ^
+      " - quit: quits the game\n\n" ^
+      "Day 0");
+      go j st
   in try nest_main fileName with
   | Sys_error(_) | Illegal ->
     Pervasives.print_endline "\nThat's not a valid .json file.";
     Pervasives.print_endline "Please enter the name of the game file you want to load.\n";
     Pervasives.print_string  "> ";
     let fileName = Pervasives.read_line () in main fileName
-
