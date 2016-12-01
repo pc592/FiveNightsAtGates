@@ -45,32 +45,21 @@ type state = {
 ******************************************************************************
 ******************************************************************************)
 
-(* [random_goal room map] returns the next room using random goal oriented
- * traversal. Random goal oriented traversal randomly chooses a room and moves
- * there as directly as possible, briefly pausing in each room. When goal is
- * reached, pauses for a longer amount of time. Chooses a new random goal when
- * goal is reached.
+(* [weighted_movement room map monster] returns the next room using weighted
+ * movement traversal. Weighted movement traversal requires that each room
+ * has a value, with movement towards a lower value more likely. In general,
+ * rooms near the main room are lower valued than paths leading away. If the
+ * current room is next to the main room and a new room must be selected,
+ * or the lower valued room has been reached (ie all other rooms are of equal
+ * or higher value) then the rooms will be randomly revalued. Returned room
+ * will not be main nor have another monster in it already.
  * requires:
  *  - [room] is the details of the current room
- *  - [map] is the map of the game for the AI to traverse
-val random_goal : room -> map -> room *)
-let random_goal room map =
+ *  - [map] is the map of the game for the AI to traverse *)
+let weighted_movement room map monster =
   failwith "unimplemented"
 
-(* [weighted_movement room map] returns the next room using weighted
- * movement traversal. Weighted movement traversal weights each path between
- * rooms as a 2-way edge and favors moving along higher weighted edges. In
- * general, paths leaing towards the main room are higher weighted than paths
- * leading away. If the current room is next to the main room and a new room
- * must be selected, the new room is randomly selected and reached before
- * algorithm is restarted.
- * requires:
- *  - [room] is the details of the current room
- *  - [map] is the map of the game for the AI to traverse
-val weighted_movement : room -> map -> room *)
-let weighted_movement room map =
-  failwith "unimplemented"
-
+(*Bug where sometimes the monster may move despite being right next door. :/*)
 let rec random_walk room map monster =
   let current = List.assoc room.nameR map in
   let exits = current.exitsR in
@@ -122,9 +111,7 @@ let makeRoom room = {
   monsterR = getMonster room;
 }
 
-(* [get_map yojson] returns a valid map.
-val get_map : yojson -> map *)
-let get_map j =
+let get_map_no_monsters j =
   (j |> member "rooms" |> to_list) |> List.map makeRoom |>
   List.map (fun roomRec -> (roomRec.nameR, roomRec))
 
@@ -139,8 +126,6 @@ let getStartRoom monster =
   monster |> member "startRoom" |> to_string
 let getModusOp monster =
   monster |> member "modusOperandi" |> to_string
-let getTime monster =
-  monster |> member "timeToMove" |> to_int |> float_of_int
 
 (* Helper function to make monster record. *)
 let makeMonster monster = {
@@ -149,18 +134,15 @@ let makeMonster monster = {
   imageM = getImageM monster;
   currentRoomM = getStartRoom monster;
   modusOperandiM = getModusOp monster;
-  timeToMoveM = getTime monster;
+  timeToMoveM = 2.*.Unix.time();
 }
 
-(* [insert_monster lvl state] returns the state with the possible monsters,
- * as corresponding to the level of the game
-val insert_monster : yojson -> int -> (string*monster) list *)
 let insert_monster j lvl =
   (j |> member "monsters" |> to_list) |> List.map makeMonster
   |> List.filter (fun monstRec -> (monstRec.levelM <= lvl))
   |> List.map (fun monstRec -> (monstRec.nameM, monstRec))
 
-let get_map_with_monsters j lvl map =
+let get_map j lvl map =
   let monsters = insert_monster j lvl in
   let rec nextMonster mons map' =
     match mons with
@@ -174,17 +156,15 @@ let get_map_with_monsters j lvl map =
               in nextMonster t newMap
   in nextMonster monsters map
 
-(* [init_state lvl] returns an initial state based on the current level.
-val init_state : yojson -> int -> state *)
 let init_state j lvl = {
   monsters = (insert_monster j lvl);
   player = "Student";
-  map = get_map_with_monsters j lvl (get_map j);
+  map = get_map j lvl (get_map_no_monsters j);
   startTime = Unix.time();
   time = 0.;
   battery = 100.;
   doorStatus = ((One,true),(Two,true));
-  room = List.assoc "main" (get_map j);
+  room = List.assoc "main" (get_map_no_monsters j);
   level = lvl;
   quit = false;
   lost = false
@@ -196,24 +176,15 @@ let init_state j lvl = {
 ******************************************************************************
 ******************************************************************************)
 
-(* [main_view state] enters the player view to that of the main room.
-val main_view : state -> state *)
 let main_view st =
   {st with room = List.assoc "main" st.map}
-  (* is this supposed to display it too...? *)
 
-(* [start] starts a new game.
-val start : yojson -> state *)
 let start j =
   init_state j 0
 
-(* [next_level state] allows player to go to the next level if survived.
-val next_level : state -> state *)
 let next_level j st =
   init_state j (st.level +1)
 
-(* [quit state] quits the game.
-val quit : state -> unit *)
 let quit st = {st with quit = true;}
 
 (*****************************************************************************
@@ -222,21 +193,24 @@ let quit st = {st with quit = true;}
 ******************************************************************************
 ******************************************************************************)
 
-(* 1 second real time is 24 seconds game time.*)
 let update_time_and_battery st =
   let now = Unix.time() in
+  let timeMultiplier = 20. in
+  let camPenalty = 0.1 in
+  let doorPenalty = 0.2 in
   let cameraPenalty =
-    if st.room.nameR <> "main" then 0.1 else 0. in
+    if st.room.nameR <> "main" then camPenalty else 0. in
   let doorPenalty =
     let doors = st.doorStatus in
       if (snd (fst doors)) && (snd (snd doors)) then 0.
-      else if not ((snd (fst doors)) || (snd (snd doors))) then 0.4
-      else 0.2
+      else if not ((snd (fst doors)) || (snd (snd doors))) then doorPenalty*.2.
+      else doorPenalty
     in
   let newBatt = st.battery -. cameraPenalty -. doorPenalty in
-  {st with time = (now -. st.startTime)*.20.;
+  {st with time = (now -. st.startTime)*.timeMultiplier;
            battery = if newBatt < 0. then 0. else newBatt;}
 
+(* Helper function to update map after monster move. *)
 let update_map_monster_move oldRoom newRoom map monster =
   let midMap = List.map (fun (roomName,roomRec) ->
                 if oldRoom.nameR = roomName then
@@ -251,7 +225,7 @@ let update_map_monster_move oldRoom newRoom map monster =
                 else (roomName,roomRec)) midMap
     in newMap
 
-(*update monsters after monster move*)
+(* Helper function to update monsters after monster move. *)
 let update_monsters_monster_move newRoom mons monsters =
   List.map (fun (monsName,monsRec) ->
     if mons.nameM = monsName then
@@ -260,7 +234,6 @@ let update_monsters_monster_move newRoom mons monsters =
         (monsName, newMons)
     else (monsName,monsRec)) monsters
 
-(*update state after monster move *)
 let update_state_monster_move mons newRoom st =
   let upd_room = if st.room.nameR = newRoom.nameR then newRoom else st.room in
   let mons_room = List.assoc mons.currentRoomM st.map in
@@ -270,7 +243,7 @@ let update_state_monster_move mons newRoom st =
 
 (*****************************************************************************
 ******************************************************************************
-******************************IN-GAME UPDATES*********************************
+******************************USER IN UPDATES*********************************
 ******************************************************************************
 ******************************************************************************)
 
@@ -318,18 +291,13 @@ let update_door_status st op door =
 ******************************************************************************
 ******************************************************************************)
 
+(* Helper function to format [num] printed to be a double-digit. *)
 let pretty_string num =
   if int_of_float num < 10 then "0" ^ (string_of_int (int_of_float num))
   else string_of_int (int_of_float num)
 
-let is_monster st =
-let mainExits = (List.assoc "main" st.map).exitsR in
-let roomOne = List.assoc (snd (List.nth mainExits 0)) st.map in
-let roomTwo = List.assoc (snd (List.nth mainExits 1)) st.map in
-  if ((roomOne.monsterR <> None) && (snd (fst st.doorStatus))=true) then true
-  else if ((roomTwo.monsterR <> None) && (snd (snd st.doorStatus))=true) then true
-  else false
-
+(* Helper function to decide whether or not to move the monster, and if yes,
+ * moves the monster. Returns state after monster moved or same state if no move. *)
 let move_monster monsName st =
   let randN = Random.int 3 in
   let move = (randN = 0) in
@@ -341,12 +309,23 @@ let move_monster monsName st =
       update_state_monster_move monster newMonsR st
   else st
 
+(* Helper function to iterate through monsters and move/not move. *)
 let rec move_monsters monsters st =
   match monsters with
   | [] -> st
   | (monsName,mons)::t -> let movedOneMonsSt = move_monster monsName st in
                            move_monsters t movedOneMonsSt
 
+(* Helper function to check if there is a monster in a room connecting main. *)
+let is_monster st =
+  let mainExits = (List.assoc "main" st.map).exitsR in
+  let roomOne = List.assoc (snd (List.nth mainExits 0)) st.map in
+  let roomTwo = List.assoc (snd (List.nth mainExits 1)) st.map in
+    if ((roomOne.monsterR <> None) && (snd (fst st.doorStatus))=true) then true
+    else if ((roomTwo.monsterR <> None) && (snd (snd st.doorStatus))=true) then true
+    else false
+
+(* Helper function to check if the monster has been in the room too long. *)
 let rec check_time monsters st =
   match monsters with
   | [] -> st
@@ -359,7 +338,7 @@ let rec check_time monsters st =
 
 open Async.Std
 
-let rec eval j st cmd=
+let rec eval j st cmd =
   let winTime = 28800. in
   let winLvl = 1 in
   let st = update_time_and_battery st in

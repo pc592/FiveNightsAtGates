@@ -9,7 +9,7 @@ type monster = {
   imageM: string;
   currentRoomM: string;
   modusOperandiM: string;
-  timeToMoveM: int
+  timeToMoveM: float
 }
 
 type door = | One | Two
@@ -109,9 +109,7 @@ let makeRoom room = {
   monsterR = getMonster room;
 }
 
-(* [get_map yojson] returns a valid map.
-val get_map : yojson -> map *)
-let get_map j =
+let get_map_no_monsters j =
   (j |> member "rooms" |> to_list) |> List.map makeRoom |>
   List.map (fun roomRec -> (roomRec.nameR, roomRec))
 
@@ -126,8 +124,6 @@ let getStartRoom monster =
   monster |> member "startRoom" |> to_string
 let getModusOp monster =
   monster |> member "modusOperandi" |> to_string
-let getTime monster =
-  monster |> member "timeToMove" |> to_int
 
 (* Helper function to make monster record. *)
 let makeMonster monster = {
@@ -136,7 +132,7 @@ let makeMonster monster = {
   imageM = getImageM monster;
   currentRoomM = getStartRoom monster;
   modusOperandiM = getModusOp monster;
-  timeToMoveM = getTime monster;
+  timeToMoveM = 2.*.Unix.time();
 }
 
 (* [insert_monster lvl state] returns the state with the possible monsters,
@@ -147,7 +143,7 @@ let insert_monster j lvl =
   |> List.filter (fun monstRec -> (monstRec.levelM <= lvl))
   |> List.map (fun monstRec -> (monstRec.nameM, monstRec))
 
-let get_map_with_monsters j lvl map =
+let get_map j lvl map =
   let monsters = insert_monster j lvl in
   let rec nextMonster mons map' =
     match mons with
@@ -168,12 +164,12 @@ let init_state j lvl : unit =
   {
   monsters = (insert_monster j lvl);
   player = "Student";
-  map = get_map_with_monsters j lvl (get_map j);
+  map = get_map j lvl (get_map_no_monsters j);
   startTime = Unix.time();
   time = 0.;
   battery = 100.;
   doorStatus = ((One,true),(Two,true));
-  room = List.assoc "main" (get_map j);
+  room = List.assoc "main" (get_map_no_monsters j);
   level = lvl;
   quit = false;
   lost = false
@@ -186,29 +182,19 @@ let init_state j lvl : unit =
 ******************************************************************************
 ******************************************************************************)
 
-(* [main_view state] enters the player view to that of the main room.
-val main_view : state -> state *)
 let main_view () : unit=
   let st = !global_state in
   global_state := {st with room = List.assoc "main" st.map}
-  (* is this supposed to display it too...? *)
 
-(* [start] starts a new game.
-val start : yojson -> state *)
 let start j : unit =
   init_state j 0
 
-(* [next_level state] allows player to go to the next level if survived.
-val next_level : state -> state *)
 let next_level j : unit =
   let st = !global_state in
   init_state j (st.level +1)
 
-(* [quit state] quits the game.
-val quit : state -> unit *)
 let quit () : unit =
   global_state := {!global_state with quit = true;}
-
 
 (*****************************************************************************
 ******************************************************************************
@@ -216,7 +202,6 @@ let quit () : unit =
 ******************************************************************************
 ******************************************************************************)
 
-(* 1 second real time is 24 seconds game time.*)
 let update_time_and_battery () =
   let staying_penalty = 0.005 in
   let close_penalty = 0.02 in
@@ -234,18 +219,7 @@ let update_time_and_battery () =
   global_state := {st with time = (now -. st.startTime)*.20.;
            battery = if newBatt < 0. then 0. else newBatt;}
 
-
-(* [update_battery num state] returns the state with the battery level
- * decreased by a given num of type [int]. Begins at 100% for each level.
- * costs:
- *  - closing door has an initial cost of 5% and 0.2% / sec door stays closed.
- *  - checking cameras has a cost of 0.1% / sec while in use.
-val update_battery : int -> state -> state *)
-let update_battery_close_door st =
-  printf "%s\n" "update battery called";
-  {st with battery = st.battery -. 2. ;}
-
-(*update map after monster move*)
+(* Helper function to update map after monster move. *)
 let update_map_monster_move oldRoom newRoom map monster =
   let midMap = List.map (fun (roomName,roomRec) ->
                 if oldRoom.nameR = roomName then
@@ -260,7 +234,7 @@ let update_map_monster_move oldRoom newRoom map monster =
                 else (roomName,roomRec)) midMap
     in newMap
 
-(*update monsters after monster move*)
+(* Helper function to update monsters after monster move. *)
 let update_monsters_monster_move newRoom mons monsters =
   List.map (fun (monsName,monsRec) ->
     if mons.nameM = monsName then
@@ -268,6 +242,14 @@ let update_monsters_monster_move newRoom mons monsters =
         (monsName, newMons)
     else (monsName,monsRec)) monsters
 
+(*
+let update_state_monster_move mons newRoom st =
+  let upd_room = if st.room.nameR = newRoom.nameR then newRoom else st.room in
+  let mons_room = List.assoc mons.currentRoomM st.map in
+  {st with monsters = update_monsters_monster_move newRoom mons st.monsters;
+           map = update_map_monster_move mons_room newRoom st.map {mons with currentRoomM = newRoom.nameR};
+           room = upd_room;}
+*)
 
 (*****************************************************************************
 ******************************************************************************
