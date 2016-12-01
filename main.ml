@@ -1,4 +1,5 @@
 (* Author: CS 3110 course staff *)
+(* But heavily modified. *)
 
 let () =
   ANSITerminal.(print_string [red]
