@@ -1,4 +1,5 @@
 open Async.Std
+open Sdlevent
 (* A [GameEngine] regulates and updates the state of a FNAG game state.
  * The updated state is used by other parts to set up the graphics
  * and interface. *)

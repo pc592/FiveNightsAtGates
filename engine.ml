@@ -1,4 +1,5 @@
 
+open Gui
 (* A [GameEngine] regulates and updates the state of a FNAG game state.
  * The updated state is used by other parts to set up the graphics
  * and interface. *)
@@ -475,10 +476,8 @@ let rec go j st =
 
 let rec go j st =
   let winTime = !gameNight in
-  let cmd =
-    if (* <no input> *) false then ""
-    else (* let () = Pervasives.print_string "\n> " in *) Pervasives.read_line()
-  in let cmd = String.lowercase_ascii cmd in
+  let cmd = Gui.read_string () in
+  let cmd = String.lowercase_ascii cmd in
     if (cmd = "quit" || st.quit = true) then () else
     let newSt =
       if (cmd = "restart") then (Pervasives.print_endline "Back to Day 0"; (start j))
