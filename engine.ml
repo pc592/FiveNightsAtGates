@@ -196,8 +196,8 @@ let quit st = {st with quit = true;}
 let update_time_and_battery st =
   let now = Unix.time() in
   let timeMultiplier = 20. in
-  let camPenalty = 0.1 in
-  let doorPenalty = 0.2 in
+  let camPenalty = 0.01 in
+  let doorPenalty = 0.02 in
   let cameraPenalty =
     if st.room.nameR <> "main" then camPenalty else 0. in
   let doorPenalty =
@@ -299,7 +299,7 @@ let pretty_string num =
 (* Helper function to decide whether or not to move the monster, and if yes,
  * moves the monster. Returns state after monster moved or same state if no move. *)
 let move_monster monsName st =
-  let randN = Random.int 3 in
+  let randN = Random.int 20 in
   let move = (randN = 0) in
   if move then
     let monster = List.assoc monsName st.monsters in
@@ -405,6 +405,7 @@ let rec eval j st cmd =
       | "" -> st
       | _ -> Pervasives.print_endline ("Illegal command '" ^ cmd ^ "'"); st
   in
+    if cmd = "" then st else
     let hours = floor (st.time/.3600.) in
     let minutes = floor ((st.time -. (hours*.3600.))/.60.) in
       Pervasives.print_endline ("You are now in: " ^ (st.room.nameR));
@@ -436,7 +437,7 @@ let rec go j st =
   let winTime = 28800. in
   let cmd =
     if (* <no input> *) false then ""
-    else let () = Pervasives.print_string "\n> " in Pervasives.read_line()
+    else (* let () = Pervasives.print_string "\n> " in *) Pervasives.read_line()
   in let cmd = String.lowercase_ascii cmd in
     if (cmd = "quit" || st.quit = true) then () else
     let newSt =
