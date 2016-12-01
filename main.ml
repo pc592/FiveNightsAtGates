@@ -15,7 +15,7 @@ let () =
   let input = String.lowercase_ascii (Pervasives.read_line ()) in
   let fileName =
     if input = "yes" then "map.json"
-    else if input = "no" then "quit"
+    else if input = "no" || input = "quit" then "quit"
     else "gibberish"
   in
   Engine.main (String.lowercase_ascii fileName)

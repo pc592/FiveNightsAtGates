@@ -25,8 +25,8 @@
 		}],
 		"monsters": []
 	}, {
-	"name": "bathroom",
-	"image": "bathroom",
+	"name": "hallway",
+	"image": "hallway",
 	"exits": [{
 		"direction": "up",
 		"room_id": "kitchen"

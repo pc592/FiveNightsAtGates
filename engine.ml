@@ -3,6 +3,13 @@
  * The updated state is used by other parts to set up the graphics
  * and interface. *)
 
+let gameNight = ref 36000. (*10 hours in seconds; game time elapsed*)
+let levelMaxTime = ref 20. (* 1200. *) (*20 minutes in seconds; real time elapsed*)
+let monsterTime = ref 5. (*seconds monster allows user before killing them*)
+let maxLevel = ref (-1) (*number of levels - 1 (levels start at 0)*)
+let cPen = ref 0.1 (*battery penalty for using camera*)
+let dPen = ref 0.2 (*battery penalty for opening/closeing door*)
+
 type monster = {
   nameM: string;
   levelM: int;
@@ -36,14 +43,9 @@ type state = {
   room: room;
   level: int;
   quit: bool;
-  lost: bool
+  lost: bool;
+  printed: bool;
 }
-
-let gameNight = ref 36000. (*10 hours in seconds; game time elapsed*)
-let levelMaxTime = ref 1200. (*20 minutes in seconds; real time elapsed*)
-let maxLevel = ref 1 (*number of levels - 1 (levels start at 0)*)
-let cPen = ref 0.1
-let dPen = ref 0.2
 
 (*****************************************************************************
 ******************************************************************************
@@ -144,7 +146,9 @@ let makeMonster monster = {
 }
 
 let insert_monster j lvl =
-  (j |> member "monsters" |> to_list) |> List.map makeMonster
+  let monsterList = (j |> member "monsters" |> to_list) in
+  maxLevel := (List.length monsterList)-1;
+  List.map makeMonster monsterList
   |> List.filter (fun monstRec -> (monstRec.levelM <= lvl))
   |> List.map (fun monstRec -> (monstRec.nameM, monstRec))
 
@@ -173,7 +177,8 @@ let init_state j lvl = {
   room = List.assoc "main" (get_map_no_monsters j);
   level = lvl;
   quit = false;
-  lost = false
+  lost = false;
+  printed = false
 }
 
 (*****************************************************************************
@@ -244,7 +249,8 @@ let update_state_monster_move mons newRoom st =
   let upd_room = if st.room.nameR = newRoom.nameR then newRoom else st.room in
   let mons_room = List.assoc mons.currentRoomM st.map in
   {st with monsters = update_monsters_monster_move newRoom mons st.monsters;
-           map = update_map_monster_move mons_room newRoom st.map {mons with currentRoomM = newRoom.nameR};
+           map = (update_map_monster_move mons_room newRoom st.map
+                       {mons with currentRoomM = newRoom.nameR});
            room = upd_room;}
 
 (*****************************************************************************
@@ -277,7 +283,8 @@ let camera_view st =
     let exit = List.assoc Down st.room.exitsR in
     {st with room = List.assoc exit st.map;}
   with
-  | Not_found -> Pervasives.print_endline "There are no other rooms, you are trapped."; quit st
+  | Not_found -> Pervasives.print_endline "There are no other rooms, you are trapped.";
+      quit st
 
 let update_door_status st op door =
   let penalty = st.battery -. 2. in
@@ -336,7 +343,7 @@ let rec check_time monsters st =
   match monsters with
   | [] -> st
   | (monsName,mons)::t -> let monsTime = mons.timeToMoveM in
-                          if monsTime -. st.startTime >= 2. then
+                          if monsTime -. st.startTime >= !monsterTime then
                             {st with lost = true}
                           else check_time t st
 
@@ -357,27 +364,41 @@ let rec eval j st cmd =
     in
   let st =
     if (st.time >= winTime && st.level = winLvl) then
-      let () = Pervasives.print_endline ("You've survived all the projects. "
-        ^ "Congratulations? (Quit/Restart)") in
+      let st =
+        if not st.printed then
+          let () = Pervasives.print_endline ("You've survived all the projects. "
+            ^ "Congratulations? (Quit/Restart)") in {st with printed = true}
+        else st in
       match cmd with
       | "quit" -> quit st
       | "restart" -> start j
       | _ -> st
     else if st.time >= winTime then
-      let () = Pervasives.print_endline ("You've survived the night! "
-        ^ "Next night? (Next/Quit)") in
+      let st =
+        if not st.printed then
+          let () = Pervasives.print_endline ("You've survived the night! "
+            ^ "Next night? (Next/Quit)") in {st with printed = true}
+        else st in
       match cmd with
       | "next" -> st
       | "quit" -> quit st
       | _ -> st
     else if st.lost then
-      let () = Pervasives.print_endline ("IT'S HERE! (Quit/Restart)") in
+      let st =
+        if not st.printed then
+          let () = Pervasives.print_endline ("IT'S HERE! (Quit/Restart)") in
+            {st with printed = true}
+        else st in
       match cmd with
       | "quit" -> quit st
       | "restart" -> start j
       | _ -> st
     else if st.battery <= 0. then
-      let () = Pervasives.print_endline ("You're out of battery.... (Quit/Restart)") in
+      let st =
+        if not st.printed then
+          let () = Pervasives.print_endline ("You're out of battery.... (Quit/Restart)") in
+            {st with printed = true}
+        else st in
       match cmd with
       | "quit" -> quit st
       | "restart" -> start j
@@ -481,6 +502,6 @@ let rec main fileName =
     let input = String.lowercase_ascii (Pervasives.read_line ()) in
     let fileName =
       if input = "yes" then "map.json"
-      else if input = "no" then "quit"
+      else if input = "no" || input = "quit" then "quit"
       else "gibberish"
     in main fileName
