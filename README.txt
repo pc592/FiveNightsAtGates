@@ -4,8 +4,35 @@ use camel case for variables and types.
 
 To compile the game please have these modules installed on your computer:
 ANSITerminal
-Async(?)
-Sdl for OCaml (Simple DirectMedia Layer)
+Async
+Sdl for OCaml (Simple DirectMedia Layer) [instructions below]
 
+To play the game:
 Run make play (or make). Entering "quit" at any point of game play, or in the
 beginning for file input, exits out of the game entirely.
+
+
+
+
+To install oCamlSDL for VM:
+
+* Run the following code in the terminal to install dependency packages for SDL2:
+
+sudo apt-get install build-essential xorg-dev libudev-dev libgl1-mesa-dev libglu1-mesa-dev libasound2-dev libpulse-dev libopenal-dev libogg-dev libvorbis-dev libaudiofile-dev libpng12-dev libfreetype6-dev libusb-dev libdbus-1-dev zlib1g-dev libdirectfb-dev
+
+
+* Then run the following code in the terminal to install SDL:
+
+sudo apt-get install libsdl2-dev
+
+
+* From the terminal, navigate to the included folder "ocamlsdl-0.9.1"
+* Run
+
+sudo apt-get install libsdl-ttf2.0-dev
+sudo apt-get install libsdl-image1.2-dev
+sudo apt-get install libsdl-mixer1.2-dev
+sudo apt-get install libsdl-gfx1.2-dev
+./configure
+make
+make install
