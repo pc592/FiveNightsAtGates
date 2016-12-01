@@ -2,6 +2,31 @@
  * The updated state is used by other parts to set up the graphics
  * and interface. *)
 
+(*****************************************************************************
+******************************************************************************
+*********************************GLOBAL CONSTANTS*****************************
+******************************************************************************
+******************************************************************************)
+
+(*
+gameNight [float]: length of a night, in game time, in seconds.
+  eg, 10 hours is 36000.
+levelMaxTime [float]: length of real time for each level to complete, in seconds.
+  eg, 20 minutes is 1200.
+monsterTime [float]: length of real time a monster is allowed to be in the room
+  next to main before the player loses (is killed), in seconds. eg, 5.
+maxLevel [int]: the maximum number of levels in the game, same as the maximum
+  number of monsters defined in the .json.
+cPen [float]: the battery penalty for using the camera.
+dPen [float]: the battery penalty for opening/closing door
+*)
+
+(*****************************************************************************
+******************************************************************************
+*************************************TYPES************************************
+******************************************************************************
+******************************************************************************)
+
 (* The type of a game monster. [record]
  * stores:
  *  - nameM [string]: the identifier for the monster
@@ -45,7 +70,8 @@ type map
  *  - room [room]: The current room the camera is viewing
  *  - level [int]: The current level [1..5], aka night, the player is on
  *  - quit [bool]: whether or not the player has quit, ie if game is ongoing
- *  - lost [bool]: whether or not the player has lost to a monster *)
+ *  - lost [bool]: whether or not the player has lost to a monster
+ *  - printed [bool]: whether or not a win/lose message was printed *)
 type state
 
 (*****************************************************************************

@@ -3,12 +3,25 @@
  * The updated state is used by other parts to set up the graphics
  * and interface. *)
 
+
+(*****************************************************************************
+******************************************************************************
+*********************************GLOBAL CONSTANTS*****************************
+******************************************************************************
+******************************************************************************)
+
 let gameNight = ref 36000. (*10 hours in seconds; game time elapsed*)
 let levelMaxTime = ref 20. (* 1200. *) (*20 minutes in seconds; real time elapsed*)
 let monsterTime = ref 5. (*seconds monster allows user before killing them*)
 let maxLevel = ref (-1) (*number of levels - 1 (levels start at 0)*)
 let cPen = ref 0.1 (*battery penalty for using camera*)
-let dPen = ref 0.2 (*battery penalty for opening/closeing door*)
+let dPen = ref 0.2 (*battery penalty for opening/closing door*)
+
+(*****************************************************************************
+******************************************************************************
+*************************************TYPES************************************
+******************************************************************************
+******************************************************************************)
 
 type monster = {
   nameM: string;
