@@ -495,16 +495,20 @@ let rec main fileName =
     let st = start j in
     Pervasives.print_endline ( "\n" ^
       "Legal commands you may use:\n" ^
-      " - main: will bring you back to your main room\n" ^
-      " - camera: allows you to move around\n" ^
-      "    + while in camera mode you may also use: up / down / left / right\n" ^
-      " - close one: closes door one\n" ^
-      " - close two: clses door two\n" ^
-      " - open one: opens door one\n" ^
-      " - open two: opens door two\n" ^
-      " - restart: restarts the game\n" ^
-      " - next: starts the next level if you survive\n" ^
-      " - quit: quits the game\n\n" ^
+      " - [backspace]: will bring you back to your main room\n" ^
+      " - [space]: allows you to move around\n" ^
+      "    + while in camera mode you may also use:\n" ^
+      "       [w]: up\n" ^
+      "       [a]: left\n" ^
+      "       [s]: down\n" ^
+      "       [d]: right\n" ^
+      " - [p]: closes door one\n" ^
+      " - [u]: closes door two\n" ^
+      " - [o]: opens door one\n" ^
+      " - [i]: opens door two\n" ^
+      " - [return]: restarts the game\n" ^
+      " - [u]: starts the next level if you survive\n" ^
+      " - [Esc]: quits the game\n\n" ^
       "Day 0");
       go j st
   in try nest_main fileName with

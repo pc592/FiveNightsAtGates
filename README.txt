@@ -10,6 +10,8 @@ Sdl for OCaml (Simple DirectMedia Layer) [instructions below]
 To play the game:
 Run make play (or make). Entering "quit" at any point of game play, or in the
 beginning for file input, exits out of the game entirely.
+Make sure you click on the tiny [?] window when playing--otherwise your commands
+will not be registered.
 
 
 
@@ -36,3 +38,6 @@ sudo apt-get install libsdl-gfx1.2-dev
 ./configure
 make
 make install
+make clean
+
+* Now you can return to the previous folder and play!
