@@ -10,8 +10,12 @@
 
 let () =
   ANSITerminal.(print_string [red]
-    "\n\nWelcome to the 3110 Text Adventure Game engine.\n");
-  Pervasives.print_endline "Please enter the name of the game file you want to load.\n";
+    "\n\nDo you want to play a game? (Yes/No)\n");
   Pervasives.print_string  "> ";
-  let file_name = Pervasives.read_line () in
-  Engine.main file_name
+  let input = String.lowercase_ascii (Pervasives.read_line ()) in
+  let fileName =
+    if input = "yes" then "map.json"
+    else if input = "no" then "quit"
+    else "gibberish"
+  in
+  Engine.main (String.lowercase_ascii fileName)

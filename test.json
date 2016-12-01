@@ -48,7 +48,7 @@
 	"name": "Camel",
 	"level": 0,
 	"image": "Camel",
-	"startRoom": "Gimme!",
+	"startRoom": "bathroom",
 	"modusOperandi": "randomly goal oriented",
 	"timeToMove": 500
 	}, {

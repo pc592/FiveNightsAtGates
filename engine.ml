@@ -39,6 +39,12 @@ type state = {
   lost: bool
 }
 
+let gameNight = ref 36000. (*10 hours in seconds; game time elapsed*)
+let levelMaxTime = ref 1200. (*20 minutes in seconds; real time elapsed*)
+let maxLevel = ref 1 (*number of levels - 1 (levels start at 0)*)
+let cPen = ref 0.1
+let dPen = ref 0.2
+
 (*****************************************************************************
 ******************************************************************************
 **************************MONSTER MOVEMENT ALGORITHMS*************************
@@ -195,9 +201,9 @@ let quit st = {st with quit = true;}
 
 let update_time_and_battery st =
   let now = Unix.time() in
-  let timeMultiplier = 20. in
-  let camPenalty = 0.01 in
-  let doorPenalty = 0.02 in
+  let timeMultiplier = (!gameNight)/.(!levelMaxTime) in
+  let camPenalty = !cPen in
+  let doorPenalty = !dPen in
   let cameraPenalty =
     if st.room.nameR <> "main" then camPenalty else 0. in
   let doorPenalty =
@@ -339,8 +345,8 @@ let rec check_time monsters st =
 open Async.Std
 
 let rec eval j st cmd =
-  let winTime = 28800. in
-  let winLvl = 1 in
+  let winTime = !gameNight in
+  let winLvl = !maxLevel in
   let st = update_time_and_battery st in
   let st =
     if st.lost then st else
@@ -412,7 +418,7 @@ let rec eval j st cmd =
       Pervasives.print_endline ("Time elapsed in hh:mm is: "
           ^ pretty_string hours ^ ":" ^ pretty_string minutes);
       Pervasives.print_endline ("Battery level is: "
-          ^ (string_of_float st.battery) ^ "%");
+          ^ (string_of_float st.battery) ^ "%\n");
   st
 
 
@@ -434,7 +440,7 @@ let rec go j st =
  *)
 
 let rec go j st =
-  let winTime = 28800. in
+  let winTime = !gameNight in
   let cmd =
     if (* <no input> *) false then ""
     else (* let () = Pervasives.print_string "\n> " in *) Pervasives.read_line()
@@ -470,7 +476,11 @@ let rec main fileName =
       go j st
   in try nest_main fileName with
   | Sys_error(_) | Illegal ->
-    Pervasives.print_endline "\nThat's not a valid .json file.";
-    Pervasives.print_endline "Please enter the name of the game file you want to load.\n";
+    Pervasives.print_endline "\nYou must choose.";
     Pervasives.print_string  "> ";
-    let fileName = Pervasives.read_line () in main fileName
+    let input = String.lowercase_ascii (Pervasives.read_line ()) in
+    let fileName =
+      if input = "yes" then "map.json"
+      else if input = "no" then "quit"
+      else "gibberish"
+    in main fileName
