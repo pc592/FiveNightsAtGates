@@ -72,9 +72,9 @@ let read_string ?(default="") () : string =
         | KEYDOWN {keysym=KEY_p}, s ->
             "close one"
         | KEYDOWN {keysym=KEY_i}, s ->
-            "open two"
-        | KEYDOWN {keysym=KEY_u}, s ->
             "close two"
+        | KEYDOWN {keysym=KEY_u}, s ->
+            "open two"
         | KEYDOWN {keysym=KEY_n}, s ->
             "next"
         | _, s ->

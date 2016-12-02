@@ -11,10 +11,11 @@ open Gui
 ******************************************************************************
 ******************************************************************************)
 
-let monsterProb = ref 15 (*probability 1/monsterProb that the monster will move*)
+let monsterProb = ref 20 (*probability 1/monsterProb that the monster will move*)
 let gameNight = ref 36000. (*10 hours in seconds; game time elapsed*)
 let levelMaxTime = ref 1200. (*20 minutes in seconds; real time elapsed*)
-let monsterTime = ref 5. (*seconds monster allows user before killing them*)
+let monsterTime = ref 300. (*game time seconds monster allows user before
+                               killing them; I like 60, Jovan says 300-450*)
 let maxLevel = ref (-1) (*number of levels - 1 (levels start at 0)*)
 let cPen = ref 0.1 (*battery penalty for using camera*)
 let dPen = ref 0.2 (*battery penalty for opening/closing door*)
@@ -335,7 +336,7 @@ let move_monster monsName st =
     let monster = List.assoc monsName st.monsters in
     let oldMonsR = (List.assoc monster.currentRoomM st.map) in
     let newMonsR = random_walk oldMonsR st.map monster in
-    let () = Pervasives.print_endline (monsName^" moved to "^newMonsR.nameR) in
+    (* let () = Pervasives.print_endline (monsName^" moved to "^newMonsR.nameR) in *)
       update_state_monster_move monster newMonsR st
   else st
 
@@ -433,9 +434,18 @@ let rec eval j st cmd =
         | "down" -> Down
         | _ -> Elsewhere
       in
-      try shift_view st dir with
-        | Illegal -> Pervasives.print_endline
-                       ("Illegal command '" ^cmd ^ "'"); st
+      let newView =
+        try shift_view st dir with
+          | Illegal -> Pervasives.print_endline
+                         ("Illegal command '" ^cmd ^ "'"); st
+      in
+      let newRoom = newView.room in
+        if (newRoom.monsterR <> None) then
+          match newRoom.monsterR with
+          | Some mons ->
+              Pervasives.print_endline (mons.nameM ^ " present!"); newView
+          | None -> newView
+        else newView
     else if (st.room.nameR = "main") &&
             (cmd = "close one" || cmd = "close two" ||
              cmd = "open one"  || cmd = "open two") then
@@ -494,14 +504,16 @@ let rec main fileName =
       "       [a]: left\n" ^
       "       [s]: down\n" ^
       "       [d]: right\n" ^
-      " - [u]: closes door two\n" ^
-      " - [i]: opens door two\n" ^
+      " - [u]: opens door two\n" ^
+      " - [i]: closes door two\n" ^
       " - [o]: opens door one\n" ^
       " - [p]: closes door one\n" ^
       " - [n]: starts the next level if you survive\n" ^
       " - [return]: restarts the game\n" ^
       " - [esc]: quits the game\n\n" ^
-      "Day 0");
+      "Press [enter] to continue.");
+    let _n = Pervasives.read_line () in
+      Pervasives.print_endline ("Day 0");
       go j st
   in try nest_main fileName with
   | Sys_error(_) | Illegal ->
