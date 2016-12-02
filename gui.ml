@@ -47,7 +47,7 @@ let translate keycode =
 
 let read_string ?(default="") () : string =
   pump ();Sdltimer.delay 500;
-  let x = Sdlvideo.set_video_mode 1 1 [`DOUBLEBUF] in
+  let _x = Sdlvideo.set_video_mode 1 1 [`DOUBLEBUF] in
     let rec read_more_of s :string =
         pump (); if not (has_event ()) then "" else
         match wait_event (), s with
