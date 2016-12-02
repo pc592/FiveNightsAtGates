@@ -18,7 +18,7 @@
 		"room_id": "main"
 		}, {
 		"direction": "down",
-		"room_id": "bathroom"
+		"room_id": "hallway"
 		}, {
 		"direction": "up",
 		"room_id": "Gimme!"
@@ -43,10 +43,13 @@
 	"image": "lectureHall",
 	"exits": [{
 		"direction": "up",
-		"room_id": "bathroom"
+		"room_id": "hallway"
 		}, {
 		"direction": "down",
 		"room_id": "CSOffices"
+		}, {
+		"direction": "left",
+		"room_id": "copyRoom"
 		}],
 	"monsters": []
 	}, {
@@ -57,7 +60,7 @@
 		"room_id": "lectureHall"
 		}, {
 		"direction": "up",
-		"room_id": "bathroom"
+		"room_id": "hallway"
 		}, {
 		"direction": "left",
 		"room_id": "studySpaces"
@@ -70,17 +73,20 @@
 		"direction": "right",
 		"room_id": "CSOffices"
 		}, {
-		"direction": "up",
-		"room_id": "copyRoom"
-		}, {
 		"direction": "left",
 		"room_id": "CSUGLab"
+		}, {
+		"direction": "up",
+		"room_id": "gradLounge"
 		}],
 	"monsters": []
 	}, {
 	"name": "CSUGLab",
 	"image": "CSUGLab",
 	"exits": [{
+		"direction": "up",
+		"room_id": "profOffice"
+		}, {
 		"direction": "down",
 		"room_id": "studySpaces"
 		}, {
@@ -93,7 +99,7 @@
 	"image": "copyRoom",
 	"exits": [{
 		"direction": "right",
-		"room_id": "studySpaces"
+		"room_id": "lectureHall"
 		}, {
 		"direction": "up",
 		"room_id": "gradLounge"
@@ -106,14 +112,14 @@
 	"name": "gradLounge",
 	"image": "gradLounge",
 	"exits": [{
-		"direction": "right",
-		"room_id": "Gimme!"
-		}, {
 		"direction": "up",
 		"room_id": "profOffice"
 		}, {
 		"direction": "down",
 		"room_id": "copyRoom"
+		}, {
+		"direction": "right",
+		"room_id": "studySpaces"
 		}],
 	"monsters": []
 	}, {
@@ -122,6 +128,9 @@
 	"exits": [{
 		"direction": "right",
 		"room_id": "Gimme!"
+		}, {
+		"direction": "left",
+		"room_id": "CSUGLab"
 		}, {
 		"direction": "down",
 		"room_id": "gradLounge"
@@ -139,9 +148,6 @@
 		}, {
 		"direction": "left",
 		"room_id": "profOffice"
-		}, {
-		"direction": "down",
-		"room_id": "gradLounge"
 		}],
 	"monsters": []
 	}],

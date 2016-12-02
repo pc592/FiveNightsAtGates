@@ -9,6 +9,7 @@
 ******************************************************************************)
 
 (*
+monsterProb [int]: probability 1/monsterProb that the monster will move.
 gameNight [float]: length of a night, in game time, in seconds.
   eg, 10 hours is 36000.
 levelMaxTime [float]: length of real time for each level to complete, in seconds.

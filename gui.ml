@@ -11,8 +11,7 @@ module Gui = struct
 
 let update_disp previous_image new_image screen =
   (* process click and call state? *)
-  if previous_image = new_image then ()
-else
+  if previous_image = new_image then () else
   let image = Sdlloader.load_image ("Rooms/" ^ new_image) in
   let position_of_image = Sdlvideo.rect 0 0 0 0 in
   (*Initializes the ttf reader*)
