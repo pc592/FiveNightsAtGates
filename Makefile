@@ -1,6 +1,6 @@
 play:
-	ocamlbuild -use-ocamlfind -tag thread	-pkgs \
-	oUnit,yojson,str,ANSITerminal,async,threads,sdl,sdl.sdlimage,sdl.sdlttf,sdl.sdlgfx \
+	ocamlbuild -use-ocamlfind	-pkgs \
+	yojson,str,ANSITerminal,sdl,sdl.sdlimage,sdl.sdlttf,sdl.sdlgfx \
 	main.byte && ./main.byte
 
 

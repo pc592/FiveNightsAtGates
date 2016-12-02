@@ -2,6 +2,7 @@
 "rooms": [{
 	"name": "main",
 	"image": "main",
+	"value": 0,
 	"exits": [{
 		"direction": "left",
 		"room_id": "Gimme!"
@@ -13,6 +14,7 @@
 	}, {
 	"name": "kitchen",
 	"image": "kitchen",
+	"value": 1,
 	"exits": [{
 		"direction": "left",
 		"room_id": "main"
@@ -27,6 +29,7 @@
 	}, {
 	"name": "hallway",
 	"image": "hallway",
+	"value": 2,
 	"exits": [{
 		"direction": "up",
 		"room_id": "kitchen"
@@ -41,6 +44,7 @@
 	}, {
 	"name": "lectureHall",
 	"image": "lectureHall",
+	"value": 3,
 	"exits": [{
 		"direction": "up",
 		"room_id": "hallway"
@@ -55,6 +59,7 @@
 	}, {
 	"name": "CSOffices",
 	"image": "CSOffices",
+	"value": 3,
 	"exits": [{
 		"direction": "right",
 		"room_id": "lectureHall"
@@ -69,6 +74,7 @@
 	}, {
 	"name": "studySpaces",
 	"image": "studySpaces",
+	"value": 4,
 	"exits": [{
 		"direction": "right",
 		"room_id": "CSOffices"
@@ -83,6 +89,7 @@
 	}, {
 	"name": "CSUGLab",
 	"image": "CSUGLab",
+	"value":3,
 	"exits": [{
 		"direction": "up",
 		"room_id": "profOffice"
@@ -97,6 +104,7 @@
 	}, {
 	"name": "copyRoom",
 	"image": "copyRoom",
+	"value": 4,
 	"exits": [{
 		"direction": "right",
 		"room_id": "lectureHall"
@@ -111,6 +119,7 @@
 	}, {
 	"name": "gradLounge",
 	"image": "gradLounge",
+	"value": 3,
 	"exits": [{
 		"direction": "up",
 		"room_id": "profOffice"
@@ -125,6 +134,7 @@
 	}, {
 	"name": "profOffice",
 	"image": "profOffice",
+	"value": 2,
 	"exits": [{
 		"direction": "right",
 		"room_id": "Gimme!"
@@ -139,6 +149,7 @@
 	}, {
 	"name": "Gimme!",
 	"image": "Gimme",
+	"value": 1,
 	"exits": [{
 		"direction": "right",
 		"room_id": "main"
@@ -156,14 +167,16 @@
 	"level": 0,
 	"image": "Camel",
 	"startRoom": "CSUGLab",
-	"modusOperandi": "randomly goal oriented",
-	"timeToMove": 500
+	"modusOperandi": "random walk",
+	"timeToMove": -1,
+	"teleportRoom": ["copyRoom"]
 	}, {
 	"name": "Bed",
 	"level": 1,
 	"image": "Bed",
 	"startRoom": "CSOffices",
-	"modusOperandi": "random walk",
-	"timeToMove": 500
+	"modusOperandi": "weighted movement",
+	"timeToMove": -1,
+	"teleportRoom": ["studySpaces"]
 	}]
 }

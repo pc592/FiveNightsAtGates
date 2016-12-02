@@ -4,7 +4,6 @@ use camel case for variables and types.
 
 To compile the game please have these modules installed on your computer:
 ANSITerminal
-Async
 Sdl for OCaml (Simple DirectMedia Layer) [instructions below]
 
 To play the game:
@@ -30,7 +29,7 @@ sudo apt-get install libsdl2-dev
 
 
 * From the terminal, navigate to the included folder "ocamlsdl-0.9.1"
-* Run
+* Run the following line by line.
 
 sudo apt-get install libsdl-ttf2.0-dev
 sudo apt-get install libsdl-image1.2-dev

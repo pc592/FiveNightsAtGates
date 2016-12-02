@@ -32,7 +32,8 @@ type monster = {
   imageM: string;
   currentRoomM: string;
   modusOperandiM: string;
-  timeToMoveM: float
+  timeToMoveM: float;
+  teleportRoomM: string list
 }
 
 type door = | One | Two
@@ -42,6 +43,7 @@ type dir = | Left | Right | Up | Down | Elsewhere
 type room = {
   nameR: string;
   imageR: string;
+  valueR: int;
   exitsR: (dir*string) list;
   monsterR: monster option
 }
@@ -69,30 +71,36 @@ type state = {
 ******************************************************************************
 ******************************************************************************)
 
-(* [weighted_movement room map monster] returns the next room using weighted
- * movement traversal. Weighted movement traversal requires that each room
- * has a value, with movement towards a lower value more likely. In general,
- * rooms near the main room are lower valued than paths leading away. If the
- * current room is next to the main room and a new room must be selected,
- * or the lower valued room has been reached (ie all other rooms are of equal
- * or higher value) then the rooms will be randomly revalued. Returned room
- * will not be main nor have another monster in it already.
- * requires:
- *  - [room] is the details of the current room
- *  - [map] is the map of the game for the AI to traverse *)
-let weighted_movement room map monster =
-  failwith "unimplemented"
-
 (*Bug where sometimes the monster may move despite being right next door. :/*)
-let rec random_walk room map monster =
+
+let rec random_walk room map =
   let current = List.assoc room.nameR map in
   let exits = current.exitsR in
   let numExits = List.length exits in
   let random = Random.int numExits in
   let (dir,name) = List.nth exits random in
     if (name = "main") || ((List.assoc name map).monsterR <> None) then
-      random_walk room map monster
+      random_walk room map
     else List.assoc name map
+
+let rec weighted_movement room map monster =
+  let current = List.assoc room.nameR map in
+  let exits = current.exitsR in
+  if (current.valueR-1) = 0 then
+    match monster.teleportRoomM with
+      | [] -> failwith "Impossible."
+      | h::t -> List.assoc h map
+  else
+    let roomsRecs = List.map (fun (dir,rName) -> (List.assoc rName map)) exits in
+    let f r = (r.valueR <= current.valueR) in
+    let roomsOfVal = List.filter f roomsRecs in
+    let num = List.length roomsOfVal in
+    let random = Random.int num in
+    let (dir,name) = List.nth exits random in
+      if ((List.assoc name map).monsterR <> None) then
+        weighted_movement room map monster
+      else List.assoc name map
+
 
 (* [Illegal] is raised by the game to indicate that a command is illegal. *)
 exception Illegal
@@ -110,6 +118,8 @@ let getName room =
   room |> member "name" |> to_string
 let getImage room =
   room |> member "image" |> to_string
+let getValue room =
+  room |> member "value" |> to_int
 let getExits room =
   let exitsList = room |> member "exits" |> to_list in
     let makeExit exit =
@@ -131,6 +141,7 @@ let getMonster room = None
 let makeRoom room = {
   nameR = getName room;
   imageR = getImage room;
+  valueR = getValue room;
   exitsR = getExits room;
   monsterR = getMonster room;
 }
@@ -150,6 +161,11 @@ let getStartRoom monster =
   monster |> member "startRoom" |> to_string
 let getModusOp monster =
   monster |> member "modusOperandi" |> to_string
+let getTelepRoom monster =
+  let telRooms = (monster |> member "teleportRoom" |> to_list) in
+  if (List.length telRooms)=0 then
+        (Pervasives.print_endline ("Teleport room must exist."); raise Illegal)
+  else List.map to_string telRooms
 
 (* Helper function to make monster record. *)
 let makeMonster monster = {
@@ -159,6 +175,7 @@ let makeMonster monster = {
   currentRoomM = getStartRoom monster;
   modusOperandiM = getModusOp monster;
   timeToMoveM = 2.*.Unix.time();
+  teleportRoomM = getTelepRoom monster;
 }
 
 let insert_monster j lvl =
@@ -217,7 +234,7 @@ let quit st = {st with quit = true;}
 
 (*****************************************************************************
 ******************************************************************************
-*************************REQUIRED STATE UPDATE********************************
+****************************REQUIRED STATE UPDATE*****************************
 ******************************************************************************
 ******************************************************************************)
 
@@ -237,6 +254,12 @@ let update_time_and_battery st =
   let newBatt = st.battery -. cameraPenalty -. doorPenalty in
     {st with time = (now -. st.startTime)*.timeMultiplier;
              battery = if newBatt < 0. then 0. else newBatt;}
+
+(*****************************************************************************
+******************************************************************************
+*************************MONSTER MOVE STATE UPDATE****************************
+******************************************************************************
+******************************************************************************)
 
 (* Helper function to update map after monster move. *)
 let update_map_monster_move oldRoom newRoom map monster =
@@ -272,7 +295,7 @@ let update_state_monster_move mons newRoom st =
 
 (*****************************************************************************
 ******************************************************************************
-******************************USER IN UPDATES*********************************
+*****************************USER INPUT UPDATES*******************************
 ******************************************************************************
 ******************************************************************************)
 
@@ -335,7 +358,12 @@ let move_monster monsName st =
   if move then
     let monster = List.assoc monsName st.monsters in
     let oldMonsR = (List.assoc monster.currentRoomM st.map) in
-    let newMonsR = random_walk oldMonsR st.map monster in
+    let newMonsR =
+      if monster.modusOperandiM = "weighted movement" then
+        weighted_movement oldMonsR st.map monster
+      else (*default to random walk*)
+        random_walk oldMonsR st.map
+    in
     (* let () = Pervasives.print_endline (monsName^" moved to "^newMonsR.nameR) in *)
       update_state_monster_move monster newMonsR st
   else st
@@ -367,9 +395,10 @@ let rec check_time monsters st =
           {st with lost = true}
         else check_time t st
 
-(* ============================== EVAL LOOP =============================== *)
 
-open Async.Std
+(*****************************************************************************
+**********************************EVAL LOOP***********************************
+******************************************************************************)
 
 let rec eval j st cmd =
   let winTime = !gameNight in
@@ -450,10 +479,14 @@ let rec eval j st cmd =
             (cmd = "close one" || cmd = "close two" ||
              cmd = "open one"  || cmd = "open two") then
         match cmd with
-        | "close one" -> update_door_status st false One
-        | "close two" -> update_door_status st false Two
-        | "open one"  -> update_door_status st true One
-        | "open two"  -> update_door_status st true Two
+        | "close one" -> Pervasives.print_endline "Door one closed.";
+                           update_door_status st false One
+        | "close two" -> Pervasives.print_endline "Door two closed.";
+                           update_door_status st false Two
+        | "open one"  -> Pervasives.print_endline "Door one opened.";
+                           update_door_status st true One
+        | "open two"  -> Pervasives.print_endline "Door two opened.";
+                           update_door_status st true Two
         | _ -> Pervasives.print_endline ("Illegal command '" ^ cmd ^ "'"); st
     else
       match cmd with
@@ -481,21 +514,47 @@ let rec go j st =
     if (cmd = "quit" || st.quit = true) then () else
     let newSt =
       if (cmd = "restart") then
-        (Pervasives.print_endline "Back to Day 0"; (start j))
+        (Pervasives.print_endline "Back to Day 0\n"; (start j))
       else if (cmd = "next" && st.time >= winTime) then
         (Pervasives.print_endline ("Day "^(string_of_int (st.level+1)));
           (next_level j st))
       else (eval j st cmd)
     in go j newSt
 
-(* [main f] is the main entry point from outside this module
- * to load a game from file [f] and start playing it. *)
-let rec main fileName =
-  let nest_main fileName =
-    if fileName = "quit" then () else
-    let j = Yojson.Basic.from_file fileName in
-    let st = start j in
-    Pervasives.print_endline ( "\n" ^
+
+(*****************************************************************************
+******************************************************************************
+*********************************START GAME***********************************
+******************************************************************************
+******************************************************************************)
+
+let intro =(
+  "\n\n\n\n\n\n" ^
+  "Introduction:\n" ^
+  "It's late at night and you have CS3110 assignments to do, due tomorrow!.\n" ^
+  "But there's monsters lurking around every corner....\n" ^
+  "\n" ^
+  "You must keep track of the monsters roaming around Gates. If they get\n" ^
+  "into the main room, they'll ruin your project and you'll fail! Luckily,\n" ^
+  "you have access to the security cameras placed in each room.\n"^
+  "\n" ^
+  "Doubly lucky, the [main] room you've chosen to be in is well fortified--\n" ^
+  "it has only two doors, which you may open or close using your laptop to\n" ^
+  "keep the monsters out.\n" ^
+  "\n" ^
+  "The catch? Viewing the security cameras increases the drainage of your\n" ^
+  "battery, as does keeping the doors closed. Opening or closing the doors\n" ^
+  "also takes battery. Additionally, your laptop is only able to either view\n" ^
+  "the security camera footage or handle the doors, it cannot do both.\n" ^
+  "Of course, if you run out of battery, you will be unable to finish the\n" ^
+  "project, and you will fail.\n" ^
+  "\n" ^
+  "Can you finish all the projects and survive every night?\n" ^
+  "\n\n")
+
+(* The gameplay instructions for what commands are valid. *)
+let commands =
+      "\n\n\n\n\n\n\n\n" ^
       "Legal commands you may use:\n" ^
       " - [backspace]: will bring you back to your main room\n" ^
       " - [space]: will bring you to camera mode\n" ^
@@ -504,24 +563,41 @@ let rec main fileName =
       "       [a]: left\n" ^
       "       [s]: down\n" ^
       "       [d]: right\n" ^
-      " - [u]: opens door two\n" ^
-      " - [i]: closes door two\n" ^
-      " - [o]: opens door one\n" ^
-      " - [p]: closes door one\n" ^
+      " - [u]: opens door one\n" ^
+      " - [i]: closes door one\n" ^
+      " - [o]: opens door two\n" ^
+      " - [p]: closes door two\n" ^
       " - [n]: starts the next level if you survive\n" ^
       " - [return]: restarts the game\n" ^
-      " - [esc]: quits the game\n\n" ^
-      "Press [enter] to continue.");
+      " - [esc]: quits the game\n\n"
+
+(* [main f] is the main entry point from outside this module
+ * to load a game from file [f] and start playing it. *)
+let rec main fileNameIn =
+  let nest_main fileName =
+    if fileName = "quit" then () else
+    let j = Yojson.Basic.from_file fileName in
+    let st = start j in
+    let _o = Sys.command "clear" in
+    Pervasives.print_endline commands;
+    Pervasives.print_endline  "Press [enter] to continue.";
     let _n = Pervasives.read_line () in
-      Pervasives.print_endline ("Day 0");
-      go j st
-  in try nest_main fileName with
-  | Sys_error(_) | Illegal ->
+    let _p = Sys.command "clear" in
+    let () = Pervasives.print_endline ("\n\n\n\n\n") in
+    Pervasives.print_endline ("Day 0\n");
+    go j st
+  in try nest_main fileNameIn with
+  | Sys_error(_) ->
     Pervasives.print_endline "\nYou must choose.";
     Pervasives.print_string  "> ";
     let input = String.lowercase_ascii (Pervasives.read_line ()) in
     let fileName =
-      if input = "yes" then "map.json"
+      if input = "yes" then
+        let _m = Sys.command "clear" in
+        let () = (Printf.printf "%s" intro) in
+          Pervasives.print_string "Press [enter] to continue.";
+        let _n = Pervasives.read_line () in "map.json"
       else if input = "no" || input = "quit" then "quit"
       else "gibberish"
     in main fileName
+  | Illegal -> Pervasives.print_endline "\nSomething is wrong with the .json"

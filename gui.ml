@@ -67,14 +67,14 @@ let read_string ?(default="") () : string =
             "right"
         | KEYDOWN {keysym=KEY_s}, s ->
             "down"
-        | KEYDOWN {keysym=KEY_o}, s ->
-            "open one"
-        | KEYDOWN {keysym=KEY_p}, s ->
-            "close one"
-        | KEYDOWN {keysym=KEY_i}, s ->
-            "close two"
         | KEYDOWN {keysym=KEY_u}, s ->
+            "open one"
+        | KEYDOWN {keysym=KEY_i}, s ->
+            "close one"
+        | KEYDOWN {keysym=KEY_o}, s ->
             "open two"
+        | KEYDOWN {keysym=KEY_p}, s ->
+            "close two"
         | KEYDOWN {keysym=KEY_n}, s ->
             "next"
         | _, s ->

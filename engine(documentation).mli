@@ -35,8 +35,8 @@ dPen [float]: the battery penalty for opening/closing door
  *  - imageM [string]: image location for the monster
  *  - currentRoomM [string]: where the monster is currently located.
  *  - modusOperandiM [string]: the algorithm used by the monster for movement
- *                             ** has no use in the game itself **
- *  - timeToMoveM [int]: how long it has been since the monster moved *)
+ *  - timeToMoveM [int]: how long it has been since the monster moved
+ *  - teleportRoom [string list]: the name(s) of room(s) to teleport/travel to *)
 type monster
 
 (* The type of the two doors leading to the main room, left/right, one/two *)
@@ -50,6 +50,7 @@ type dir
  * stores:
  *  - nameR [string]: the name of the room
  *  - imageR [string]: the image(s) location for the location
+ *  - valueR [ing]: the value of a room, ie the fewest number of edges to main
  *  - exitsR [(dir*string) list]: the exits associated with the room
  *  - monsterR [monster option]: Some monster if one is in the room or None.
  *                            ** there can only be one monster in a room **)
@@ -81,25 +82,25 @@ type state
 ******************************************************************************
 ******************************************************************************)
 
+(* [random_walk room map] returns the next room using random walk.
+ * Returned room will not be main nor have another monster in it already.
+ * requires:
+ *  - [room] is the details of the current room
+ *  - [map] is the map of the game for the AI to traverse *)
+val random_walk : room -> map -> room
+
 (* [weighted_movement room map monster] returns the next room using weighted
  * movement traversal. Weighted movement traversal requires that each room
  * has a value, with movement towards a lower value more likely. In general,
  * rooms near the main room are lower valued than paths leading away. If the
  * current room is next to the main room and a new room must be selected,
  * or the lower valued room has been reached (ie all other rooms are of equal
- * or higher value) then the rooms will be randomly revalued. Returned room
- * will not be main nor have another monster in it already.
+ * or higher value) then the monster will teleport. Returned room will not be
+ * main nor have another monster in it already.
  * requires:
  *  - [room] is the details of the current room
  *  - [map] is the map of the game for the AI to traverse *)
 val weighted_movement : room -> map -> monster -> room
-
-(* [random_walk room map monster] returns the next room using random walk.
- * Returned room will not be main nor have another monster in it already.
- * requires:
- *  - [room] is the details of the current room
- *  - [map] is the map of the game for the AI to traverse *)
-val random_walk : room -> map -> monster -> room
 
 (*****************************************************************************
 ******************************************************************************
@@ -145,13 +146,19 @@ val game_over : state -> state
  * and, if in use, the battery decreased. *)
 val update_time_and_battery : state -> state
 
+(*****************************************************************************
+******************************************************************************
+*************************MONSTER MOVE STATE UPDATE****************************
+******************************************************************************
+******************************************************************************)
+
 (* [update_state_monster_move monster newRoom map] returns the state with
  * map and monsters updated after [monster] has moved to [newRoom]. *)
 val update_state_monster_move : monster -> room -> map -> state
 
 (*****************************************************************************
 ******************************************************************************
-******************************USER IN UPDATES*********************************
+*****************************USER INPUT UPDATES*******************************
 ******************************************************************************
 ******************************************************************************)
 
