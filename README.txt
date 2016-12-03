@@ -27,7 +27,6 @@ sudo apt-get install build-essential xorg-dev libudev-dev libgl1-mesa-dev libglu
 
 sudo apt-get install libsdl2-dev
 
-
 * From the terminal, navigate to the included folder "ocamlsdl-0.9.1"
 * Run the following line by line.
 
@@ -42,9 +41,12 @@ make clean
 
 * Now you can return to the previous folder and play!
 
+
+
+
 To install for MacOS:
 * if you have ports, install with instructions in https://vog.github.io/ocamlsdl-tutorial/
-* if you have brew, 
+* if you have brew,
 
 brew install sdl2
 brew install ocamlsdl

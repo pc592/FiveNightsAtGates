@@ -13,9 +13,9 @@ open Gui
 
 let monsterProb = ref 20 (*probability 1/monsterProb that the monster will move*)
 let gameNight = ref 36000. (*10 hours in seconds; game time elapsed*)
-let levelMaxTime = ref 10. (* 1200. *) (*20 minutes in seconds; real time elapsed*)
-let monsterTime = ref 150. (*game time seconds monster allows user before
-                               killing them; I like 60, Jovan says 300-450*)
+let levelMaxTime = ref 1200. (* 1200. *) (*20 minutes in seconds; real time elapsed*)
+let monsterTime = ref 300. (*game time seconds monster allows user before
+                               killing them; 300 is ~10 seconds. *)
 let maxLevel = ref (-1) (*number of levels - 1 (levels start at 0)*)
 let cPen = ref 0.1 (*battery penalty for using camera*)
 let dPen = ref 0.2 (*battery penalty for opening/closing door*)
@@ -278,18 +278,18 @@ let update_map_monster_move oldRoom newRoom map monster =
   in newMap
 
 (* Helper function to update monsters after monster move. *)
-let update_monsters_monster_move newRoom mons monsters =
+let update_monsters_monster_move newRoom mons monsters timeNow =
   List.map (fun (monsName,monsRec) ->
     if mons.nameM = monsName then
       let newMons = {mons with currentRoomM = newRoom.nameR;
-                               timeToMoveM = Unix.time()} in
+                               timeToMoveM = timeNow} in
         (monsName, newMons)
     else (monsName,monsRec)) monsters
 
 let update_state_monster_move mons newRoom st =
   let upd_room = if st.room.nameR = newRoom.nameR then newRoom else st.room in
   let mons_room = List.assoc mons.currentRoomM st.map in
-  {st with monsters = update_monsters_monster_move newRoom mons st.monsters;
+  {st with monsters = update_monsters_monster_move newRoom mons st.monsters st.time;
            map = (update_map_monster_move mons_room newRoom st.map
                        {mons with currentRoomM = newRoom.nameR});
            room = upd_room;}
@@ -377,7 +377,7 @@ let move_monster monsName st =
       else (*default to random walk*)
         random_walk oldMonsR st.map
     in
-    (* let () = Pervasives.print_endline (monsName^" moved to "^newMonsR.nameR) in *)
+    let () = Pervasives.print_endline (monsName^" moved to "^newMonsR.nameR) in
       update_state_monster_move monster newMonsR st
   else st
 
@@ -404,7 +404,7 @@ let rec check_time monsters st =
   | [] -> st
   | (monsName,mons)::t ->
       let monsTime = mons.timeToMoveM in
-        if monsTime -. st.startTime >= !monsterTime then
+        if st.time -. monsTime >= !monsterTime then
           {st with lost = true}
         else check_time t st
 
@@ -429,7 +429,7 @@ let rec eval j st cmd =
         if is_monster newSt then
           check_time newSt.monsters newSt
         else newSt
-      in
+    in
     let st =
       if (st.time >= winTime && st.level = winLvl) then
         let st =
