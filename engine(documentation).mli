@@ -53,7 +53,8 @@ type dir
  *  - valueR [ing]: the value of a room, ie the fewest number of edges to main
  *  - exitsR [(dir*string) list]: the exits associated with the room
  *  - monsterR [monster option]: Some monster if one is in the room or None.
- *                            ** there can only be one monster in a room **)
+ *                            ** there can only be one monster in a room **
+ *  - lastCheckR [float]: last time the room was viewed. )
 type room
 
 (* The type of the game map [(string*room) list].

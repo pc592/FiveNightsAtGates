@@ -34,12 +34,12 @@ let () =
     Pervasives.print_string  "> ";
   let input = String.lowercase_ascii (Pervasives.read_line ()) in
   let fileName =
-    if input = "yes" then
+    if input = "yes" || input = "y" then
       let _m = Sys.command "clear" in
       let () = (Printf.printf "%s" intro) in
         Pervasives.print_string "Press [enter] to continue.";
       let _n = Pervasives.read_line () in "map.json"
-    else if input = "no" || input = "quit" then "quit"
+    else if input = "no" || input = "n" || input = "quit" then "quit"
     else "gibberish"
   in
   Engine.main (String.lowercase_ascii fileName)
