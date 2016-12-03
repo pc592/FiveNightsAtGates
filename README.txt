@@ -41,3 +41,13 @@ make install
 make clean
 
 * Now you can return to the previous folder and play!
+
+To install for MacOS:
+* if you have ports, install with instructions in https://vog.github.io/ocamlsdl-tutorial/
+* if you have brew, 
+
+brew install sdl2
+brew install ocamlsdl
+
+*then
+opam install ocamlsdl
