@@ -1,6 +1,9 @@
 #require "yojson";;
 #require "ANSITerminal";;
-#require "async";;
 #require "sdl";;
+#require "sdl.sdlimage";;
+#require "sdl.sdlttf";;
+#require "sdl.sdlmixer";;
+#require "sdl.sdlgfx";;
 
 #use "engine.ml";;
