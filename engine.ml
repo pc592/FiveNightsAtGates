@@ -74,8 +74,6 @@ type state = {
 ******************************************************************************
 ******************************************************************************)
 
-(*Bug where sometimes the monster may move despite being right next door. :/*)
-
 let rec random_walk room map =
   let current = List.assoc room.nameR map in
   let exits = current.exitsR in
@@ -103,7 +101,6 @@ let rec weighted_movement room map monster =
       if ((List.assoc name map).monsterR <> None) then
         weighted_movement room map monster
       else List.assoc name map
-
 
 (* [Illegal] is raised by the game to indicate that a command is illegal. *)
 exception Illegal
