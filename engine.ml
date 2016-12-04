@@ -613,11 +613,6 @@ let rec main fileNameIn =
     let _n = Pervasives.read_line () in
     let _p = Sys.command "clear" in
     let () = Pervasives.print_endline ("\n\n\n\n\n") in
-    let screen = Gui.create_disp () in
-        let mapIm = Sdlloader.load_image ("map.png") in
-        let mapPos = Sdlvideo.rect 0 0 0 0 in
-          Sdlvideo.blit_surface ~dst_rect:mapPos ~src:mapIm ~dst:screen ();
-          Sdlvideo.flip screen;
     Pervasives.print_endline ("Day 0\n");
     Gui.collect_commands ();
     let screen = Gui.create_disp () in

@@ -9,7 +9,7 @@ Sdl for OCaml (Simple DirectMedia Layer) [instructions below]
 To play the game:
 Run make play (or make). Entering "quit" at any point of game play, or in the
 beginning for file input, exits out of the game entirely.
-Make sure you are on the [?] window in your taskbar when playing--otherwise
+Make sure you are on the game window in your taskbar when playing--otherwise
 your commands will not be registered. This is indicated by an outlined clear
 rectangle rather than the regular solid rectangle in the terminal window.
 
