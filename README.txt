@@ -54,3 +54,10 @@ brew install ocamlsdl
 
 *then
 opam install ocamlsdl
+
+
+Background Music and Sound Credits:
+ThrillShowX: https://www.youtube.com/channel/UC6aGkyktim54QjAIVqrx2sg
+Ross Bugden - Music: https://www.youtube.com/channel/UCQKGLOK2FqmVgVwYferltKQ
+FreeSFX: http://www.freesfx.co.uk
+
