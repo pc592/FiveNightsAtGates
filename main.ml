@@ -1,3 +1,5 @@
+open Async.Std
+open MUSIC_FX
 (* Author: CS 3110 course staff *)
 (* But heavily modified. *)
 
@@ -25,7 +27,8 @@ let intro =(
   "Can you finish all the projects and survive every night?\n" ^
   "\n\n")
 
-let () =
+let _ = Scheduler.go ()
+let _ =
   let _n = Sys.command "clear" in
     ANSITerminal.(print_string [red]
       ("\n\n\n\n\n\n" ^
@@ -36,10 +39,16 @@ let () =
   let fileName =
     if input = "yes" || input = "y" then
       let _m = Sys.command "clear" in
-      let () = (Printf.printf "%s" intro) in
+     (*  let () = (Printf.printf "%s" intro) in *)
         Pervasives.print_string "Press [enter] to continue.";
       let _n = Pervasives.read_line () in "map.json"
     else if input = "no" || input = "n" || input = "quit" then "quit"
     else "gibberish"
   in
-  Engine.main (String.lowercase_ascii fileName)
+  (Deferred.all
+    [(return (Engine.main (String.lowercase_ascii fileName)));
+    (return (Music_FX.init_music ()))]
+    );
+
+
+

@@ -14,13 +14,16 @@ open Gui
 ******************************************************************************)
 let loopiloop = ref 0
 let monsterProb = ref 200000 (*probability 1/monsterProb that the monster will move*)
+
 let gameNight = ref 36000. (*10 hours in seconds; game time elapsed*)
 let levelMaxTime = ref 30. (* 1200. *) (*20 minutes in seconds; real time elapsed*)
 let monsterTime = ref 3000. (*game time seconds monster allows user before
                                killing them; 3000 is ~5 seconds. *)
 let maxLevel = ref (-1) (*number of levels - 1 (levels start at 0)*)
+
 let cPen = ref 0.00001 (*battery penalty for using camera*)
 let dPen = ref 0.00002 (*battery penalty for opening/closing door*)
+
 
 (*****************************************************************************
 ******************************************************************************
@@ -538,11 +541,17 @@ let rec eval j st cmd =
         in
         Pervasives.print_string "\n"; st
 
-let update screen hours battery =
+let unpack opt = match opt with |Some x -> x |None -> failwith "Something royally bonkers"; raise Illegal
+let update screen roomname filenname hours battery=
   if ((!loopiloop) = 1000) then
     let () = loopiloop := 0 in
-    Gui.update_disp "" "main.jpg" screen hours battery
+    Gui.update_disp roomname filenname screen hours battery
   else ()
+
+let file_name st =
+  let monster_val = st.room.monsterR in
+  let monstername = if monster_val = None then "" else "_" ^ ((unpack st.room.monsterR).nameM) in
+  st.room.nameR ^ monstername ^ ".jpg"
 
 let rec go j st screen=
   (* updates the image after set amount of recursive calls*)
@@ -554,8 +563,9 @@ let rec go j st screen=
     let newState = (eval j st cmd) in
       let hours = (string_of_int (int_of_float (floor (st.time/.3600.)))) in
       let battery = string_of_int (int_of_float st.battery) in
-      update screen hours battery;
+      update screen st.room.nameR (file_name st) hours battery;
     go j newState screen
+
 
 
 (*****************************************************************************
