@@ -27,7 +27,7 @@ let intro =(
   "Can you finish all the projects and survive every night?\n" ^
   "\n\n")
 
-let _ = Scheduler.go ()
+
 let _ =
   let _n = Sys.command "clear" in
     ANSITerminal.(print_string [red]
@@ -49,6 +49,7 @@ let _ =
     [(return (Engine.main (String.lowercase_ascii fileName)));
     (return (Music_FX.init_music ()))]
     );
+let _ = Scheduler.go ()
 
 
 
