@@ -10,15 +10,15 @@ open Gui
 *********************************GLOBAL CONSTANTS*****************************
 ******************************************************************************
 ******************************************************************************)
-
-let monsterProb = ref 20 (*probability 1/monsterProb that the monster will move*)
+let loopiloop = ref 0
+let monsterProb = ref 50000 (*probability 1/monsterProb that the monster will move*)
 let gameNight = ref 36000. (*10 hours in seconds; game time elapsed*)
-let levelMaxTime = ref 10. (* 1200. *) (*20 minutes in seconds; real time elapsed*)
-let monsterTime = ref 150. (*game time seconds monster allows user before
-                               killing them; I like 60, Jovan says 300-450*)
+let levelMaxTime = ref 30. (* 1200. *) (*20 minutes in seconds; real time elapsed*)
+let monsterTime = ref 3000. (*game time seconds monster allows user before
+                               killing them; 3000 is ~5 seconds. *)
 let maxLevel = ref (-1) (*number of levels - 1 (levels start at 0)*)
-let cPen = ref 0.1 (*battery penalty for using camera*)
-let dPen = ref 0.2 (*battery penalty for opening/closing door*)
+let cPen = ref 0.001 (*battery penalty for using camera*)
+let dPen = ref 0.002 (*battery penalty for opening/closing door*)
 
 (*****************************************************************************
 ******************************************************************************
@@ -278,18 +278,18 @@ let update_map_monster_move oldRoom newRoom map monster =
   in newMap
 
 (* Helper function to update monsters after monster move. *)
-let update_monsters_monster_move newRoom mons monsters =
+let update_monsters_monster_move newRoom mons monsters timeNow =
   List.map (fun (monsName,monsRec) ->
     if mons.nameM = monsName then
       let newMons = {mons with currentRoomM = newRoom.nameR;
-                               timeToMoveM = Unix.time()} in
+                               timeToMoveM = timeNow} in
         (monsName, newMons)
     else (monsName,monsRec)) monsters
 
 let update_state_monster_move mons newRoom st =
   let upd_room = if st.room.nameR = newRoom.nameR then newRoom else st.room in
   let mons_room = List.assoc mons.currentRoomM st.map in
-  {st with monsters = update_monsters_monster_move newRoom mons st.monsters;
+  {st with monsters = update_monsters_monster_move newRoom mons st.monsters st.time;
            map = (update_map_monster_move mons_room newRoom st.map
                        {mons with currentRoomM = newRoom.nameR});
            room = upd_room;}
@@ -377,7 +377,7 @@ let move_monster monsName st =
       else (*default to random walk*)
         random_walk oldMonsR st.map
     in
-    (* let () = Pervasives.print_endline (monsName^" moved to "^newMonsR.nameR) in *)
+    let () = Pervasives.print_endline (monsName^" moved to "^newMonsR.nameR) in
       update_state_monster_move monster newMonsR st
   else st
 
@@ -404,7 +404,7 @@ let rec check_time monsters st =
   | [] -> st
   | (monsName,mons)::t ->
       let monsTime = mons.timeToMoveM in
-        if monsTime -. st.startTime >= !monsterTime then
+        if st.time -. monsTime >= !monsterTime then
           {st with lost = true}
         else check_time t st
 
@@ -429,7 +429,7 @@ let rec eval j st cmd =
         if is_monster newSt then
           check_time newSt.monsters newSt
         else newSt
-      in
+    in
     let st =
       if (st.time >= winTime && st.level = winLvl) then
         let st =
@@ -515,7 +515,6 @@ let rec eval j st cmd =
             | _ -> Pervasives.print_endline ("Illegal command '" ^ cmd ^ "'"); st
       else
         match cmd with
-        | "main" ->  main_view st
         | "camera" -> if st.room.nameR = "main" then
                         camera_view st
                       else main_view st
@@ -536,11 +535,23 @@ let rec eval j st cmd =
         in
         Pervasives.print_string "\n"; st
 
-let rec go j st =
-  let cmd = Gui.read_string () in
+let update screen hours st=
+  if ((!loopiloop) = 1000) then
+    let () = loopiloop := 0 in
+    Gui.update_disp "" "main.jpg" screen hours (string_of_float st.battery)
+  else ()
+
+let rec go j st screen=
+  (* updates the image after set amount of recursive calls*)
+  loopiloop := !loopiloop + 1;
+  let cmd_opt = Gui.poll_event () in
+  let cmd = (match cmd_opt with |None -> "" |Some x -> Gui.read_string x) in
   let cmd = String.lowercase_ascii cmd in
     if (cmd = "quit" || st.quit = true) then () else
-    go j (eval j st cmd)
+    let new_state = (eval j st cmd) in
+    let hours = (string_of_int (int_of_float (floor (st.time/.3600.)))) in
+    update screen hours st;
+    go j new_state screen
 
 
 (*****************************************************************************
@@ -575,21 +586,18 @@ let intro =(
 
 (* The gameplay instructions for what commands are valid. *)
 let commands =
-      "\n\n\n\n\n\n\n\n" ^
+      "\n\n\n\n\n" ^
       "Legal commands you may use:\n" ^
-      " - [backspace]: will bring you back to your main room\n" ^
-      " - [space]: will bring you to camera mode\n" ^
+      " - [return]: restarts the game\n" ^
+      " - [space]: will bring you in and out of camera mode\n" ^
       "    + while in camera mode you may also use:\n" ^
       "       [w]: up\n" ^
       "       [a]: left\n" ^
       "       [s]: down\n" ^
       "       [d]: right\n" ^
-      " - [u]: opens door one\n" ^
-      " - [i]: closes door one\n" ^
-      " - [o]: opens door two\n" ^
-      " - [p]: closes door two\n" ^
+      " - [u]: opens/closes door one\n" ^
+      " - [i]: opens/closes door two\n" ^
       " - [n]: starts the next level if you survive\n" ^
-      " - [return]: restarts the game\n" ^
       " - [esc]: quits the game\n\n"
 
 (* [main f] is the main entry point from outside this module
@@ -605,13 +613,10 @@ let rec main fileNameIn =
     let _n = Pervasives.read_line () in
     let _p = Sys.command "clear" in
     let () = Pervasives.print_endline ("\n\n\n\n\n") in
-    let screen = Gui.create_disp () in
-        let mapIm = Sdlloader.load_image ("map.png") in
-        let mapPos = Sdlvideo.rect 0 0 0 0 in
-          Sdlvideo.blit_surface ~dst_rect:mapPos ~src:mapIm ~dst:screen ();
-          Sdlvideo.flip screen;
     Pervasives.print_endline ("Day 0\n");
-    go j st
+    Gui.collect_commands ();
+    let screen = Gui.create_disp () in
+    go j st screen
   in try nest_main fileNameIn with
   | Sys_error(_) ->
     Pervasives.print_endline "\nYou must choose.";
