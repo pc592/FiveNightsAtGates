@@ -1,3 +1,5 @@
+open Sdlmixer
+open Sdlttf
 
 module Music_FX = struct
  let BCKGND1 = "Sound_Effects/Background1.wav"
