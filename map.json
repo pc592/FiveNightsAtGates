@@ -160,7 +160,7 @@
 	"monsters": []
 	}, {
 	"name": "Gimme!",
-	"image": "Gimme",
+	"image": "Gimme!",
 	"value": 1,
 	"exits": [{
 		"direction": "right",

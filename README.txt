@@ -5,6 +5,7 @@ use camel case for variables and types.
 To compile the game please have these modules installed on your computer:
 ANSITerminal
 Sdl for OCaml (Simple DirectMedia Layer) [instructions below]
+...and also unzip the Rooms.tar.gz folder.
 
 To play the game:
 Run make play (or make). Entering "quit" at any point of game play, or in the
@@ -54,7 +55,9 @@ brew install ocamlsdl
 *then
 opam install ocamlsdl
 
+
 Background Music and Sound Credits:
 ThrillShowX: https://www.youtube.com/channel/UC6aGkyktim54QjAIVqrx2sg
 Ross Bugden - Music: https://www.youtube.com/channel/UCQKGLOK2FqmVgVwYferltKQ
 FreeSFX: http://www.freesfx.co.uk
+
