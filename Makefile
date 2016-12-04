@@ -1,6 +1,6 @@
 play:
 	ocamlbuild -use-ocamlfind	-pkgs \
-	yojson,str,ANSITerminal,sdl,sdl.sdlimage,sdl.sdlttf,sdl.sdlgfx \
+	yojson,str,ANSITerminal,sdl,sdl.sdlimage,sdl.sdlmixer,sdl.sdlttf,sdl.sdlgfx \
 	main.byte && ./main.byte
 
 

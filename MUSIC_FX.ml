@@ -1,13 +1,18 @@
-open Sdlmixer
 open Sdlttf
+open Sdltimer
+open Sdlmixer
 
 module Music_FX = struct
- let BCKGND1 = "Sound_Effects/Background1.wav"
- let LENGTH1 = 134000;
- let BCKGND2 = "Sound_Effects/Background2.wav"
- let LENGTH2 = 188000;
- let BCKGND3 = "Sound_Effects/Background3.wav"
- let LENGTH3 = 265000;
+ let background1 = "Sound_Effects/Background1.wav"
+ let song1Length = 134000
+ let background2 = "Sound_Effects/Background2.wav"
+ let song2Length = 188000
+ let background3 = "Sound_Effects/Background3.wav"
+ let song3Length = 265000
+ let door_open = "Sound_Effects/open_door.wav"
+ let door_close = "Sound_Effects/close_door.wav"
+ let switch_screens = "Sound_Effects/switch_screens.wav"
+ let cam_mode_switch = "Sound_Effects/cam_mode.wav"
 
 let rec is_song_playing song =
   if (Sdlmixer.playing_music ()) = false then
@@ -31,17 +36,48 @@ let init_song music_filename length=
 
 let start_songs song1 song2 length1 length2 =
   init_song song1 length1;
-  init_song song2 length2;
+  init_song song2 length2
 
-let init_music_fx music_filename =
+let init_music () =
   Sdl.init [`AUDIO];
   at_exit Sdl.quit;
   Sdlttf.init ();
   at_exit Sdlttf.quit;
   Sdlmixer.open_audio ();
   at_exit Sdlmixer.close_audio;
-  start_songs BCKGND1 BCKGND2 LENGTH1 LENGTH2
+  start_songs background1 background2 song1Length song2Length
 
+let open_door () =
+  Sdlmixer.open_audio ();
+  let door_sound = Sdlmixer.load_music door_open in
+  Sdlmixer.play_music door_sound;
+  Sdltimer.delay 500;
+  Sdlmixer.fadeout_music 2.0;
+  Sdlmixer.halt_music ();
+
+let close_door () =
+  Sdlmixer.open_audio ();
+  let door_sound = Sdlmixer.load_music door_close in
+  Sdlmixer.play_music door_sound;
+  Sdltimer.delay 500;
+  Sdlmixer.fadeout_music 2.0;
+  Sdlmixer.halt_music ();
+
+let open_camera_mode () =
+  Sdlmixer.open_audio ();
+  let cam_mode = Sdlmixer.load_music cam_mode_switch in
+  Sdlmixer.play_music cam_mode;
+  Sdltimer.delay 150;
+  Sdlmixer.fadeout_music 2.0;
+  Sdlmixer.halt_music ();
+
+let switch_screens () =
+  Sdlmixer.open_audio ();
+  let switch = Sdlmixer.load_music switch_screens in
+  Sdlmixer.play_music switch;
+  Sdltimer.delay 150;
+  Sdlmixer.fadeout_music 2.0;
+  Sdlmixer.halt_music ();
 
 end
 

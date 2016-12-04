@@ -1,5 +1,7 @@
 
 open Gui
+open MUSIC_FX
+
 (* A [GameEngine] regulates and updates the state of a FNAG game state.
  * The updated state is used by other parts to set up the graphics
  * and interface. *)
@@ -433,7 +435,7 @@ let rec eval j st cmd =
     let st =
       if (st.time >= winTime && st.level = winLvl) then
         let st =
-          if not st.printed then
+          if not st.printed then (* victory music *)
             let () = Pervasives.print_endline ("You've survived all the projects. "
               ^ "Congratulations? (Quit/Restart)\n") in {st with printed = true}
           else st in
@@ -443,7 +445,7 @@ let rec eval j st cmd =
         | _ -> st
       else if st.time >= winTime then
         let st =
-          if not st.printed then
+          if not st.printed then (* Pass_level music *)
             let () = Pervasives.print_endline ("You've survived the night! "
               ^ "Next night? (Next/Quit)\n") in {st with printed = true}
           else st in
@@ -455,7 +457,7 @@ let rec eval j st cmd =
         | _ -> st
       else if st.lost then
         let st =
-          if not st.printed then
+          if not st.printed then  (* failure music *)
             let () = Pervasives.print_endline ("IT'S HERE! (Quit/Restart)") in
               {st with printed = true}
           else st in
@@ -465,7 +467,7 @@ let rec eval j st cmd =
         | _ -> st
       else if st.battery <= 0. then
         let st =
-          if not st.printed then
+          if not st.printed then (* failure music *)
             let () = Pervasives.print_endline ("You're out of battery.... "
               ^ "(Quit/Restart)") in
               {st with lost = true; printed = true}
@@ -614,6 +616,7 @@ let rec main fileNameIn =
     let _p = Sys.command "clear" in
     let () = Pervasives.print_endline ("\n\n\n\n\n") in
     Pervasives.print_endline ("Day 0\n");
+    (* Music_FX.init_music (); *) (* need to play background music without stopping everything *)
     Gui.collect_commands ();
     let screen = Gui.create_disp () in
     go j st screen
