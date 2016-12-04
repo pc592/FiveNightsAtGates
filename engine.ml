@@ -1,6 +1,6 @@
 
 open Gui
-open MUSIC_FX
+(* open MUSIC_FX *)
 
 (* A [GameEngine] regulates and updates the state of a FNAG game state.
  * The updated state is used by other parts to set up the graphics
@@ -13,14 +13,14 @@ open MUSIC_FX
 ******************************************************************************
 ******************************************************************************)
 let loopiloop = ref 0
-let monsterProb = ref 50000 (*probability 1/monsterProb that the monster will move*)
+let monsterProb = ref 200000 (*probability 1/monsterProb that the monster will move*)
 let gameNight = ref 36000. (*10 hours in seconds; game time elapsed*)
 let levelMaxTime = ref 30. (* 1200. *) (*20 minutes in seconds; real time elapsed*)
 let monsterTime = ref 3000. (*game time seconds monster allows user before
                                killing them; 3000 is ~5 seconds. *)
 let maxLevel = ref (-1) (*number of levels - 1 (levels start at 0)*)
-let cPen = ref 0.001 (*battery penalty for using camera*)
-let dPen = ref 0.002 (*battery penalty for opening/closing door*)
+let cPen = ref 0.00001 (*battery penalty for using camera*)
+let dPen = ref 0.00002 (*battery penalty for opening/closing door*)
 
 (*****************************************************************************
 ******************************************************************************
