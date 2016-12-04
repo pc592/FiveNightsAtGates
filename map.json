@@ -178,7 +178,7 @@
 	"name": "Camel",
 	"level": 0,
 	"image": "Camel",
-	"startRoom": "CSUGLab",
+	"startRoom": "copyRoom",
 	"modusOperandi": "random walk",
 	"timeToMove": -1,
 	"teleportRoom": ["copyRoom"]
