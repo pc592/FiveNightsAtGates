@@ -14,13 +14,16 @@ open Gui
 ******************************************************************************)
 let loopiloop = ref 0
 let monsterProb = ref 200000 (*probability 1/monsterProb that the monster will move*)
+
 let gameNight = ref 36000. (*10 hours in seconds; game time elapsed*)
 let levelMaxTime = ref 30. (* 1200. *) (*20 minutes in seconds; real time elapsed*)
 let monsterTime = ref 3000. (*game time seconds monster allows user before
                                killing them; 3000 is ~5 seconds. *)
 let maxLevel = ref (-1) (*number of levels - 1 (levels start at 0)*)
+
 let cPen = ref 0.00001 (*battery penalty for using camera*)
 let dPen = ref 0.00002 (*battery penalty for opening/closing door*)
+
 
 (*****************************************************************************
 ******************************************************************************
@@ -306,7 +309,8 @@ let update_map_camera_view map newRoom time =
     else (roomName,room)
   in List.map replace_room map
 
-let shift_camera_view st dir =
+let shift_camera_view st dir cam_sound =
+  cam_sound := true;
   let now = Unix.time() in
   let timeMultiplier = (!gameNight)/.(!levelMaxTime) in
   let time = ((now -. st.startTime)*.timeMultiplier) in
@@ -413,7 +417,7 @@ let rec check_time monsters st =
 **********************************EVAL LOOP***********************************
 ******************************************************************************)
 
-let rec eval j st cmd =
+let rec eval j st cmd cam_sound =
   let winTime = !gameNight in
   let winLvl = !maxLevel in
   if (cmd = "restart") then
@@ -485,7 +489,7 @@ let rec eval j st cmd =
           | _ -> Elsewhere
         in
         let newView =
-          try shift_camera_view st dir with
+          try shift_camera_view st dir cam_sound with
             | Illegal -> Pervasives.print_endline
                            ("Illegal command '" ^cmd ^ "'"); st
         in
@@ -535,24 +539,31 @@ let rec eval j st cmd =
         in
         Pervasives.print_string "\n"; st
 
-let update screen hours battery =
+let unpack opt = match opt with |Some x -> x |None -> failwith "Something royally bonkers"; raise Illegal
+let update screen roomname filenname hours battery=
   if ((!loopiloop) = 1000) then
     let () = loopiloop := 0 in
-    Gui.update_disp "" "main.jpg" screen hours battery
+    Gui.update_disp roomname filenname screen hours battery
   else ()
 
-let rec go j st screen=
+let file_name st =
+  let monster_val = st.room.monsterR in
+  let monstername = if monster_val = None then "" else "_" ^ ((unpack st.room.monsterR).nameM) in
+  st.room.nameR ^ monstername ^ ".jpg"
+
+let rec go j st screen cam_sound =
   (* updates the image after set amount of recursive calls*)
   loopiloop := !loopiloop + 1;
   let cmd_opt = Gui.poll_event () in
   let cmd = (match cmd_opt with |None -> "" |Some x -> Gui.read_string x) in
   let cmd = String.lowercase_ascii cmd in
     if (cmd = "quit" || st.quit = true) then () else
-    let newState = (eval j st cmd) in
+    let newState = (eval j st cmd cam_sound) in
       let hours = (string_of_int (int_of_float (floor (st.time/.3600.)))) in
       let battery = string_of_int (int_of_float st.battery) in
-      update screen hours battery;
-    go j newState screen
+      update screen st.room.nameR (file_name st) hours battery;
+    go j newState screen cam_sound
+
 
 
 (*****************************************************************************
@@ -603,7 +614,7 @@ let commands =
 
 (* [main f] is the main entry point from outside this module
  * to load a game from file [f] and start playing it. *)
-let rec main fileNameIn =
+let rec main fileNameIn cam_sound =
   let nest_main fileName =
     if fileName = "quit" then () else
     let j = Yojson.Basic.from_file fileName in
@@ -618,10 +629,10 @@ let rec main fileNameIn =
     (* Music_FX.init_music (); *) (* need to play background music without stopping everything *)
     Gui.collect_commands ();
     let screen = Gui.create_disp () in
-    go j st screen
+    go j st screen cam_sound
   in try nest_main fileNameIn with
   | Sys_error(_) ->
-    Pervasives.print_endline "\nYou must choose.";
+    Pervasives.print_endline "\nYou must choose. Yes or No?";
     Pervasives.print_string  "> ";
     let input = String.lowercase_ascii (Pervasives.read_line ()) in
     let fileName =
@@ -632,5 +643,5 @@ let rec main fileNameIn =
         let _n = Pervasives.read_line () in "map.json"
       else if input = "no" || input = "n" || input = "quit" then "quit"
       else "gibberish"
-    in main fileName
+    in main fileName cam_sound
   | Illegal -> Pervasives.print_endline "\nSomething is wrong with the .json"
