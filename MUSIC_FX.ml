@@ -53,7 +53,7 @@ let open_door () =
   Sdlmixer.play_music door_sound;
   Sdltimer.delay 500;
   Sdlmixer.fadeout_music 2.0;
-  Sdlmixer.halt_music ();
+  Sdlmixer.halt_music ()
 
 let close_door () =
   Sdlmixer.open_audio ();
@@ -61,7 +61,7 @@ let close_door () =
   Sdlmixer.play_music door_sound;
   Sdltimer.delay 500;
   Sdlmixer.fadeout_music 2.0;
-  Sdlmixer.halt_music ();
+  Sdlmixer.halt_music ()
 
 let open_camera_mode () =
   Sdlmixer.open_audio ();
@@ -69,7 +69,7 @@ let open_camera_mode () =
   Sdlmixer.play_music cam_mode;
   Sdltimer.delay 150;
   Sdlmixer.fadeout_music 2.0;
-  Sdlmixer.halt_music ();
+  Sdlmixer.halt_music ()
 
 let switch_screens () =
   Sdlmixer.open_audio ();
@@ -77,7 +77,7 @@ let switch_screens () =
   Sdlmixer.play_music switch;
   Sdltimer.delay 150;
   Sdlmixer.fadeout_music 2.0;
-  Sdlmixer.halt_music ();
+  Sdlmixer.halt_music ()
 
 end
 
