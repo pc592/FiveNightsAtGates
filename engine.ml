@@ -316,6 +316,7 @@ let shift_camera_view st dir =
   try
     let exit = List.assoc dir st.room.exitsR in
     let newRoom = List.assoc exit st.map in
+    if newRoom.nameR="main" then raise Illegal else
     {st with room = {newRoom with lastCheckR=time};
              map = update_map_camera_view st.map newRoom time;}
   with
@@ -537,10 +538,10 @@ let rec eval j st cmd =
         in
         Pervasives.print_string "\n"; st
 
-let update screen hours st=
+let update screen hours battery =
   if ((!loopiloop) = 1000) then
     let () = loopiloop := 0 in
-    Gui.update_disp "" "main.jpg" screen hours (string_of_float st.battery)
+    Gui.update_disp "" "main.jpg" screen hours battery
   else ()
 
 let rec go j st screen=
@@ -550,10 +551,11 @@ let rec go j st screen=
   let cmd = (match cmd_opt with |None -> "" |Some x -> Gui.read_string x) in
   let cmd = String.lowercase_ascii cmd in
     if (cmd = "quit" || st.quit = true) then () else
-    let new_state = (eval j st cmd) in
-    let hours = (string_of_int (int_of_float (floor (st.time/.3600.)))) in
-    update screen hours st;
-    go j new_state screen
+    let newState = (eval j st cmd) in
+      let hours = (string_of_int (int_of_float (floor (st.time/.3600.)))) in
+      let battery = string_of_int (int_of_float st.battery) in
+      update screen hours battery;
+    go j newState screen
 
 
 (*****************************************************************************
