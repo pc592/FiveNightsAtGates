@@ -232,10 +232,10 @@ let get_map j lvl map =
   in nextMonster monsters map
 
 let init_state j lvl =
-  let () =
+  (* let () =
   if lvl = 3 then monsterProb := 150000
   else if lvl = 4 then monsterProb := 100000
-  in
+  in *)
   {
   monsters = (insert_monster j lvl);
   player = "Student";
