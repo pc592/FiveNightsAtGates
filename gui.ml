@@ -143,5 +143,16 @@ let read_string ?(default="") event : string =
       menu_loop screen
 
 
+  let rec interim number screen=
+  let image = Sdlloader.load_image ("menu/" ^ "project" ^ (string_of_int number) ^ ".jpg") in
+  let position_of_image = Sdlvideo.rect 0 0 0 0 in
+  Sdlvideo.blit_surface ~dst_rect:position_of_image ~src:image ~dst:screen ();
+  Sdlvideo.update_rect screen;
+  match (read_menu ()) with
+  |"yes" -> "next"
+  |"quit" -> "quit"
+  |_ -> interim number screen
+
+
   end
 

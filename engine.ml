@@ -603,9 +603,11 @@ let file_name st =
 
 let rec go j st screen cam_sound =
   (* updates the image after set amount of recursive calls*)
+
   loopiloop := !loopiloop + 1;
   let cmd_opt = Gui.poll_event () in
-  let cmd = (match cmd_opt with |None -> "" |Some x -> Gui.read_string x) in
+  let cmd = (if (st.printed = true) then Gui.interim (st.level+1) screen else
+    match cmd_opt with |None -> "" |Some x -> Gui.read_string x )in
   let cmd = String.lowercase_ascii cmd in
     if (cmd = "quit" || st.quit = true) then () else
     let newState = (eval j st cmd cam_sound) in
