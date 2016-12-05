@@ -2,45 +2,175 @@
 "rooms": [{
 	"name": "main",
 	"image": "main",
+	"value": 0,
 	"exits": [{
-		"direction": "right",
+		"direction": "left",
 		"room_id": "Gimme!"
 		}, {
-		"direction": "down",
+		"direction": "right",
 		"room_id": "kitchen"
 		}],
 	"monsters": []
 	}, {
 	"name": "kitchen",
 	"image": "kitchen",
-	"exits": [{
-		"direction": "up",
-		"room_id": "main"
-		}, {
-		"direction": "right",
-		"room_id": "bathroom"
-		}],
-		"monsters": []
-	}, {
-	"name": "bathroom",
-	"image": "bathroom",
-	"exits": [{
-		"direction": "up",
-		"room_id": "Gimme!"
-		}, {
-		"direction": "left",
-		"room_id": "kitchen"
-		}],
-	"monsters": []
-	}, {
-	"name": "Gimme!",
-	"image": "Gimme",
+	"value": 1,
 	"exits": [{
 		"direction": "left",
 		"room_id": "main"
 		}, {
 		"direction": "down",
-		"room_id": "bathroom"
+		"room_id": "hallway"
+		}, {
+		"direction": "up",
+		"room_id": "Gimme!"
+		}],
+		"monsters": []
+	}, {
+	"name": "hallway",
+	"image": "hallway",
+	"value": 2,
+	"exits": [{
+		"direction": "up",
+		"room_id": "kitchen"
+		}, {
+		"direction": "left",
+		"room_id": "CSOffices"
+		}, {
+		"direction": "down",
+		"room_id": "lectureHall"
+		}],
+	"monsters": []
+	}, {
+	"name": "lectureHall",
+	"image": "lectureHall",
+	"value": 3,
+	"exits": [{
+		"direction": "up",
+		"room_id": "hallway"
+		}, {
+		"direction": "down",
+		"room_id": "CSOffices"
+		}, {
+		"direction": "left",
+		"room_id": "copyRoom"
+		}],
+	"monsters": []
+	}, {
+	"name": "CSOffices",
+	"image": "CSOffices",
+	"value": 3,
+	"exits": [{
+		"direction": "right",
+		"room_id": "lectureHall"
+		}, {
+		"direction": "up",
+		"room_id": "hallway"
+		}, {
+		"direction": "left",
+		"room_id": "studySpaces"
+		}],
+	"monsters": []
+	}, {
+	"name": "studySpaces",
+	"image": "studySpaces",
+	"value": 4,
+	"exits": [{
+		"direction": "right",
+		"room_id": "CSOffices"
+		}, {
+		"direction": "left",
+		"room_id": "CSUGLab"
+		}, {
+		"direction": "up",
+		"room_id": "gradLounge"
+		}],
+	"monsters": []
+	}, {
+	"name": "CSUGLab",
+	"image": "CSUGLab",
+	"value":3,
+	"exits": [{
+		"direction": "up",
+		"room_id": "profOffices"
+		}, {
+		"direction": "down",
+		"room_id": "studySpaces"
+		}, {
+		"direction": "right",
+		"room_id": "copyRoom"
+		}],
+	"monsters": []
+	}, {
+	"name": "copyRoom",
+	"image": "copyRoom",
+	"value": 4,
+	"exits": [{
+		"direction": "right",
+		"room_id": "lectureHall"
+		}, {
+		"direction": "up",
+		"room_id": "gradLounge"
+		}, {
+		"direction": "left",
+		"room_id": "CSUGLab"
+		}, {
+		"direction": "down",
+		"room_id": "ClarksonOffice"
+		}],
+	"monsters": []
+	}, {
+	"name": "ClarksonOffice",
+	"image": "ClarksonOffice",
+	"value": 5,
+	"exits": [{
+		"direction": "up",
+		"room_id": "copyRoom"
+		}],
+	"monsters": []
+	}, {
+	"name": "gradLounge",
+	"image": "gradLounge",
+	"value": 3,
+	"exits": [{
+		"direction": "up",
+		"room_id": "profOffices"
+		}, {
+		"direction": "down",
+		"room_id": "copyRoom"
+		}, {
+		"direction": "right",
+		"room_id": "studySpaces"
+		}],
+	"monsters": []
+	}, {
+	"name": "profOffices",
+	"image": "profOffices",
+	"value": 2,
+	"exits": [{
+		"direction": "right",
+		"room_id": "Gimme!"
+		}, {
+		"direction": "left",
+		"room_id": "CSUGLab"
+		}, {
+		"direction": "down",
+		"room_id": "gradLounge"
+		}],
+	"monsters": []
+	}, {
+	"name": "Gimme!",
+	"image": "Gimme!",
+	"value": 1,
+	"exits": [{
+		"direction": "right",
+		"room_id": "main"
+		}, {
+		"direction": "up",
+		"room_id": "kitchen"
+		}, {
+		"direction": "left",
+		"room_id": "profOffices"
 		}],
 	"monsters": []
 	}],
@@ -48,15 +178,17 @@
 	"name": "Camel",
 	"level": 0,
 	"image": "Camel",
-	"startRoom": "bathroom",
-	"modusOperandi": "randomly goal oriented",
-	"timeToMove": 500
+	"startRoom": "copyRoom",
+	"modusOperandi": "random walk",
+	"timeToMove": -1,
+	"teleportRoom": ["copyRoom"]
 	}, {
 	"name": "Bed",
 	"level": 1,
 	"image": "Bed",
-	"startRoom": "bathroom",
-	"modusOperandi": "random walk",
-	"timeToMove": 500
+	"startRoom": "CSOffices",
+	"modusOperandi": "weighted movement",
+	"timeToMove": -1,
+	"teleportRoom": ["studySpaces"]
 	}]
 }

@@ -87,6 +87,10 @@ let update_sounds door_open door_close switch_sc cam_mode =
   (if (!switch_sc = true) then (switch_screens(); switch_sc := false) else ());
   if (!cam_mode = true) then (open_camera_mode(); cam_mode := false) else  ()
 
+let stop_music () =
+  Sdlmixer.halt_music ();
+  Sdlmixer.close_audio;
+  Sdl.quit
 
 end
 

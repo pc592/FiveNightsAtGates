@@ -1,6 +1,6 @@
 
 open Gui
-(* open MUSIC_FX *)
+open MUSIC_FX
 
 (* A [GameEngine] regulates and updates the state of a FNAG game state.
  * The updated state is used by other parts to set up the graphics
@@ -509,7 +509,7 @@ let rec eval j st cmd cam_sound =
               ^ "Congratulations? (Quit/Restart)\n") in {st with printed = true}
           else st in
         match cmd with
-        | "quit" -> quit st
+        | "quit" -> (Music_FX.stop_music(); quit st)
         | "restart" -> start j
         | _ -> st
       else if st.time >= winTime then
@@ -522,7 +522,7 @@ let rec eval j st cmd cam_sound =
         | "next" ->
             (Pervasives.print_endline ("\nDay "^(string_of_int (st.level+1))^"\n");
             (next_level j st))
-        | "quit" -> quit st
+        | "quit" -> (Music_FX.stop_music(); quit st)
         | _ -> st
       else if st.lost then
         let st =
@@ -531,7 +531,7 @@ let rec eval j st cmd cam_sound =
               {st with printed = true}
           else st in
         match cmd with
-        | "quit" -> quit st
+        | "quit" -> (Music_FX.stop_music(); quit st)
         | "restart" -> start j
         | _ -> st
       else if st.battery <= 0. then
@@ -542,7 +542,7 @@ let rec eval j st cmd cam_sound =
               {st with lost = true; printed = true}
           else st in
         match cmd with
-        | "quit" -> quit st
+        | "quit" -> (Music_FX.stop_music(); quit st)
         | "restart" -> start j
         | _ -> st
       else if (st.room.nameR <> "main") &&
@@ -589,7 +589,7 @@ let rec eval j st cmd cam_sound =
         | "camera" -> if st.room.nameR = "main" then
                         camera_view st
                       else main_view st
-        | "quit" -> quit st
+        | "quit" -> (Music_FX.stop_music(); quit st)
         | "" -> st
         | _ -> Pervasives.print_endline ("Illegal command '" ^ cmd ^ "'"); st
     in
@@ -624,7 +624,7 @@ let rec go j st screen cam_sound =
   let cmd_opt = Gui.poll_event () in
   let cmd = (match cmd_opt with |None -> "" |Some x -> Gui.read_string x) in
   let cmd = String.lowercase_ascii cmd in
-    if (cmd = "quit" || st.quit = true) then () else
+    if (cmd = "quit" || st.quit = true) then( Music_FX.stop_music();()) else
     let newState = (eval j st cmd cam_sound) in
       let hours = (string_of_int (int_of_float (floor (st.time/.3600.)))) in
       let battery = string_of_int (int_of_float st.battery) in
