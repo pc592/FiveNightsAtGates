@@ -13,7 +13,7 @@ open Gui
 let camera_sound = ref false
 let open_door = ref false
 let close_door = ref false
-let camera_mode = ref false
+let cam_mode = ref false
 let flag = ref false
 
 (*****************************************************************************
@@ -51,11 +51,10 @@ let main () =
   let fileName = Gui.menu () in
   (Engine.main (String.lowercase_ascii fileName) camera_sound flag)
 
-(* let _ = Parallel.init()
+let _ = Parallel.init()
 let _ = Parallel.run ~where:`Local (fun y -> return (main()))
-let _ = Parallel.run ~where:`Local (fun x -> (return (Music_FX.init_music ())))
-let _ = Parallel.run ~where: `Local (fun z -> return (Music_FX.update_sounds open_door close_door camera_sound camera_mode))
- *)
+let _ = Parallel.run ~where:`Local (fun x -> (return (Music_FX.master_song_controller
+open_door close_door camera_sound cam_mode flag)))
 
 let _ =  main()
 

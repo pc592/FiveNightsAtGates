@@ -1,6 +1,7 @@
 open Sdlttf
 open Sdltimer
 open Sdlmixer
+open Async.Std
 
 module Music_FX = struct
  let background1 = "Sound_Effects/Background1.wav"
@@ -88,6 +89,9 @@ let rec update_sounds door_open door_close switch_sc cam_mode flag =
   (if (!cam_mode = true) then (open_camera_mode(); cam_mode := false) else  ());
   if (!flag = true) then () else update_sounds door_open door_close switch_sc cam_mode flag
 
+let master_song_controller door_open door_close switch_sc cam_mode flag =
+  Deferred.any [ return (init_music ());
+  return (update_sounds door_open door_close switch_sc cam_mode flag)]
 
 end
 
