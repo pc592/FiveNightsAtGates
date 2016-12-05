@@ -1,6 +1,6 @@
 open Async.Std
 open Async_parallel_deprecated.Std
-open MUSIC_FX
+open Music_FX
 open Gui
 (* Author: CS 3110 course staff *)
 (* But heavily modified. *)
@@ -57,5 +57,5 @@ let _ = Parallel.run ~where:`Local (fun () -> return (main()))
 let _ = Parallel.run ~where:`Local (fun () -> return (Music_FX.master_song_controller
 open_door close_door camera_sound cam_mode flag))
 
-let _ =  Scheduler.go(); main()
+let _ =  Scheduler.go()
 

@@ -3,7 +3,15 @@ open Sdltimer
 open Sdlmixer
 open Async.Std
 
+(* [Music_FX] Cretes the background music and the sound effects during game play.
+ * It utilizes Sdlmixer to open and play audio files. *)
 module Music_FX = struct
+
+(*****************************************************************************
+******************************************************************************
+*********************************GLOBAL CONSTANTS*****************************
+******************************************************************************
+******************************************************************************)
  let background1 = "Sound_Effects/Background1.wav"
  let song1Length = 134000
  let background2 = "Sound_Effects/Background2.wav"
@@ -15,6 +23,11 @@ module Music_FX = struct
  let switch_screens = "Sound_Effects/switch_screens.wav"
  let cam_mode_switch = "Sound_Effects/cam_mode.wav"
 
+(*****************************************************************************
+******************************************************************************
+****************************MUSIC PLAYING FUNCTIONS***************************
+******************************************************************************
+******************************************************************************)
 let rec is_song_playing song =
   if (Sdlmixer.playing_music ()) = false then
      (Sdlmixer.fadeout_music 2.0;
