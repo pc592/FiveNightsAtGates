@@ -11,6 +11,7 @@ open Gui
 *********************************GLOBAL CONSTANTS*****************************
 ******************************************************************************
 ******************************************************************************)
+
 let loopiloop = ref 0
 let foxyMove = ref 0
 let monsterProb = ref 200000 (*probability 1/monsterProb that the monster will move*)
@@ -19,12 +20,11 @@ let foxyTime = ref 12000. (*time before foxy (Ducky) moves; 12000 is about 3 sec
 let gameNight = ref 36000. (*10 hours in seconds; game time elapsed*)
 let levelMaxTime = ref 300. (* 1200. *) (*20 minutes in seconds; real time elapsed*)
 let monsterTime = ref 2000. (*game time seconds monster allows user before
-                               killing them; 3000 is ~5 seconds. *)
+                               killing them; 2000 is ~2 seconds. *)
 let maxLevel = ref 4 (*maximum number of levels-1 (starts at 0*)
 
 let cPen = ref 0.000001 (*battery penalty for using camera*)
 let dPen = ref 0.00002 (*battery penalty for opening/closing door*)
-
 
 (*****************************************************************************
 ******************************************************************************
@@ -211,6 +211,7 @@ let makeMonster monster = {
   teleportRoomM = getTelepRoom monster;
 }
 
+(* Helper function to insert monsters into the map *)
 let insert_monster j lvl =
   (j |> member "monsters" |> to_list) |> List.map makeMonster
   |> List.filter (fun monstRec -> (monstRec.levelM <= lvl))
@@ -233,8 +234,8 @@ let get_map j lvl map =
 
 let init_state j lvl =
   let () =
-  if lvl = 3 then monsterProb := 150000
-  else if lvl = 4 then monsterProb := 100000
+    if lvl = 3 then monsterProb := 150000
+    else if lvl = 4 then monsterProb := 100000
   in
   {
   monsters = (insert_monster j lvl);
@@ -314,7 +315,7 @@ let update_map_monster_move oldRoom newRoom map monster =
   in newMap
 
 (* Helper function to update monsters after monster move. *)
-let update_monsters_monster_move newRoom mons monsters timeNow =
+let update_monsters_mons_move newRoom mons monsters timeNow =
   List.map (fun (monsName,monsRec) ->
     if mons.nameM = monsName then
       let newMons = {mons with currentRoomM = newRoom.nameR;
@@ -325,7 +326,7 @@ let update_monsters_monster_move newRoom mons monsters timeNow =
 let update_state_monster_move mons newRoom st =
   let upd_room = if st.room.nameR = newRoom.nameR then newRoom else st.room in
   let mons_room = List.assoc mons.currentRoomM st.map in
-  {st with monsters = update_monsters_monster_move newRoom mons st.monsters st.time;
+  {st with monsters = update_monsters_mons_move newRoom mons st.monsters st.time;
            map = (update_map_monster_move mons_room newRoom st.map
                        {mons with currentRoomM = newRoom.nameR});
            room = upd_room;}
@@ -336,6 +337,7 @@ let update_state_monster_move mons newRoom st =
 ******************************************************************************
 ******************************************************************************)
 
+(* Helper function to update room time in map after being viewed by user. *)
 let update_map_camera_view map newRoom time =
   let replace_room (roomName,room) =
     if (room = newRoom) then
@@ -414,13 +416,9 @@ let move_monster monsName st =
         weighted_movement oldMonsR st.map monster
       else (*default to random walk*)
         random_walk oldMonsR st.map
-    in
-    (* let () = Pervasives.print_endline (monsName^" moved to "^newMonsR.nameR) in *)
-      update_state_monster_move monster newMonsR st
+    in update_state_monster_move monster newMonsR st
   else if monster.modusOperandiM = "foxy" then
     let newMonsR = foxy st.time st.map monster in
-    (* let () = if newMonsR <> oldMonsR then
-      Pervasives.print_endline (monsName^" moved to "^newMonsR.nameR) in *)
     let now = Unix.time() in
     let timeMultiplier = (!gameNight)/.(!levelMaxTime) in
     let time = ((now -. st.startTime)*.timeMultiplier) in
@@ -593,81 +591,63 @@ let rec eval j st cmd cam_sound =
         | _ -> st
     in st
 
-let unpack opt = match opt with |Some x -> x |None -> failwith "Something royally bonkers"
-let update screen roomname filenname hours battery doors=
+(*****************************************************************************
+******************************************************************************
+******************************INTERFACE GUI***********************************
+******************************************************************************
+******************************************************************************)
+
+let unpack opt =
+  match opt with
+  | Some x -> x
+  | None -> failwith "Something royally bonkers"
+
+let update screen roomname filenname hours battery doors =
   if ((!loopiloop) = 1000) then
     let () = loopiloop := 0 in
-    Gui.update_disp roomname filenname screen hours battery doors
+      Gui.update_disp roomname filenname screen hours battery doors
   else ()
 
 let file_name st =
   let monster_val = st.room.monsterR in
-  let monstername = if monster_val = None then "" else "_" ^ ((unpack st.room.monsterR).nameM) in
-  st.room.nameR ^ monstername ^ ".jpg"
+  let monstername =
+    if monster_val = None then ""
+    else "_" ^ ((unpack st.room.monsterR).nameM)
+  in st.room.nameR ^ monstername ^ ".jpg"
 
 let rec go j st screen cam_sound =
   (* updates the image after set amount of recursive calls*)
   loopiloop := !loopiloop + 1;
   let cmd_opt = Gui.poll_event () in
-  let cmd = if st.battery = 0. then Gui.kill_screen screen "Camel" else
-  (if st.killMonster = "" then (if (st.printed = true) then Gui.interim (st.level+1) screen else
-      match cmd_opt with |None -> "" |Some x -> Gui.read_string x )
-      else Gui.kill_screen screen st.killMonster) in
+  let cmd =
+    if st.battery = 0. then
+      Gui.kill_screen screen "Camel"
+    else
+      (if st.killMonster = "" then
+        (if (st.printed = true) then
+          Gui.interim (st.level+1) screen
+        else
+          match cmd_opt with
+          | None -> ""
+          | Some x -> Gui.read_string x )
+      else Gui.kill_screen screen st.killMonster)
+  in
   let cmd = String.lowercase_ascii cmd in
-    if (cmd = "quit" || st.quit = true) then () else
+  if (cmd = "quit" || st.quit = true) then () else
     let newState = (eval j st cmd cam_sound) in
-      let hours = (string_of_int (int_of_float (floor (st.time/.3600.)))) in
-      let battery = string_of_int (int_of_float st.battery) in
-      update screen st.room.nameR (file_name st) hours battery ((snd (fst st.doorStatus)), (snd (snd st.doorStatus)));
-    go j newState screen cam_sound
-
-
+    let hours = (string_of_int (int_of_float (floor (st.time/.3600.)))) in
+    let battery = string_of_int (int_of_float st.battery) in
+    let doorOneStatus = (snd (fst st.doorStatus)) in
+    let doorTwoStatus = (snd (snd st.doorStatus)) in
+    let doorsStatus = (doorOneStatus, doorTwoStatus) in
+      update screen st.room.nameR (file_name st) hours battery doorsStatus;
+      go j newState screen cam_sound
 
 (*****************************************************************************
 ******************************************************************************
 *********************************START GAME***********************************
 ******************************************************************************
 ******************************************************************************)
-
-let intro =(
-  "\n\n\n\n\n\n" ^
-  "Introduction:\n" ^
-  "It's late at night and you have CS3110 assignments to do, due tomorrow!.\n" ^
-  "But there's monsters lurking around every corner....\n" ^
-  "\n" ^
-  "You must keep track of the monsters roaming around Gates. If they get\n" ^
-  "into the main room, they'll ruin your project and you'll fail! Luckily,\n" ^
-  "you have access to the security cameras placed in each room.\n"^
-  "\n" ^
-  "Doubly lucky, the [main] room you've chosen to be in is well fortified--\n" ^
-  "it has only two doors, which you may open or close using your laptop to\n" ^
-  "keep the monsters out.\n" ^
-  "\n" ^
-  "The catch? Viewing the security cameras increases the drainage of your\n" ^
-  "battery, as does keeping the doors closed. Opening or closing the doors\n" ^
-  "also takes battery. Additionally, your laptop is only able to either view\n" ^
-  "the security camera footage or handle the doors, it cannot do both.\n" ^
-  "Of course, if you run out of battery, you will be unable to finish the\n" ^
-  "project, and you will fail.\n" ^
-  "\n" ^
-  "Can you finish all the projects and survive every night?\n" ^
-  "\n\n")
-
-(* The gameplay instructions for what commands are valid. *)
-let commands =
-      "\n\n\n\n\n" ^
-      "Legal commands you may use:\n" ^
-      " - [return]: restarts the game\n" ^
-      " - [space]: will bring you in and out of camera mode\n" ^
-      "    + while in camera mode you may also use:\n" ^
-      "       [w]: up\n" ^
-      "       [a]: left\n" ^
-      "       [s]: down\n" ^
-      "       [d]: right\n" ^
-      " - [u]: opens/closes door one\n" ^
-      " - [i]: opens/closes door two\n" ^
-      " - [n]: starts the next level if you survive\n" ^
-      " - [esc]: quits the game\n\n"
 
 (* [main f] is the main entry point from outside this module
  * to load a game from file [f] and start playing it. *)
