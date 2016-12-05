@@ -11,6 +11,11 @@ open Gui
 *********************************GLOBAL CONSTANTS*****************************
 ******************************************************************************
 ******************************************************************************)
+(* These global variables were created to be passed around the main function
+ * which was to update them when certain events occurred. There is some sample
+ * code still left of what would have been the functionality if we had been able
+ * to test this. Based off of these references, sound effects would be activated.
+ * or triggerred to stop *)
 let camera_sound = ref false
 let open_door = ref false
 let close_door = ref false
@@ -38,7 +43,8 @@ let _ = main ()
 (* These lines were purposely included in order to show our sound effects
  * functionality. We were unable to include this because we were unable to test
  * it effectively in virtual machine. This functionality was tested on through
- * a mac and it was able to run smoothly, but the actual game runs only on VM. *)
+ * a mac and it was able to run smoothly, but the actual game runs only on VM
+ * therefore we decided to not include this in our final submission. *)
 (* let _ = Parallel.init()
 let _ = Parallel.run ~where:`Local (fun () -> return (main()))
 let _ = Parallel.run ~where:`Local (fun () -> return (Music_FX.init_music()))
