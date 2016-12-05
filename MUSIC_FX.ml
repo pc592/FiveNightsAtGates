@@ -25,7 +25,7 @@ module Music_FX = struct
 
 (*****************************************************************************
 ******************************************************************************
-****************************MUSIC PLAYING FUNCTIONS***************************
+****************************MUSIC PLAYING HELPER FUNCTIONS********************
 ******************************************************************************
 ******************************************************************************)
 let rec is_song_playing song =
@@ -51,13 +51,6 @@ let init_song music_filename length=
 let start_songs song1 song2 length1 length2 =
   init_song song1 length1;
   init_song song2 length2
-
-let init_music () =
-  Sdl.init [`AUDIO];
-  at_exit Sdl.quit;
-  Sdlmixer.open_audio ();
-  at_exit Sdlmixer.close_audio;
-  start_songs background1 background2 song1Length song2Length
 
 let open_door () =
   Sdlmixer.open_audio ();
@@ -95,6 +88,26 @@ let switch_screens () =
   Sdlmixer.halt_music ();
   Sdlmixer.free_music switch
 
+(*****************************************************************************
+******************************************************************************
+****************************MAIN MUSIC PLAYING FUNCTIONS**********************
+******************************************************************************
+******************************************************************************)
+
+(* [init_music] initializes the main background music for the game. It plays
+ * the music and returns a unit *)
+let init_music () =
+  Sdl.init [`AUDIO];
+  at_exit Sdl.quit;
+  Sdlmixer.open_audio ();
+  at_exit Sdlmixer.close_audio;
+  start_songs background1 background2 song1Length song2Length
+
+(* [update_sounds] checks reference variables to see if they are true. These
+ * variables are updated by the Engine module and are constantly checked through
+ * a loop. If one of the variables is true, it will play a sound effect
+ * corresponding to it. This function returns a unit when it finishes executing
+ * i.e. the game ended *)
 let rec update_sounds door_open door_close switch_sc cam_mode flag =
   (if (!door_open = true) then (open_door(); door_open := false) else () );
   (if (!door_close = true) then (close_door(); door_close := false) else ());
