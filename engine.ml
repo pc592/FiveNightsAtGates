@@ -482,7 +482,7 @@ let rec eval j st cmd cam_sound =
     let st =
       if (st.time >= winTime && st.level = winLvl) then
         let st =
-          if not st.printed then (* victory music *) {st with printed = true}
+          if not st.printed then {st with printed = true}
           else st in
         match cmd with
         | "quit" -> quit st
@@ -490,7 +490,7 @@ let rec eval j st cmd cam_sound =
         | _ -> st
       else if st.time >= winTime then
         let st =
-          if not st.printed then (* Pass_level music *) {st with printed = true}
+          if not st.printed then {st with printed = true}
           else st in
         match cmd with
         | "next" -> (next_level j st)
@@ -498,7 +498,7 @@ let rec eval j st cmd cam_sound =
         | _ -> st
       else if st.lost then
         let st =
-          if not st.printed then  (* failure music *) {st with printed = true}
+          if not st.printed then {st with printed = true}
           else st in
         match cmd with
         | "quit" -> (quit st)
@@ -506,7 +506,7 @@ let rec eval j st cmd cam_sound =
         | _ -> st
       else if st.battery <= 0. then
         let st =
-          if not st.printed then (* failure music *) {st with lost = true; printed = true}
+          if not st.printed then {st with lost = true; printed = true}
           else st in
         match cmd with
         | "quit" -> (quit st)
