@@ -1,13 +1,19 @@
+(NOTE/WARNING: ONLY PROVEN TO WORK IN VIRTUALBOX WITH UBUNTU GUEST)
+
 Convention (informally. we all have different coding preferences, but we're trying):
 use snake case for functions.
 use camel case for variables and types.
 
 To compile the game please have these modules installed on your computer:
+REQUIRED:
+Sdl for OCaml (Simple DirectMedia Layer) [instructions below]
+OPTIONAL (FEATURES NOT FINISHED)
 ANSITerminal
 async (and async_parallel, installed by running [opam install async_parallel]
   in the terminal window)
-Sdl for OCaml (Simple DirectMedia Layer) [instructions below]
-...and also unzip the Rooms.tar.gz folder.
+
+
+
 
 To play the game:
 Run make play (or make). Entering "quit" at any point of game play, or in the

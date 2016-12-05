@@ -12,7 +12,7 @@ module Gui = struct
   let camera_view roomname new_image screen =
     let image = Sdlloader.load_image ("Rooms/" ^ roomname ^ "/" ^ new_image) in
     let position_of_image = Sdlvideo.rect 0 0 0 0 in
-    let font = Sdlttf.open_font "Fonts/Amatic-Bold.ttf" 30 in
+    let font = Sdlttf.open_font "Fonts/Amatic-Bold.ttf" 60 in
     let position_of_name = Sdlvideo.rect 10 10 0 0 in
     (*Initializes the ttf reader*)
     let map = Sdlloader.load_image ("map.png") in
@@ -32,11 +32,11 @@ module Gui = struct
     let image = Sdlloader.load_image ("Rooms/" ^ roomname ^ "/" ^ new_image) in
     let position_of_image = Sdlvideo.rect 0 0 0 0 in
     let () = Sdlttf.init () in
-    let font = Sdlttf.open_font "Fonts/Amatic-Bold.ttf" 30 in
-    let position_of_battery = Sdlvideo.rect 10 400 0 0 in
+    let font = Sdlttf.open_font "Fonts/Amatic-Bold.ttf" 60 in
+    let position_of_battery = Sdlvideo.rect 10 510 0 0 in
     let position_of_time = Sdlvideo.rect 10 10 0 0 in
-    let time = Sdlttf.render_text_blended font ("Time: " ^ hours) ~fg:Sdlvideo.black in
-    let battery = Sdlttf.render_text_blended font ("Battery: " ^ battery) ~fg:Sdlvideo.black in
+    let time = Sdlttf.render_text_blended font ("Time: " ^ hours) ~fg:Sdlvideo.yellow in
+    let battery = Sdlttf.render_text_blended font ("Battery: " ^ battery) ~fg:Sdlvideo.yellow in
     Sdlvideo.blit_surface ~dst_rect:position_of_image ~src:image ~dst:screen ();
     Sdlvideo.blit_surface ~dst_rect:position_of_time ~src:time ~dst:screen ();
     Sdlvideo.blit_surface ~dst_rect:position_of_battery ~src:battery ~dst:screen ();
@@ -94,7 +94,7 @@ module Gui = struct
   (*Watered Down event handler, built for just the menu *)
   let rec read_menu () =
     match wait_event () with
-      | KEYDOWN {keysym=KEY_n} ->
+      | KEYDOWN {keysym=KEY_ESCAPE} ->
         "quit"
       | KEYDOWN {keysym=KEY_y} ->
         "yes"
@@ -104,6 +104,8 @@ module Gui = struct
         "instructions"
       | KEYDOWN {keysym=KEY_s} ->
         "story"
+      | KEYDOWN {keysym=KEY_n} ->
+        "quit"
       | _ ->
         read_menu ()
 
@@ -150,6 +152,12 @@ module Gui = struct
       |"quit" -> "quit"
       |_ -> wait_for_response ()
 
+  let rec wait_for_kill () =
+    match (read_menu ()) with
+      |"yes" -> "restart"
+      |"quit" -> "quit"
+      |_ -> wait_for_response ()
+
   let rec interim number screen =
     let image = Sdlloader.load_image ("menu/" ^ "project" ^ (string_of_int number) ^ ".jpg") in
     let position_of_image = Sdlvideo.rect 0 0 0 0 in
@@ -169,7 +177,7 @@ module Gui = struct
     Sdlvideo.update_rect screen; Sdltimer.delay 2000;
     Sdlvideo.blit_surface ~dst_rect:position_of_image ~src:gameOver ~dst:screen ();
     Sdlvideo.update_rect screen;
-    wait_for_response ()
+    wait_for_kill ()
 
   end
 

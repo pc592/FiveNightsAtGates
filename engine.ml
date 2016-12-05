@@ -17,12 +17,12 @@ let monsterProb = ref 200000 (*probability 1/monsterProb that the monster will m
 
 let foxyTime = ref 12000. (*time before foxy (Ducky) moves; 12000 is about 3 seconds*)
 let gameNight = ref 36000. (*10 hours in seconds; game time elapsed*)
-let levelMaxTime = ref 30. (* 1200. *) (*20 minutes in seconds; real time elapsed*)
-let monsterTime = ref 3000. (*game time seconds monster allows user before
+let levelMaxTime = ref 300. (* 1200. *) (*20 minutes in seconds; real time elapsed*)
+let monsterTime = ref 2000. (*game time seconds monster allows user before
                                killing them; 3000 is ~5 seconds. *)
 let maxLevel = ref 4 (*maximum number of levels-1 (starts at 0*)
 
-let cPen = ref 0.00001 (*battery penalty for using camera*)
+let cPen = ref 0.000001 (*battery penalty for using camera*)
 let dPen = ref 0.00002 (*battery penalty for opening/closing door*)
 
 
@@ -232,10 +232,10 @@ let get_map j lvl map =
   in nextMonster monsters map
 
 let init_state j lvl =
-  (* let () =
+  let () =
   if lvl = 3 then monsterProb := 150000
   else if lvl = 4 then monsterProb := 100000
-  in *)
+  in
   {
   monsters = (insert_monster j lvl);
   player = "Student";
@@ -609,7 +609,8 @@ let rec go j st screen cam_sound =
   (* updates the image after set amount of recursive calls*)
   loopiloop := !loopiloop + 1;
   let cmd_opt = Gui.poll_event () in
-  let cmd = (if st.killMonster = "" then (if (st.printed = true) then Gui.interim (st.level+1) screen else
+  let cmd = if st.battery = 0. then Gui.kill_screen screen "Camel" else
+  (if st.killMonster = "" then (if (st.printed = true) then Gui.interim (st.level+1) screen else
       match cmd_opt with |None -> "" |Some x -> Gui.read_string x )
       else Gui.kill_screen screen st.killMonster) in
   let cmd = String.lowercase_ascii cmd in
