@@ -537,7 +537,7 @@ let rec eval j st cmd cam_sound =
             match cmd with
             | "one" -> if (snd (fst st.doorStatus)) then "close one" else "open one"
             | "two" -> if (snd (snd st.doorStatus)) then "close two" else "open two"
-            | _ -> failwith "how did you even get here."; raise Illegal
+            | _ -> failwith "how did you even get here."
           in
             match truCmd with
             | "close one" -> update_door_status st false One
@@ -555,7 +555,7 @@ let rec eval j st cmd cam_sound =
         | _ -> st
     in st
 
-let unpack opt = match opt with |Some x -> x |None -> failwith "Something royally bonkers"; raise Illegal
+let unpack opt = match opt with |Some x -> x |None -> failwith "Something royally bonkers"
 let update screen roomname filenname hours battery doors=
   if ((!loopiloop) = 1000) then
     let () = loopiloop := 0 in

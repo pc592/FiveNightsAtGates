@@ -103,6 +103,19 @@ val random_walk : room -> map -> room
  *  - [map] is the map of the game for the AI to traverse *)
 val weighted_movement : room -> map -> monster -> room
 
+(* [foxy time map monster] is named after the movement of the monster Foxy in
+ * Five Nights at Freddy's. The monster moves whenever the room it resides in,
+ * in this case ClarksonOffice, is not checked on for more than a given amount
+ * of time. It will then quickly move towards [MAIN] and attempt to access the
+ * room. If it is unable to access the room, it will return (teleport) to the
+ * original room. If its path is blocked by another monster, it will be forced
+ * to wait until the other monster moves. Returned room will not be main nor
+ * have another monster in it already.
+ * requires:
+ *  - [time] is the state time
+ *  - [map] is the map of the game for the AI to traverse *)
+val foxy : float -> map -> monster -> room
+
 (*****************************************************************************
 ******************************************************************************
 *******************************START GAME/LEVEL*******************************
