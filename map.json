@@ -199,7 +199,7 @@
 	"timeToMove": -1,
 	"teleportRoom": ["copyRoom","gradLounge","profOffices","Gimme!"]
 	}, {
-	"name": "Camel 2.0",
+	"name": "Camel",
 	"level": 3,
 	"image": "Camel",
 	"startRoom": "lectureHall",

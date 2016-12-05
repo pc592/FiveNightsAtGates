@@ -13,9 +13,9 @@ let camera_view roomname new_image screen =
   let font = Sdlttf.open_font "Fonts/Amatic-Bold.ttf" 30 in
   let position_of_name = Sdlvideo.rect 10 10 0 0 in
   (*Initializes the ttf reader*)
-  let map = Sdlloader.load_image ("map2.png") in
+  let map = Sdlloader.load_image ("map.png") in
   let name = Sdlttf.render_text_blended font ("room: " ^ roomname) ~fg:Sdlvideo.red in
-  let position_of_map = Sdlvideo.rect (800-240) (0) 0 0 in
+  let position_of_map = Sdlvideo.rect (800-300) (0) 0 0 in
   Sdlvideo.blit_surface ~dst_rect:position_of_image ~src:image ~dst:screen ();
   Sdlvideo.blit_surface ~dst_rect:position_of_map ~src:map ~dst:screen ();
   Sdlvideo.blit_surface ~dst_rect:position_of_name ~src:name ~dst:screen ();
@@ -129,7 +129,7 @@ let read_string ?(default="") event : string =
       |"yes" -> Sdl.quit (); cmd
       |_ -> instruction_story_loop screen cmd
 
-  and instruction_story_loop screen name=
+  and instruction_story_loop screen name =
     let image = Sdlloader.load_image ("menu/" ^ name ^ ".jpg") in
             let position_of_image = Sdlvideo.rect 0 0 0 0 in
             Sdlvideo.blit_surface ~dst_rect:position_of_image ~src:image ~dst:screen ();
@@ -142,17 +142,32 @@ let read_string ?(default="") event : string =
     let screen = create_disp () in
       menu_loop screen
 
+  let rec wait_for_response () =
+    match (read_menu ()) with
+      |"yes" -> "next"
+      |"quit" -> "quit"
+      |_ -> wait_for_response ()
 
-  let rec interim number screen=
-  let image = Sdlloader.load_image ("menu/" ^ "project" ^ (string_of_int number) ^ ".jpg") in
-  let position_of_image = Sdlvideo.rect 0 0 0 0 in
-  Sdlvideo.blit_surface ~dst_rect:position_of_image ~src:image ~dst:screen ();
-  Sdlvideo.update_rect screen;
-  match (read_menu ()) with
-  |"yes" -> "next"
-  |"quit" -> "quit"
-  |_ -> interim number screen
+  let rec interim number screen =
+    let image = Sdlloader.load_image ("menu/" ^ "project" ^ (string_of_int number) ^ ".jpg") in
+    let position_of_image = Sdlvideo.rect 0 0 0 0 in
+    Sdlvideo.blit_surface ~dst_rect:position_of_image ~src:image ~dst:screen ();
+    Sdlvideo.update_rect screen;
+    wait_for_response ()
 
+
+
+
+
+  let kill_screen screen monster =
+    let image = Sdlloader.load_image ("Rooms/gameOver/" ^ "game_over_" ^ monster ^ ".jpg") in
+    let gameOver = Sdlloader.load_image ("menu/" ^ "fail_project" ^  ".jpg") in
+    let position_of_image = Sdlvideo.rect 0 0 0 0 in
+    Sdlvideo.blit_surface ~dst_rect:position_of_image ~src:image ~dst:screen ();
+    Sdlvideo.update_rect screen; Sdltimer.delay 2000;
+    Sdlvideo.blit_surface ~dst_rect:position_of_image ~src:gameOver ~dst:screen ();
+    Sdlvideo.update_rect screen;
+    wait_for_response ()
 
   end
 
