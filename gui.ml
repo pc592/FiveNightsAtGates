@@ -3,12 +3,11 @@ open Sdlkey
 
 (*threads.posix*)
 module Gui = struct
-  (*[create_disp ()] initializes the screen for the game. Hard coded to be
-  800*600 Pixels*)
+
   let create_disp () = let x = Sdlvideo.set_video_mode 800 600 [`DOUBLEBUF] in
     Sdlvideo.unset_clip_rect x; x
 
-  (*[camera_view roomname new_image screen] takes a roomname*)
+  (*[camera_view roomname new_image screen] takes a roomname and *)
   let camera_view roomname new_image screen =
     let image = Sdlloader.load_image ("Rooms/" ^ roomname ^ "/" ^ new_image) in
     let position_of_image = Sdlvideo.rect 0 0 0 0 in
@@ -23,6 +22,7 @@ module Gui = struct
     Sdlvideo.blit_surface ~dst_rect:position_of_name ~src:name ~dst:screen ();
     Sdlvideo.update_rect screen
 
+(*[camera_view roomname new_image screen] takes a roomname*)
   let main_view roomname screen hours battery doors=
     let new_image = (match doors with
         |(false,false) ->"main_both_closed.jpg"
@@ -164,9 +164,6 @@ module Gui = struct
     Sdlvideo.blit_surface ~dst_rect:position_of_image ~src:image ~dst:screen ();
     Sdlvideo.update_rect screen;
     wait_for_response ()
-
-
-
 
 
   let kill_screen screen monster =
