@@ -16,8 +16,7 @@ levelMaxTime [float]: length of real time for each level to complete, in seconds
   eg, 20 minutes is 1200.
 monsterTime [float]: length of real time a monster is allowed to be in the room
   next to main before the player loses (is killed), in seconds. eg, 5.
-maxLevel [int]: the maximum number of levels in the game, same as the maximum
-  number of monsters defined in the .json.
+maxLevel [int]: the maximum number of levels in the game, -1 for starting at 0.
 cPen [float]: the battery penalty for using the camera.
 dPen [float]: the battery penalty for opening/closing door
 *)

@@ -192,11 +192,19 @@
 	"teleportRoom": ["studySpaces"]
 	}, {
 	"name": "Ducky",
-	"level": 3,
+	"level": 2,
 	"image": "Ducky",
 	"startRoom": "ClarksonOffice",
 	"modusOperandi": "foxy",
 	"timeToMove": -1,
 	"teleportRoom": ["copyRoom","gradLounge","profOffices","Gimme!"]
-	}, ]
+	}, {
+	"name": "Camel 2.0",
+	"level": 3,
+	"image": "Camel",
+	"startRoom": "lectureHall",
+	"modusOperandi": "random walk",
+	"timeToMove": -1,
+	"teleportRoom": ["lectureHall"]
+	}]
 }

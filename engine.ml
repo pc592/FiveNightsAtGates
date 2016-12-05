@@ -21,7 +21,7 @@ let gameNight = ref 36000. (*10 hours in seconds; game time elapsed*)
 let levelMaxTime = ref 30. (* 1200. *) (*20 minutes in seconds; real time elapsed*)
 let monsterTime = ref 3000. (*game time seconds monster allows user before
                                killing them; 3000 is ~5 seconds. *)
-let maxLevel = ref (-1) (*number of levels - 1 (levels start at 0)*)
+let maxLevel = ref 4 (*maximum number of levels-1 (starts at 0*)
 
 let cPen = ref 0.00001 (*battery penalty for using camera*)
 let dPen = ref 0.00002 (*battery penalty for opening/closing door*)
@@ -124,12 +124,13 @@ let foxy stateTime map monster =
       match monster.teleportRoomM with
         | [] -> let () = foxyMove := 24000 in
                   List.assoc "ClarksonOffice" map
-        | h::t -> let () = if h = "Gimme!" then
-                    foxyMove := 72000
-                  else
-                    foxyMove := 24000
-                  in
-                  List.assoc h map
+        | h::t -> match (List.assoc h map).monsterR with
+                  | Some mons -> List.assoc monster.currentRoomM map
+                  | None -> let () =
+                              if h = "Gimme!" then foxyMove := 72000
+                              else foxyMove := 24000
+                            in
+                            List.assoc h map
     else
       let () = foxyMove := !foxyMove-1 in
       List.assoc monster.currentRoomM map
@@ -211,9 +212,7 @@ let makeMonster monster = {
 }
 
 let insert_monster j lvl =
-  let monsterList = (j |> member "monsters" |> to_list) in
-  maxLevel := (List.length monsterList)-1;
-  List.map makeMonster monsterList
+  (j |> member "monsters" |> to_list) |> List.map makeMonster
   |> List.filter (fun monstRec -> (monstRec.levelM <= lvl))
   |> List.map (fun monstRec -> (monstRec.nameM, monstRec))
 
@@ -232,7 +231,12 @@ let get_map j lvl map =
         in nextMonster t newMap
   in nextMonster monsters map
 
-let init_state j lvl = {
+let init_state j lvl =
+  let () =
+  if lvl = 3 then monsterProb := 150000
+  else if lvl = 4 then monsterProb := 100000
+  in
+  {
   monsters = (insert_monster j lvl);
   player = "Student";
   map = get_map j lvl (get_map_no_monsters j);
