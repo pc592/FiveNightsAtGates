@@ -10,4 +10,15 @@ val create_disp : unit -> Sdlvideo.surface
  * displayed on the graphics window. *)
 val update_disp : string -> string -> Sdlvideo.surface -> unit
 
+val collect_commands : unit -> unit
+
+val update_disp : string -> string -> Sdlvideo.surface -> int -> int -> bool * bool
+
+val menu : unit -> string
+
+val interim : int -> Sdlvideo.surface
+
+
+
+
 end

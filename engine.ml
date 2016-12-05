@@ -405,19 +405,57 @@ let pretty_string num =
  * if no move. *)
 let move_monster monsName st =
   let randN = Random.int !monsterProb in
+  let monster = List.assoc monsName st.monsters in
+  let oldMonsR = (List.assoc monster.currentRoomM st.map) in
   let move = (randN = 0) in
-  if move then
-    let monster = List.assoc monsName st.monsters in
-    let oldMonsR = (List.assoc monster.currentRoomM st.map) in
+  if (monster.modusOperandiM <> "foxy") && move then
     let newMonsR =
       if monster.modusOperandiM = "weighted movement" then
         weighted_movement oldMonsR st.map monster
       else (*default to random walk*)
         random_walk oldMonsR st.map
     in
-    (* let () = Pervasives.print_endline(monsName^" moved to "^newMonsR.nameR) in *)
-    update_state_monster_move monster newMonsR st
-  else st
+    (* let () = Pervasives.print_endline (monsName^" moved to "^newMonsR.nameR) in *)
+      update_state_monster_move monster newMonsR st
+  else if monster.modusOperandiM = "foxy" then
+    let newMonsR = foxy st.time st.map monster in
+    (* let () = if newMonsR <> oldMonsR then
+      Pervasives.print_endline (monsName^" moved to "^newMonsR.nameR) in *)
+    let now = Unix.time() in
+    let timeMultiplier = (!gameNight)/.(!levelMaxTime) in
+    let time = ((now -. st.startTime)*.timeMultiplier) in
+    let newMap =
+      if oldMonsR.nameR = "Gimme!" && newMonsR.nameR = "ClarksonOffice" then
+          let replaceClarkson (roomName,room) =
+            if room.nameR = "ClarksonOffice" then
+              (roomName,{room with lastCheckR = time})
+            else
+              (roomName,room)
+          in
+          List.map replaceClarkson st.map
+      else
+        st.map
+    in
+    let newTelep =
+      if oldMonsR.nameR <> newMonsR.nameR then
+        match monster.teleportRoomM with
+        | [] -> ["copyRoom";"gradLounge";"profOffices";"Gimme!"]
+        | h::t -> t
+      else if monster.currentRoomM = "ClarksonOffice" then
+        ["copyRoom";"gradLounge";"profOffices";"Gimme!"]
+      else
+        monster.teleportRoomM
+    in
+    let clarksonSt =
+      if st.room.nameR = "ClarksonOffice" then
+        {st with map = newMap; room = {st.room with lastCheckR = time} }
+      else
+        {st with map = newMap}
+    in
+    let newMons = {monster with teleportRoomM = newTelep} in
+      update_state_monster_move newMons newMonsR clarksonSt
+  else
+    st
 
 (* Helper function to iterate through monsters and move/not move. *)
 let rec move_monsters monsters st =
@@ -569,7 +607,6 @@ let file_name st =
 
 let rec go j st screen cam_sound =
   (* updates the image after set amount of recursive calls*)
-  if st.killMonster = "" then
   loopiloop := !loopiloop + 1;
   let cmd_opt = Gui.poll_event () in
   let cmd = (if st.killMonster = "" then (if (st.printed = true) then Gui.interim (st.level+1) screen else
