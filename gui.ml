@@ -3,70 +3,67 @@ open Sdlkey
 
 (*threads.posix*)
 module Gui = struct
-
+  (*[create_disp ()] initializes the screen for the game. Hard coded to be
+  800*600 Pixels*)
   let create_disp () = let x = Sdlvideo.set_video_mode 800 600 [`DOUBLEBUF] in
-  Sdlvideo.unset_clip_rect x; x
+    Sdlvideo.unset_clip_rect x; x
 
-let camera_view roomname new_image screen =
-  let image = Sdlloader.load_image ("Rooms/" ^ roomname ^ "/" ^ new_image) in
-  let position_of_image = Sdlvideo.rect 0 0 0 0 in
-  let font = Sdlttf.open_font "Fonts/Amatic-Bold.ttf" 30 in
-  let position_of_name = Sdlvideo.rect 10 10 0 0 in
-  (*Initializes the ttf reader*)
-  let map = Sdlloader.load_image ("map.png") in
-  let name = Sdlttf.render_text_blended font ("room: " ^ roomname) ~fg:Sdlvideo.red in
-  let position_of_map = Sdlvideo.rect (800-300) (0) 0 0 in
-  Sdlvideo.blit_surface ~dst_rect:position_of_image ~src:image ~dst:screen ();
-  Sdlvideo.blit_surface ~dst_rect:position_of_map ~src:map ~dst:screen ();
-  Sdlvideo.blit_surface ~dst_rect:position_of_name ~src:name ~dst:screen ();
-  Sdlvideo.update_rect screen
+  (*[camera_view roomname new_image screen] takes a roomname*)
+  let camera_view roomname new_image screen =
+    let image = Sdlloader.load_image ("Rooms/" ^ roomname ^ "/" ^ new_image) in
+    let position_of_image = Sdlvideo.rect 0 0 0 0 in
+    let font = Sdlttf.open_font "Fonts/Amatic-Bold.ttf" 30 in
+    let position_of_name = Sdlvideo.rect 10 10 0 0 in
+    (*Initializes the ttf reader*)
+    let map = Sdlloader.load_image ("map.png") in
+    let name = Sdlttf.render_text_blended font ("room: " ^ roomname) ~fg:Sdlvideo.red in
+    let position_of_map = Sdlvideo.rect (800-300) (0) 0 0 in
+    Sdlvideo.blit_surface ~dst_rect:position_of_image ~src:image ~dst:screen ();
+    Sdlvideo.blit_surface ~dst_rect:position_of_map ~src:map ~dst:screen ();
+    Sdlvideo.blit_surface ~dst_rect:position_of_name ~src:name ~dst:screen ();
+    Sdlvideo.update_rect screen
 
-let main_view roomname screen hours battery doors=
-  let new_image = (match doors with
-      |(false,false) ->"main_both_closed.jpg"
-      |(true,false) ->"main_right_closed.jpg"
-      |(false,true) ->"main_left_closed.jpg"
-      |(true, true) -> "main.jpg") in
-  let image = Sdlloader.load_image ("Rooms/" ^ roomname ^ "/" ^ new_image) in
-  let position_of_image = Sdlvideo.rect 0 0 0 0 in
-  let () = Sdlttf.init () in
-  let font = Sdlttf.open_font "Fonts/Amatic-Bold.ttf" 30 in
-  let position_of_battery = Sdlvideo.rect 10 400 0 0 in
-  let position_of_time = Sdlvideo.rect 10 10 0 0 in
-  let time = Sdlttf.render_text_blended font ("Time: " ^ hours) ~fg:Sdlvideo.black in
-  let battery = Sdlttf.render_text_blended font ("Battery: " ^ battery) ~fg:Sdlvideo.black in
-  Sdlvideo.blit_surface ~dst_rect:position_of_image ~src:image ~dst:screen ();
-  Sdlvideo.blit_surface ~dst_rect:position_of_time ~src:time ~dst:screen ();
-  Sdlvideo.blit_surface ~dst_rect:position_of_battery ~src:battery ~dst:screen ();
-  Sdlvideo.update_rect screen
-
-
-
-let update_disp roomname new_image screen hours battery doors=
-  (* process click and call state? *)
-  match new_image with
-  |"main.jpg" -> main_view roomname screen hours battery doors
-  | _ ->     camera_view roomname new_image screen
+  let main_view roomname screen hours battery doors=
+    let new_image = (match doors with
+        |(false,false) ->"main_both_closed.jpg"
+        |(true,false) ->"main_right_closed.jpg"
+        |(false,true) ->"main_left_closed.jpg"
+        |(true, true) -> "main.jpg") in
+    let image = Sdlloader.load_image ("Rooms/" ^ roomname ^ "/" ^ new_image) in
+    let position_of_image = Sdlvideo.rect 0 0 0 0 in
+    let () = Sdlttf.init () in
+    let font = Sdlttf.open_font "Fonts/Amatic-Bold.ttf" 30 in
+    let position_of_battery = Sdlvideo.rect 10 400 0 0 in
+    let position_of_time = Sdlvideo.rect 10 10 0 0 in
+    let time = Sdlttf.render_text_blended font ("Time: " ^ hours) ~fg:Sdlvideo.black in
+    let battery = Sdlttf.render_text_blended font ("Battery: " ^ battery) ~fg:Sdlvideo.black in
+    Sdlvideo.blit_surface ~dst_rect:position_of_image ~src:image ~dst:screen ();
+    Sdlvideo.blit_surface ~dst_rect:position_of_time ~src:time ~dst:screen ();
+    Sdlvideo.blit_surface ~dst_rect:position_of_battery ~src:battery ~dst:screen ();
+    Sdlvideo.update_rect screen
 
 
-(* ocamlbuild -use-ocamlfind -tag thread -pkgs oUnit,yojson,str,ANSITerminal,async,threads,sdl,sdl.sdlimage,sdl.sdlttf,sdl.sdlgfx GUI.byte  *)
 
-(*
-#require "sdl.sdlimage"
-#require "sdl.sdlttf"
-*)
-let translate keycode =
-  match keycode with
-    |'w' -> "up"
-    |'s' -> "down"
-    |'a' -> "right"
-    |'d' -> "left"
-    |'q' -> "door one"
-    |'e' -> "door two"
-    | _ -> ""
+  let update_disp roomname new_image screen hours battery doors=
+    (* process click and call state? *)
+    match new_image with
+    |"main.jpg" -> main_view roomname screen hours battery doors
+    | _ ->     camera_view roomname new_image screen
 
-let read_string ?(default="") event : string =
-    let read_more_of event =
+
+
+  let translate keycode =
+    match keycode with
+      |'w' -> "up"
+      |'s' -> "down"
+      |'a' -> "right"
+      |'d' -> "left"
+      |'q' -> "door one"
+      |'e' -> "door two"
+      | _ -> ""
+
+  let read_string ?(default="") event : string =
+      let read_more_of event =
         match event with
         | KEYDOWN {keysym=KEY_ESCAPE} ->
             "quit"
@@ -90,8 +87,8 @@ let read_string ?(default="") event : string =
             "next"
         | _ ->
             ""
-    in
-    read_more_of event ;;
+      in
+      read_more_of event ;;
 
 
   (*Watered Down event handler, built for just the menu *)
@@ -108,7 +105,7 @@ let read_string ?(default="") event : string =
       | KEYDOWN {keysym=KEY_s} ->
         "story"
       | _ ->
-          read_menu ()
+        read_menu ()
 
 
   let poll_event () = if not (has_event ()) then None else
@@ -140,6 +137,11 @@ let read_string ?(default="") event : string =
 
   let menu () =
     let screen = create_disp () in
+    let image = Sdlloader.load_image ("menu/" ^ "not_for_losers.jpg") in
+    let position_of_image = Sdlvideo.rect 0 0 0 0 in
+    Sdlvideo.blit_surface ~dst_rect:position_of_image ~src:image ~dst:screen ();
+    Sdlvideo.update_rect screen;
+    Sdltimer.delay 4000;
       menu_loop screen
 
   let rec wait_for_response () =

@@ -1,6 +1,6 @@
 open Async.Std
-open Async_parallel_deprecated.Std
-open Music_FX
+(* open Async_parallel_deprecated.Std
+open Music_FX *)
 open Gui
 (* Author: CS 3110 course staff *)
 (* But heavily modified. *)
@@ -51,11 +51,11 @@ let main () =
   let fileName = Gui.menu () in
   (Engine.main (String.lowercase_ascii fileName) camera_sound flag)
 
-let _ = Parallel.init()
+(* let _ = Parallel.init()
 let _ = Parallel.run ~where:`Local (fun () -> return (main()))
-(* let _ = Parallel.run ~where:`Local (fun () -> return (Music_FX.init_music())) *)
+let _ = Parallel.run ~where:`Local (fun () -> return (Music_FX.init_music()))
 let _ = Parallel.run ~where:`Local (fun () -> return (Music_FX.master_song_controller
-open_door close_door camera_sound cam_mode flag))
+open_door close_door camera_sound cam_mode flag)) *)
 
-let _ =  Scheduler.go()
+let _ = main ()
 
