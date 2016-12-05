@@ -126,13 +126,13 @@ val foxy : float -> map -> monster -> room
 
 (* [insert_monster j lvl] returns the list of possible monsters,
  * as corresponding to the level of the game *)
-val insert_monster : json -> int -> (string*monster) list
+val insert_monster : Basic.json -> int -> (string*monster) list
 
 (* [get_map j] returns a valid map from the json file. *)
-val get_map : json -> map
+val get_map : Basic.json -> int -> map -> map
 
 (* [init_state j lvl] returns an initial state based on the current level.*)
-val init_state : json -> int -> state
+val init_state : Basic.json -> int -> state
 
 (*****************************************************************************
 ******************************************************************************
@@ -144,13 +144,13 @@ val init_state : json -> int -> state
 val main_view : state -> state
 
 (* [start] returns the state of a game at level 0. *)
-val start : json -> state
+val start : Basic.json -> state
 
 (* [next_level j state] returns the state of the next level. *)
-val next_level : json -> state -> state
+val next_level : Basic.json -> state -> state
 
 (* [quit state] returns the state showing the user has quit the game. *)
-val game_over : state -> state
+val quit : state -> state
 
 (*****************************************************************************
 ******************************************************************************
@@ -170,7 +170,7 @@ val update_time_and_battery : state -> state
 
 (* [update_state_monster_move monster newRoom map] returns the state with
  * map and monsters updated after [monster] has moved to [newRoom]. *)
-val update_state_monster_move : monster -> room -> map -> state
+val update_state_monster_move : monster -> room -> state -> state
 
 (*****************************************************************************
 ******************************************************************************
@@ -178,12 +178,12 @@ val update_state_monster_move : monster -> room -> map -> state
 ******************************************************************************
 ******************************************************************************)
 
-(* [shift_view state dir] returns the state with a shifted camera view to
+(* [shift_camera_view state dir] returns the state with a shifted camera view to
  * [dir] if player is viewing cameras. raises Illegal if there is no exit in
  * the direction of [dir].
  * requires:
  *  - [dir] is direction to shift the current camera view. *)
-val shift_view : state -> dir -> state
+val shift_camera_view : state -> dir -> bool ref -> state
 
 (* [camera_view state] enters the player view to that of the camera.
  * Automatically shifts the room view out of the main room to some other room. *)
@@ -203,7 +203,7 @@ val update_door_status : state -> bool -> door -> state
 ******************************************************************************)
 
 (* [eval j st cmd] returns a state after evaluating the command. *)
-val eval : json -> state -> string -> state
+val eval : Basic.json -> state -> string -> bool ref -> state
 
 (* [main f] is the main entry point from outside this module
  * to load a game from file [f] and start playing it. *)
