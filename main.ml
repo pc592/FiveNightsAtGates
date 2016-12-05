@@ -14,7 +14,7 @@ let camera_sound = ref false
 let open_door = ref false
 let close_door = ref false
 let camera_mode = ref false
-
+let flag = ref false
 
 (*****************************************************************************
 ******************************************************************************
@@ -49,7 +49,7 @@ let intro =(
 let main () =
   let _n = Sys.command "clear" in
   let fileName = Gui.menu () in
-  (Engine.main (String.lowercase_ascii fileName) camera_sound)
+  (Engine.main (String.lowercase_ascii fileName) camera_sound flag)
 
 (* let _ = Parallel.init()
 let _ = Parallel.run ~where:`Local (fun y -> return (main()))

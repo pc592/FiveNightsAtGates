@@ -646,7 +646,7 @@ let commands =
 
 (* [main f] is the main entry point from outside this module
  * to load a game from file [f] and start playing it. *)
-let rec main fileNameIn cam_sound =
+let rec main fileNameIn cam_sound flag =
   let nest_main fileName =
   if fileName = "quit" then () else
     let j = Yojson.Basic.from_file "map.json" in
@@ -655,7 +655,7 @@ let rec main fileNameIn cam_sound =
     Pervasives.print_endline ("Day 0\n");
     Gui.collect_commands ();
     let screen = Gui.create_disp () in
-    go j st screen cam_sound
+    (go j st screen cam_sound ); flag:=true
   in try nest_main fileNameIn with
   | Sys_error(_) ->
     let input = String.lowercase_ascii (Pervasives.read_line ()) in
@@ -667,5 +667,5 @@ let rec main fileNameIn cam_sound =
         let _n = Pervasives.read_line () in "map.json"
       else if input = "no" || input = "n" || input = "quit" then "quit"
       else "gibberish"
-    in main fileName cam_sound
+    in main fileName cam_sound flag
   | Illegal -> Pervasives.print_endline "\nSomething is wrong with the .json"
