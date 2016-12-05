@@ -1,4 +1,4 @@
-Convention (informally. we all have different coding preferences):
+Convention (informally. we all have different coding preferences, but we're trying):
 use snake case for functions.
 use camel case for variables and types.
 

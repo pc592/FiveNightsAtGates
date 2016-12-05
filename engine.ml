@@ -415,8 +415,8 @@ let move_monster monsName st =
       else (*default to random walk*)
         random_walk oldMonsR st.map
     in
-    let () = Pervasives.print_endline (monsName^" moved to "^newMonsR.nameR) in
-      update_state_monster_move monster newMonsR st
+    (* let () = Pervasives.print_endline(monsName^" moved to "^newMonsR.nameR) in *)
+    update_state_monster_move monster newMonsR st
   else st
 
 (* Helper function to iterate through monsters and move/not move. *)
@@ -457,9 +457,7 @@ let rec check_time monsters st =
                   | Some mons -> mons.nameM
                   | None -> "How did you get here?"
                 else "No seriously how?"
-              in
-              (* Pervasives.print_endline ("The monster that killed you was "^killMons) *)
-        {checkedSt with killMonster = killMons}
+              in {checkedSt with killMonster = killMons}
         else check_time t st
 
 
@@ -470,11 +468,8 @@ let rec check_time monsters st =
 let rec eval j st cmd cam_sound =
   let winTime = !gameNight in
   let winLvl = !maxLevel in
-  if (cmd = "restart") then
-    let () = (Pervasives.print_endline "Back to Day 0\n") in (start j)
-  else if (cmd = "next" && st.time >= winTime) then
-    (Pervasives.print_endline ("\nDay "^(string_of_int (st.level+1))^"\n");
-      (next_level j st))
+  if (cmd = "restart") then (start j)
+  else if (cmd = "next" && st.time >= winTime) then (next_level j st)
   else
     let st = update_time_and_battery st in
     let st =
@@ -487,9 +482,7 @@ let rec eval j st cmd cam_sound =
     let st =
       if (st.time >= winTime && st.level = winLvl) then
         let st =
-          if not st.printed then (* victory music *)
-            let () = Pervasives.print_endline ("You've survived all the projects. "
-              ^ "Congratulations? (Quit/Restart)\n") in {st with printed = true}
+          if not st.printed then (* victory music *) {st with printed = true}
           else st in
         match cmd with
         | "quit" -> quit st
@@ -497,21 +490,15 @@ let rec eval j st cmd cam_sound =
         | _ -> st
       else if st.time >= winTime then
         let st =
-          if not st.printed then (* Pass_level music *)
-            let () = Pervasives.print_endline ("You've survived the night! "
-              ^ "Next night? (Next/Quit)\n") in {st with printed = true}
+          if not st.printed then (* Pass_level music *) {st with printed = true}
           else st in
         match cmd with
-        | "next" ->
-            (Pervasives.print_endline ("\nDay "^(string_of_int (st.level+1))^"\n");
-            (next_level j st))
+        | "next" -> (next_level j st)
         | "quit" -> (quit st)
         | _ -> st
       else if st.lost then
         let st =
-          if not st.printed then  (* failure music *)
-            let () = Pervasives.print_endline ("IT'S HERE! (Quit/Restart)") in
-              {st with printed = true}
+          if not st.printed then  (* failure music *) {st with printed = true}
           else st in
         match cmd with
         | "quit" -> (quit st)
@@ -519,10 +506,7 @@ let rec eval j st cmd cam_sound =
         | _ -> st
       else if st.battery <= 0. then
         let st =
-          if not st.printed then (* failure music *)
-            let () = Pervasives.print_endline ("You're out of battery.... "
-              ^ "(Quit/Restart)") in
-              {st with lost = true; printed = true}
+          if not st.printed then (* failure music *) {st with lost = true; printed = true}
           else st in
         match cmd with
         | "quit" -> (quit st)
@@ -540,14 +524,12 @@ let rec eval j st cmd cam_sound =
         in
         let newView =
           try shift_camera_view st dir cam_sound with
-            | Illegal -> Pervasives.print_endline
-                           ("Illegal command '" ^cmd ^ "'"); st
+            | Illegal -> st
         in
         let newRoom = newView.room in
           if (newRoom.monsterR <> None) then
             match newRoom.monsterR with
-            | Some mons ->
-                Pervasives.print_endline (mons.nameM ^ " present!"); newView
+            | Some mons -> newView
             | None -> newView
           else newView
       else if (st.room.nameR = "main") && (cmd = "one" || cmd = "two") then
@@ -558,15 +540,11 @@ let rec eval j st cmd cam_sound =
             | _ -> failwith "how did you even get here."; raise Illegal
           in
             match truCmd with
-            | "close one" -> Pervasives.print_endline "Door one closed.";
-                               update_door_status st false One
-            | "close two" -> Pervasives.print_endline "Door two closed.";
-                               update_door_status st false Two
-            | "open one"  -> Pervasives.print_endline "Door one opened.";
-                               update_door_status st true One
-            | "open two"  -> Pervasives.print_endline "Door two opened.";
-                               update_door_status st true Two
-            | _ -> Pervasives.print_endline ("Illegal command '" ^ cmd ^ "'"); st
+            | "close one" -> update_door_status st false One
+            | "close two" -> update_door_status st false Two
+            | "open one"  -> update_door_status st true One
+            | "open two"  -> update_door_status st true Two
+            | _ -> st
       else
         match cmd with
         | "camera" -> if st.room.nameR = "main" then
@@ -574,20 +552,8 @@ let rec eval j st cmd cam_sound =
                       else main_view st
         | "quit" -> (quit st)
         | "" -> st
-        | _ -> Pervasives.print_endline ("Illegal command '" ^ cmd ^ "'"); st
-    in
-      if (cmd = "" || st.printed) then st else
-        let () = Pervasives.print_endline ("You are now in: " ^ (st.room.nameR)) in
-        let () = if st.room.nameR = "main" then
-                   let hours = floor (st.time/.3600.) in
-                   let minutes = floor ((st.time -. (hours*.3600.))/.60.) in
-                     Pervasives.print_endline ("Time elapsed in hh:mm is: "
-                         ^ pretty_string hours ^ ":" ^ pretty_string minutes);
-                     Pervasives.print_endline ("Battery level is: "
-                        ^ (string_of_float st.battery) ^ "%");
-                   else ();
-        in
-        Pervasives.print_string "\n"; st
+        | _ -> st
+    in st
 
 let unpack opt = match opt with |Some x -> x |None -> failwith "Something royally bonkers"; raise Illegal
 let update screen roomname filenname hours battery doors=
@@ -673,7 +639,6 @@ let rec main fileNameIn cam_sound flag =
     let j = Yojson.Basic.from_file "map.json" in
     let st = start j in
     let _p = Sys.command "clear" in
-    Pervasives.print_endline ("Day 0\n");
     Gui.collect_commands ();
     let screen = Gui.create_disp () in
     (go j st screen cam_sound ); flag:=true
@@ -683,8 +648,6 @@ let rec main fileNameIn cam_sound flag =
     let fileName =
       if input = "yes" || input = "y" then
         let _m = Sys.command "clear" in
-        let () = (Printf.printf "%s" intro) in
-          Pervasives.print_string "Press [enter] to continue.";
         let _n = Pervasives.read_line () in "map.json"
       else if input = "no" || input = "n" || input = "quit" then "quit"
       else "gibberish"
