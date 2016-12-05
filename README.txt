@@ -4,6 +4,8 @@ use camel case for variables and types.
 
 To compile the game please have these modules installed on your computer:
 ANSITerminal
+async (and async_parallel, installed by running [opam install async_parallel]
+  in the terminal window)
 Sdl for OCaml (Simple DirectMedia Layer) [instructions below]
 ...and also unzip the Rooms.tar.gz folder.
 

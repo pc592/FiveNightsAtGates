@@ -77,15 +77,15 @@ type state = {
 ******************************************************************************
 ******************************************************************************)
 
-(*Bug where sometimes the monster may move despite being right next door. :/*)
-
 let rec random_walk room map =
   let current = List.assoc room.nameR map in
   let exits = current.exitsR in
   let numExits = List.length exits in
   let random = Random.int numExits in
   let (dir,name) = List.nth exits random in
-    if (name = "main") || ((List.assoc name map).monsterR <> None) then
+    if (name = "main")
+        || ((List.assoc name map).monsterR <> None)
+        || name = "ClarksonOffice" then
       random_walk room map
     else List.assoc name map
 
@@ -103,10 +103,18 @@ let rec weighted_movement room map monster =
     let num = List.length roomsOfVal in
     let random = Random.int num in
     let (dir,name) = List.nth exits random in
-      if ((List.assoc name map).monsterR <> None) then
+      if ((List.assoc name map).monsterR <> None)
+          || (name = "ClarksonOffice") then
         weighted_movement room map monster
       else List.assoc name map
 
+let foxy stateTime map monster =
+  let roomTime = (List.assoc monster.currentRoomM map).lastCheckR in
+  if stateTime -. roomTime >= 120. then
+    match monster.teleportRoomM with
+    | [] -> List.assoc monster.currentRoomM map
+    | h::t -> List.assoc h map
+  else List.assoc monster.currentRoomM map
 
 (* [Illegal] is raised by the game to indicate that a command is illegal. *)
 exception Illegal
