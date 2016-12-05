@@ -31,6 +31,8 @@ let main_view roomname new_image screen hours battery =
   Sdlvideo.blit_surface ~dst_rect:position_of_battery ~src:battery ~dst:screen ();
   Sdlvideo.update_rect screen
 
+
+
 let update_disp roomname new_image screen hours battery=
   (* process click and call state? *)
   match new_image with
@@ -82,11 +84,47 @@ let read_string ?(default="") event : string =
     in
     read_more_of event ;;
 
+
+  (*Watered Down event handler, built for just the menu *)
+  let rec read_menu () =
+    match wait_event () with
+      | KEYDOWN {keysym=KEY_n} ->
+        "quit"
+      | KEYDOWN {keysym=KEY_y} ->
+        "yes"
+      | _ ->
+          read_menu ()
+
+
   let poll_event () = if not (has_event ()) then None else
     let event_opt = poll () in
     event_opt
 
-  let collect_commands ()= pump ();
+  let collect_commands () = pump ()
+
+
+  let rec menu_loop screen =
+    let image = Sdlloader.load_image ("menu/" ^ "menu.jpg") in
+    let position_of_image = Sdlvideo.rect 0 0 0 0 in
+    Sdlvideo.blit_surface ~dst_rect:position_of_image ~src:image ~dst:screen ();
+    Sdlvideo.update_rect screen;
+    let cmd = read_menu () in
+    if cmd = "instructions" then instruction_loop screen else
+    let () = Sdl.quit () in
+     cmd
+  and instruction_loop screen =
+    let image = Sdlloader.load_image ("menu/" ^ "instructions.jpg") in
+            let position_of_image = Sdlvideo.rect 0 0 0 0 in
+            Sdlvideo.blit_surface ~dst_rect:position_of_image ~src:image ~dst:screen ();
+            Sdlvideo.update_rect screen;
+            let cmd = read_menu () in
+            if (not (cmd = "yes")) then instruction_loop screen else
+            menu_loop screen
+
+  let menu () =
+    let screen = create_disp () in
+      "menu_loop screen"
+
 
   end
 
