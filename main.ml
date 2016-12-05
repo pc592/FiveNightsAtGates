@@ -1,6 +1,7 @@
 open Async.Std
 open Async_parallel_deprecated.Std
 open MUSIC_FX
+open Gui
 (* Author: CS 3110 course staff *)
 (* But heavily modified. *)
 
@@ -47,29 +48,14 @@ let intro =(
 
 let main () =
   let _n = Sys.command "clear" in
-    ANSITerminal.(print_string [red]
-      ("\n\n\n\n\n\n" ^
-          "Welcome to Gates Hall.\n" ^
-          "Do you want to play a game? (Yes/No)\n"));
-    Pervasives.print_string  "> ";
-  let input = String.lowercase_ascii (Pervasives.read_line ()) in
-  let fileName =
-    if input = "yes" || input = "y" then
-      let _m = Sys.command "clear" in
-     (*  let () = (Printf.printf "%s" intro) in *)
-        Pervasives.print_string "Press [enter] to continue.";
-      let _n = Pervasives.read_line () in "map.json"
-    else if input = "no" || input = "n" || input = "quit" then "quit"
-    else "gibberish"
-  in
+  let fileName = Gui.menu () in
   (Engine.main (String.lowercase_ascii fileName) camera_sound)
 
-let _ = Parallel.init()
+(* let _ = Parallel.init()
 let _ = Parallel.run ~where:`Local (fun y -> return (main()))
 let _ = Parallel.run ~where:`Local (fun x -> (return (Music_FX.init_music ())))
 let _ = Parallel.run ~where: `Local (fun z -> return (Music_FX.update_sounds open_door close_door camera_sound camera_mode))
+ *)
 
-
-let _ =  Scheduler.go ()
-
+let _ =  main()
 
