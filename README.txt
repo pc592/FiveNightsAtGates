@@ -1,10 +1,10 @@
-(NOTE/WARNING: ONLY PROVEN TO WORK IN VIRTUALBOX WITH UBUNTU GUEST)
-
+Game Goals: Survive 10 in-game hours to finish assignment and get through the night while avoiding monsters
+————————————————————————————————————————————————————————————————
 Convention (informally. we all have different coding preferences, but we're trying):
 use snake case for functions.
 use camel case for variables and types.
 
-To compile the game please have these modules installed on your computer:
+To compile the game please have these modules installed on your computer.
 REQUIRED:
 Sdl for OCaml (Simple DirectMedia Layer) [instructions below]
 OPTIONAL (FEATURES NOT FINISHED)
@@ -12,18 +12,17 @@ ANSITerminal
 async (and async_parallel, installed by running [opam install async_parallel]
   in the terminal window)
 
-
-
+**NOTE/WARNING: ONLY PROVEN TO WORK IN VIRTUALBOX WITH UBUNTU GUEST**
 
 To play the game:
-Run make play (or make). Entering "quit" at any point of game play, or in the
+Run make play (or make). Entering “Escape” at any point of game play, or in the
 beginning for file input, exits out of the game entirely.
-Make sure you are on the game window in your taskbar when playing--otherwise
+
+**Make sure you are on the game window in your taskbar when playing--otherwise
 your commands will not be registered. This is indicated by an outlined clear
-rectangle rather than the regular solid rectangle in the terminal window.
+rectangle rather than the regular solid rectangle in the terminal window.**
 
-
-
+————————————————————————————————————————————————————————————————
 
 To install oCamlSDL for VM:
 
@@ -50,8 +49,7 @@ make clean
 
 * Now you can return to the previous folder and play!
 
-
-
+————————————————————————————————————————————————————————————————
 
 To install for MacOS:
 * if you have ports, install with instructions in https://vog.github.io/ocamlsdl-tutorial/
@@ -63,6 +61,7 @@ brew install ocamlsdl
 *then
 opam install ocamlsdl
 
+————————————————————————————————————————————————————————————————
 
 Background Music and Sound Credits:
 ThrillShowX: https://www.youtube.com/channel/UC6aGkyktim54QjAIVqrx2sg
