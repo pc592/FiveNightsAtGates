@@ -190,5 +190,13 @@
 	"modusOperandi": "weighted movement",
 	"timeToMove": -1,
 	"teleportRoom": ["studySpaces"]
-	}]
+	}, {
+	"name": "Ducky",
+	"level": 3,
+	"image": "Ducky",
+	"startRoom": "ClarksonOffice",
+	"modusOperandi": "foxy",
+	"timeToMove": -1,
+	"teleportRoom": ["copyRoom","gradLounge","profOffices","Gimme!"]
+	}, ]
 }
