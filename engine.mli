@@ -2,6 +2,8 @@
  * The updated state is used by other parts to set up the graphics
  * and interface. *)
 
+open Yojson
+
 (*****************************************************************************
 ******************************************************************************
 *********************************GLOBAL CONSTANTS*****************************
@@ -124,13 +126,13 @@ val foxy : float -> map -> monster -> room
 
 (* [insert_monster j lvl] returns the list of possible monsters,
  * as corresponding to the level of the game *)
-val insert_monster : yojson -> int -> (string*monster) list
+val insert_monster : json -> int -> (string*monster) list
 
-(* [get_map yojson] returns a valid map from the json file. *)
-val get_map : yojson -> map
+(* [get_map j] returns a valid map from the json file. *)
+val get_map : json -> map
 
 (* [init_state j lvl] returns an initial state based on the current level.*)
-val init_state : yojson -> int -> state
+val init_state : json -> int -> state
 
 (*****************************************************************************
 ******************************************************************************
@@ -142,10 +144,10 @@ val init_state : yojson -> int -> state
 val main_view : state -> state
 
 (* [start] returns the state of a game at level 0. *)
-val start : yojson -> state
+val start : json -> state
 
 (* [next_level j state] returns the state of the next level. *)
-val next_level : yojson -> state -> state
+val next_level : json -> state -> state
 
 (* [quit state] returns the state showing the user has quit the game. *)
 val game_over : state -> state
@@ -201,8 +203,8 @@ val update_door_status : state -> bool -> door -> state
 ******************************************************************************)
 
 (* [eval j st cmd] returns a state after evaluating the command. *)
-val eval : yojson -> state -> string -> state
+val eval : json -> state -> string -> state
 
 (* [main f] is the main entry point from outside this module
  * to load a game from file [f] and start playing it. *)
-val main : string -> unit
+val main : string -> bool ref -> bool ref -> unit
