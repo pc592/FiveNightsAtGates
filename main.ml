@@ -59,7 +59,7 @@ let main () =
      (*  let () = (Printf.printf "%s" intro) in *)
         Pervasives.print_string "Press [enter] to continue.";
       let _n = Pervasives.read_line () in "map.json"
-    else if input = "no" || input = "n" || input = "quit" then "quit"
+    else if input = "no" || input = "n" || input = "quit" then (Music_FX.stop_music();"quit")
     else "gibberish"
   in
   (Engine.main (String.lowercase_ascii fileName) camera_sound)
