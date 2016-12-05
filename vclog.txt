@@ -1,3 +1,24 @@
+commit a74154a5e590dccbb67e06c3944ddf72f86dfcf3
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Dec 5 07:14:28 2016 -0500
+
+    tweaks
+
+ README.txt |  2 +-
+ engine.ml  | 18 ++----------------
+ 2 files changed, 3 insertions(+), 17 deletions(-)
+
+commit d09a8519bfeb2cf93680f69e47518c913d37ee53
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Dec 5 06:37:00 2016 -0500
+
+    post-submission files, .zip and vclog
+
+ CS3110_Project.zip |  Bin 21812303 -> 21787568 bytes
+ gitlog.txt         | 3234 ---------------------------------------------------
+ vclog.txt          | 3258 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 3258 insertions(+), 3234 deletions(-)
+
 commit 3739213db17532747b633c1bc507e3a55a248421
 Author: Pui Lam <pc592@cornell.edu>
 Date:   Mon Dec 5 06:34:51 2016 -0500
