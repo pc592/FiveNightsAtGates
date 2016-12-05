@@ -12,6 +12,9 @@ module Music_FX = struct
 *********************************GLOBAL CONSTANTS*****************************
 ******************************************************************************
 ******************************************************************************)
+ (* Global variables that are used to load in specific sound effects and
+  * background music. songlength variables store the length of that song in ms.
+  *)
  let background1 = "Sound_Effects/Background1.wav"
  let song1Length = 134000
  let background2 = "Sound_Effects/Background2.wav"
@@ -28,6 +31,11 @@ module Music_FX = struct
 ****************************MUSIC PLAYING HELPER FUNCTIONS********************
 ******************************************************************************
 ******************************************************************************)
+
+(* [is_song_playing] checks if music is still playing every two seconds. If the
+ * song is still playing, it will call the function again after two seconds.
+ * Otherwise, if the song has finished playing, it will stop everything and free
+ * that variable *)
 let rec is_song_playing song =
   if (Sdlmixer.playing_music ()) = false then
      (Sdlmixer.fadeout_music 2.0;
