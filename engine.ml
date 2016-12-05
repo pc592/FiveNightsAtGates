@@ -20,7 +20,7 @@ let foxyTime = ref 12000. (*time before foxy (Ducky) moves; 12000 is about 3 sec
 let gameNight = ref 36000. (*10 hours in seconds; game time elapsed*)
 let levelMaxTime = ref 300. (* 1200. *) (*20 minutes in seconds; real time elapsed*)
 let monsterTime = ref 2000. (*game time seconds monster allows user before
-                               killing them; 2000 is ~2 seconds. *)
+                               killing them; 2000 is ~5 seconds. *)
 let maxLevel = ref 4 (*maximum number of levels-1 (starts at 0*)
 
 let cPen = ref 0.000001 (*battery penalty for using camera*)
@@ -479,21 +479,7 @@ let rec check_time monsters st =
   | (monsName,mons)::t ->
       let monsTime = mons.timeToMoveM in
         if st.time -. monsTime >= !monsterTime then
-        let checkedSt = {st with lost = true} in
-            let killMons =
-                let mainExits = (List.assoc "main" st.map).exitsR in
-                let roomOne = List.assoc (snd (List.nth mainExits 0)) st.map in
-                let roomTwo = List.assoc (snd (List.nth mainExits 1)) st.map in
-                if (roomOne.monsterR <> None) then
-                  match roomOne.monsterR with
-                  | Some mons -> mons.nameM
-                  | None -> "How did you get here?"
-                else if (roomTwo.monsterR <> None) then
-                  match roomTwo.monsterR with
-                  | Some mons -> mons.nameM
-                  | None -> "How did you get here?"
-                else "No seriously how?"
-              in {checkedSt with killMonster = killMons}
+          {st with lost = true; killMonster = monsName}
         else check_time t st
 
 

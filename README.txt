@@ -51,7 +51,7 @@ make clean
 
 ————————————————————————————————————————————————————————————————
 
-To install oCamlSDL for MacOS:
+To install for MacOS:
 * if you have ports, install with instructions in https://vog.github.io/ocamlsdl-tutorial/
 * if you have brew,
 
