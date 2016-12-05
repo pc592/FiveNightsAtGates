@@ -2,7 +2,6 @@
 (* A [gui] opens screens and updates the graphics accordingly. Along with
  * tracking for user keyboard inputs. Provides the functions for the user to
  * interface with the game graphics and interface. *)
-module type Gui = sig
 
 (*[create_disp ()] initializes the screen for the game. Hard coded to be
   800*600 Pixels*)
@@ -12,7 +11,9 @@ val create_disp : unit -> Sdlvideo.surface
 [roomname], the image name [new_image], initialized screen [screen]
 an int representing the hours [hours], and  battery
 doors *)
-val update_disp : string -> string -> Sdlvideo.surface -> int -> int -> bool * bool
+val update_disp : string -> string -> Sdlvideo.surface -> int -> int -> bool * bool -> unit
+
+val poll_event : unit -> unit
 
 (* [collect_commands ()] Launches the Sdlevent function pump to collect user
 keyboard *)
@@ -32,5 +33,3 @@ val interim : int -> Sdlvideo.surface -> string
 the monster and then presents the game over window.*)
 val kill_screen : Sdlvideo.surface -> string
 
-
-end

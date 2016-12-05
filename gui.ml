@@ -2,7 +2,6 @@ open Sdlevent
 open Sdlkey
 
 (*threads.posix*)
-module Gui = struct
 
   let create_disp () = let x = Sdlvideo.set_video_mode 800 600 [`DOUBLEBUF] in
     Sdlvideo.unset_clip_rect x; x
@@ -22,13 +21,14 @@ module Gui = struct
     Sdlvideo.blit_surface ~dst_rect:position_of_name ~src:name ~dst:screen ();
     Sdlvideo.update_rect screen
 
-(*[camera_view roomname new_image screen] takes a roomname*)
   let main_view roomname screen hours battery doors=
-    let new_image = (match doors with
-        |(false,false) ->"main_both_closed.jpg"
-        |(true,false) ->"main_right_closed.jpg"
-        |(false,true) ->"main_left_closed.jpg"
-        |(true, true) -> "main.jpg") in
+    let new_image =
+      (match doors with
+       | (false,false) -> "main_both_closed.jpg"
+       | (true,false)  -> "main_right_closed.jpg"
+       | (false,true)  -> "main_left_closed.jpg"
+       | (true,true)   -> "main.jpg")
+    in
     let image = Sdlloader.load_image ("Rooms/" ^ roomname ^ "/" ^ new_image) in
     let position_of_image = Sdlvideo.rect 0 0 0 0 in
     let () = Sdlttf.init () in
@@ -42,15 +42,10 @@ module Gui = struct
     Sdlvideo.blit_surface ~dst_rect:position_of_battery ~src:battery ~dst:screen ();
     Sdlvideo.update_rect screen
 
-
-
-  let update_disp roomname new_image screen hours battery doors=
-    (* process click and call state? *)
+  let update_disp roomname new_image screen hours battery doors =
     match new_image with
     |"main.jpg" -> main_view roomname screen hours battery doors
-    | _ ->     camera_view roomname new_image screen
-
-
+    | _ -> camera_view roomname new_image screen
 
   let translate keycode =
     match keycode with
@@ -63,59 +58,37 @@ module Gui = struct
       | _ -> ""
 
   let read_string ?(default="") event : string =
-      let read_more_of event =
-        match event with
-        | KEYDOWN {keysym=KEY_ESCAPE} ->
-            "quit"
-        | KEYDOWN {keysym=KEY_RETURN} ->
-            "restart"
-        | KEYDOWN {keysym=KEY_SPACE} ->
-            "camera"
-        | KEYDOWN {keysym=KEY_w} ->
-            "up"
-        | KEYDOWN {keysym=KEY_a} ->
-            "left"
-        | KEYDOWN {keysym=KEY_d} ->
-            "right"
-        | KEYDOWN {keysym=KEY_s} ->
-            "down"
-        | KEYDOWN {keysym=KEY_u} ->
-            "one"
-        | KEYDOWN {keysym=KEY_i} ->
-            "two"
-        | KEYDOWN {keysym=KEY_n} ->
-            "next"
-        | _ ->
-            ""
-      in
-      read_more_of event ;;
+    let read_more_of event =
+      match event with
+      | KEYDOWN {keysym=KEY_ESCAPE} -> "quit"
+      | KEYDOWN {keysym=KEY_RETURN} -> "restart"
+      | KEYDOWN {keysym=KEY_SPACE}  -> "camera"
+      | KEYDOWN {keysym=KEY_w} -> "up"
+      | KEYDOWN {keysym=KEY_a} -> "left"
+      | KEYDOWN {keysym=KEY_s} -> "down"
+      | KEYDOWN {keysym=KEY_d} -> "right"
+      | KEYDOWN {keysym=KEY_u} -> "one"
+      | KEYDOWN {keysym=KEY_i} -> "two"
+      | KEYDOWN {keysym=KEY_n} -> "next"
+      | _ -> ""
+    in
+    read_more_of event;;
 
-
-  (*Watered Down event handler, built for just the menu *)
+  (* Watered down event handler, built for just the menu *)
   let rec read_menu () =
     match wait_event () with
-      | KEYDOWN {keysym=KEY_ESCAPE} ->
-        "quit"
-      | KEYDOWN {keysym=KEY_y} ->
-        "yes"
-      | KEYDOWN {keysym=KEY_b} ->
-        "yes"
-      | KEYDOWN {keysym=KEY_i} ->
-        "instructions"
-      | KEYDOWN {keysym=KEY_s} ->
-        "story"
-      | KEYDOWN {keysym=KEY_n} ->
-        "quit"
-      | _ ->
-        read_menu ()
+      | KEYDOWN {keysym=KEY_ESCAPE} -> "quit"
+      | KEYDOWN {keysym=KEY_y} -> "yes"
+      | KEYDOWN {keysym=KEY_b} -> "yes"
+      | KEYDOWN {keysym=KEY_i} -> "instructions"
+      | KEYDOWN {keysym=KEY_s} -> "story"
+      | KEYDOWN {keysym=KEY_n} -> "quit"
+      | _ -> read_menu ()
 
-
-  let poll_event () = if not (has_event ()) then None else
-    let event_opt = poll () in
-    event_opt
+  let poll_event () =
+    if not (has_event ()) then None else poll ()
 
   let collect_commands () = pump ()
-
 
   let rec menu_loop screen =
     let image = Sdlloader.load_image ("menu/" ^ "menu.jpg") in
@@ -124,18 +97,17 @@ module Gui = struct
     Sdlvideo.update_rect screen;
     let cmd = read_menu () in
     match cmd with
-      |"quit" -> Sdl.quit (); cmd
-      |"yes" -> Sdl.quit (); cmd
-      |_ -> instruction_story_loop screen cmd
-
+      | "quit" -> Sdl.quit (); cmd
+      | "yes" -> Sdl.quit (); cmd
+      | _ -> instruction_story_loop screen cmd
   and instruction_story_loop screen name =
     let image = Sdlloader.load_image ("menu/" ^ name ^ ".jpg") in
-            let position_of_image = Sdlvideo.rect 0 0 0 0 in
-            Sdlvideo.blit_surface ~dst_rect:position_of_image ~src:image ~dst:screen ();
-            Sdlvideo.update_rect screen;
-            let cmd = read_menu () in
-            if (not (cmd = "yes")) then instruction_story_loop screen cmd else
-            menu_loop screen
+      let position_of_image = Sdlvideo.rect 0 0 0 0 in
+      Sdlvideo.blit_surface ~dst_rect:position_of_image ~src:image ~dst:screen ();
+      Sdlvideo.update_rect screen;
+      let cmd = read_menu () in
+      if (not (cmd = "yes")) then instruction_story_loop screen cmd else
+        menu_loop screen
 
   let menu () =
     let screen = create_disp () in
@@ -148,15 +120,15 @@ module Gui = struct
 
   let rec wait_for_response () =
     match (read_menu ()) with
-      |"yes" -> "next"
-      |"quit" -> "quit"
-      |_ -> wait_for_response ()
+      | "yes" -> "next"
+      | "quit" -> "quit"
+      | _ -> wait_for_response ()
 
   let rec wait_for_kill () =
     match (read_menu ()) with
-      |"yes" -> "restart"
-      |"quit" -> "quit"
-      |_ -> wait_for_response ()
+      | "yes" -> "restart"
+      | "quit" -> "quit"
+      | _ -> wait_for_response ()
 
   let rec interim number screen =
     let image = Sdlloader.load_image ("menu/" ^ "project" ^ (string_of_int number) ^ ".jpg") in
@@ -164,7 +136,6 @@ module Gui = struct
     Sdlvideo.blit_surface ~dst_rect:position_of_image ~src:image ~dst:screen ();
     Sdlvideo.update_rect screen;
     wait_for_response ()
-
 
   let kill_screen screen monster =
     let image = Sdlloader.load_image ("Rooms/gameOver/" ^ "game_over_" ^ monster ^ ".jpg") in
@@ -175,6 +146,3 @@ module Gui = struct
     Sdlvideo.blit_surface ~dst_rect:position_of_image ~src:gameOver ~dst:screen ();
     Sdlvideo.update_rect screen;
     wait_for_kill ()
-
-  end
-
