@@ -1,6 +1,0 @@
-2016-12-05T01:57:24+00:00 Ruoyans-MacBook-Pro.local#01 I: Start test  test suite:0:insert_monster.
-2016-12-05T01:57:24+00:00 Ruoyans-MacBook-Pro.local#01 I: Test  test suite:0:insert_monster is successful.
-2016-12-05T01:57:24+00:00 Ruoyans-MacBook-Pro.local#01 I: End test  test suite:0:insert_monster.
-2016-12-05T01:57:24+00:00 Ruoyans-MacBook-Pro.local#01 I: Start test  test suite:2:init_state.
-2016-12-05T01:57:24+00:00 Ruoyans-MacBook-Pro.local#01 I: Test  test suite:2:init_state is successful.
-2016-12-05T01:57:24+00:00 Ruoyans-MacBook-Pro.local#01 I: End test  test suite:2:init_state.

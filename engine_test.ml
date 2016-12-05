@@ -223,11 +223,24 @@ let level1_state =
    lastCheckR = 0.};
  level = 1; quit = false; lost = false; printed = false}
 
-let level1_tests = 
+let update_tests = 
 [
 	"next_level" >:: (fun _ -> assert_equal 
 		level1_state
 		(next_level j (init_state j 0)));
+
+	"next_level" >:: (fun _ -> assert_equal 
+		map
+		(update_map_camera_view map {nameR = "kitchen"; imageR = "kitchen"; valueR = 1;
+		   exitsR = [(Left, "main"); (Down, "hallway"); (Up, "Gimme!")];
+		   monsterR = None; lastCheckR = 0.} 0.));
+
+	"next_level" >:: (fun _ -> assert_equal 
+		map
+		(update_map_camera_view map {nameR = "kitchen"; imageR = "kitchen"; valueR = 1;
+		   exitsR = [(Left, "main"); (Down, "hallway"); (Up, "Gimme!")];
+		   monsterR = None; lastCheckR = 0.} 0.));
+
 ]
 
 let do_tests =
@@ -390,6 +403,6 @@ let do_tests =
 
 let suite =
   " test suite"
-  >::: json_tests @ level1_tests @ do_tests
+  >::: json_tests @ update_tests @ do_tests
 
 let _ = run_test_tt_main suite
