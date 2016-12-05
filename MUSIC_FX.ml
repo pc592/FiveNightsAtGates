@@ -18,8 +18,8 @@ let rec is_song_playing song =
   if (Sdlmixer.playing_music ()) = false then
      (Sdlmixer.fadeout_music 2.0;
       Sdltimer.delay 2000; (* fade out *)
-        Sdlmixer.halt_music ();
-        Sdlmixer.free_music song)
+      Sdlmixer.halt_music ();
+      Sdlmixer.free_music song)
   else
     Sdltimer.delay 2000;
     is_song_playing song
@@ -80,6 +80,13 @@ let switch_screens () =
   Sdlmixer.fadeout_music 2.0;
   Sdlmixer.halt_music ();
   Sdlmixer.free_music switch
+
+let update_sounds door_open door_close switch_sc cam_mode =
+  (if (!door_open = true) then (open_door(); door_open := false) else () );
+  (if (!door_close = true) then (close_door(); door_close := false) else ());
+  (if (!switch_sc = true) then (switch_screens(); switch_sc := false) else ());
+  if (!cam_mode = true) then (open_camera_mode(); cam_mode := false) else  ()
+
 
 end
 

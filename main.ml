@@ -4,6 +4,22 @@ open MUSIC_FX
 (* Author: CS 3110 course staff *)
 (* But heavily modified. *)
 
+(*****************************************************************************
+******************************************************************************
+*********************************GLOBAL CONSTANTS*****************************
+******************************************************************************
+******************************************************************************)
+let camera_sound = ref false
+let open_door = ref false
+let close_door = ref false
+let camera_mode = ref false
+
+
+(*****************************************************************************
+******************************************************************************
+************************************* MAIN ***********************************
+******************************************************************************
+******************************************************************************)
 let intro =(
   "\n\n\n\n\n\n" ^
   "Introduction:\n" ^
@@ -46,13 +62,14 @@ let main () =
     else if input = "no" || input = "n" || input = "quit" then "quit"
     else "gibberish"
   in
-  (Engine.main(String.lowercase_ascii fileName))
+  (Engine.main (String.lowercase_ascii fileName) camera_sound)
 
 let _ = Parallel.init()
 let _ = Parallel.run ~where:`Local (fun y -> return (main()))
 let _ = Parallel.run ~where:`Local (fun x -> (return (Music_FX.init_music ())))
+let _ = Parallel.run ~where: `Local (fun z -> return (Music_FX.update_sounds open_door close_door camera_sound camera_mode))
+
 
 let _ =  Scheduler.go ()
-
 
 
