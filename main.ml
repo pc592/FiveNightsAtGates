@@ -53,9 +53,9 @@ let main () =
 
 let _ = Parallel.init()
 let _ = Parallel.run ~where:`Local (fun () -> return (main()))
-let _ = Parallel.run ~where:`Local (fun () -> return (Music_FX.init_music()))
-(* let _ = Parallel.run ~where:`Local (fun () -> return (Music_FX.master_song_controller
-open_door close_door camera_sound cam_mode flag)) *)
+(* let _ = Parallel.run ~where:`Local (fun () -> return (Music_FX.init_music())) *)
+let _ = Parallel.run ~where:`Local (fun () -> return (Music_FX.master_song_controller
+open_door close_door camera_sound cam_mode flag))
 
 let _ =  Scheduler.go(); main()
 
