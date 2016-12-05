@@ -1,6 +1,7 @@
 open Sdlttf
 open Sdltimer
 open Sdlmixer
+open Async.Std
 
 module Music_FX = struct
  let background1 = "Sound_Effects/Background1.wav"
@@ -81,16 +82,16 @@ let switch_screens () =
   Sdlmixer.halt_music ();
   Sdlmixer.free_music switch
 
-let update_sounds door_open door_close switch_sc cam_mode =
+let rec update_sounds door_open door_close switch_sc cam_mode flag =
   (if (!door_open = true) then (open_door(); door_open := false) else () );
   (if (!door_close = true) then (close_door(); door_close := false) else ());
   (if (!switch_sc = true) then (switch_screens(); switch_sc := false) else ());
-  if (!cam_mode = true) then (open_camera_mode(); cam_mode := false) else  ()
+  (if (!cam_mode = true) then (open_camera_mode(); cam_mode := false) else  ());
+  if (!flag = true) then () else update_sounds door_open door_close switch_sc cam_mode flag
 
-let stop_music () =
-  Sdlmixer.halt_music ();
-  Sdlmixer.close_audio;
-  Sdl.quit
+let master_song_controller door_open door_close switch_sc cam_mode flag =
+  Deferred.any [ return (init_music ());
+  return (update_sounds door_open door_close switch_sc cam_mode flag)]
 
 end
 
