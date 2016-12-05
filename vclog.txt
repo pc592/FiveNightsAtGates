@@ -1,3 +1,27 @@
+commit 3739213db17532747b633c1bc507e3a55a248421
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Dec 5 06:34:51 2016 -0500
+
+    ocamlinit and Makefile updates, minor engine.mli edits
+
+ .ocamlinit                       |    1 -
+ CS3110_Project.zip               |  Bin 0 -> 21812303 bytes
+ Makefile                         |    8 +-
+ README.txt                       |    4 +-
+ Sound_Effects/Background1.wav    |  Bin 23708648 -> 0 bytes
+ Sound_Effects/Background2.wav    |  Bin 46747908 -> 0 bytes
+ Sound_Effects/Background3.wav    |  Bin 33115624 -> 0 bytes
+ Sound_Effects/cam_mode.wav       |  Bin 46148 -> 0 bytes
+ Sound_Effects/close_door.wav     |  Bin 114732 -> 0 bytes
+ Sound_Effects/fail_game.wav      |  Bin 33115624 -> 0 bytes
+ Sound_Effects/open_door.wav      |  Bin 147500 -> 0 bytes
+ Sound_Effects/switch_screens.wav |  Bin 34816 -> 0 bytes
+ engine.ml                        |   23 +-
+ engine.mli                       |   27 +-
+ gitlog.txt                       | 3234 ++++++++++++++++++++++++++++++++++++++
+ gui.mli                          |   28 +-
+ 16 files changed, 3281 insertions(+), 44 deletions(-)
+
 commit 93efe49d18fa83fe48ac582ba227a7083082b29b
 Author: Ubuntu <ubuntu@csvm>
 Date:   Mon Dec 5 06:03:50 2016 -0500
