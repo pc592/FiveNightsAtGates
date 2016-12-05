@@ -4,7 +4,7 @@ open Sdlmixer
 open Async.Std
 
 (* [Music_FX] Cretes the background music and the sound effects during game play.
- * It utilizes Sdlmixer to open and play audio files. *)
+ * It utilizes Sdlmixer to open and play audio files as well as stop them, etc.*)
 module Music_FX = struct
 
 (*****************************************************************************
@@ -32,20 +32,23 @@ module Music_FX = struct
 ******************************************************************************
 ******************************************************************************)
 
-(* [is_song_playing] checks if music is still playing every two seconds. If the
- * song is still playing, it will call the function again after two seconds.
+(* [is_song_playing song] checks if music is still playing every two seconds.
+ * If the song is still playing, it will call the function again after two seconds.
  * Otherwise, if the song has finished playing, it will stop everything and free
  * that variable *)
 let rec is_song_playing song =
   if (Sdlmixer.playing_music ()) = false then
      (Sdlmixer.fadeout_music 2.0;
       Sdltimer.delay 2000; (* fade out *)
-      Sdlmixer.halt_music ();
+      Sdlmixer.halt_music (); (* stop song *)
       Sdlmixer.free_music song)
   else
     Sdltimer.delay 2000;
     is_song_playing song
 
+(* [init_song music_filename length] takes in a [music_filename] and its [length]
+ * as input. The [music_filename] is used to load the file and play the song.
+ * [length] helps determine the length of time this song should be played for. *)
 let init_song music_filename length=
   let current_song = Sdlmixer.load_music music_filename in
     Sdlmixer.fadein_music ~loops:1 current_song 1.0; (* change loops later *)
@@ -56,10 +59,15 @@ let init_song music_filename length=
     Sdlmixer.halt_music ();
     Sdlmixer.free_music current_song
 
+(* [start_songs song1 song2 length1 length2] initializes two songs as background
+ * music. Takes in their names and their length. Plays the first input and then
+ * plays the second input song. *)
 let start_songs song1 song2 length1 length2 =
   init_song song1 length1;
   init_song song2 length2
 
+(* [open_door] when this function is called the sound effect for a door opening
+ * is played immediately then it is stopped and the variable is freed. *)
 let open_door () =
   Sdlmixer.open_audio ();
   let door_sound = Sdlmixer.load_music door_open in
@@ -69,6 +77,8 @@ let open_door () =
   Sdlmixer.halt_music ();
   Sdlmixer.free_music door_sound
 
+(* [close_door] when this function is called the sound effect for a door closing
+ * is played immediately then it is stopped and the variable is freed. *)
 let close_door () =
   Sdlmixer.open_audio ();
   let door_sound = Sdlmixer.load_music door_close in
@@ -78,6 +88,8 @@ let close_door () =
   Sdlmixer.halt_music ();
   Sdlmixer.free_music door_sound
 
+(* [open_camera_mode] when this function is called the sound effect for when
+ * camera_mode is toggled. Once played, it is stopped and its variable is freed *)
 let open_camera_mode () =
   Sdlmixer.open_audio ();
   let cam_mode = Sdlmixer.load_music cam_mode_switch in
@@ -87,6 +99,9 @@ let open_camera_mode () =
   Sdlmixer.halt_music ();
   Sdlmixer.free_music cam_mode
 
+(* [switch_screens] when this function is called the sound effect for when
+ * player is switching between room screens when camera mode is on.
+ * Once played, it is stopped and its variable is freed *)
 let switch_screens () =
   Sdlmixer.open_audio ();
   let switch = Sdlmixer.load_music switch_screens in
@@ -103,7 +118,7 @@ let switch_screens () =
 ******************************************************************************)
 
 (* [init_music] initializes the main background music for the game. It plays
- * the music and returns a unit *)
+ * the music and returns a unit. It goes through two different songs then stops *)
 let init_music () =
   Sdl.init [`AUDIO];
   at_exit Sdl.quit;
@@ -123,6 +138,12 @@ let rec update_sounds door_open door_close switch_sc cam_mode flag =
   (if (!cam_mode = true) then (open_camera_mode(); cam_mode := false) else  ());
   if (!flag = true) then () else update_sounds door_open door_close switch_sc cam_mode flag
 
+(* [master_song_controller] takes in 5 different reference variables that act like
+ * flags for whenever the user is performing a specific action. Given that one of
+ * these "flags" are updated to true, the corresponding sound effect or action
+ * will be performed. This function is wrapped by a Deferred.any for whenever the
+ * user decides to exit the game, everything is closed appropriately and the
+ * game can exit flawlessly. *)
 let master_song_controller door_open door_close switch_sc cam_mode flag =
   Deferred.any [ return (init_music ());
   return (update_sounds door_open door_close switch_sc cam_mode flag)]
