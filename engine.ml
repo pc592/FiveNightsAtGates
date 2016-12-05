@@ -597,17 +597,17 @@ let rec eval j st cmd cam_sound =
 ******************************INTERFACE GUI***********************************
 ******************************************************************************
 ******************************************************************************)
-(*[unpack opt] Unpacks a monstr option [opt]. It should never return None as this
-was checked prior to the function*)
+(*[unpack opt] Unpacks a monstr option [opt]. It should never return None as
+ * this was checked prior to the function*)
 let unpack opt =
   match opt with
   | Some x -> x
   | None -> failwith "Something royally bonkers"
 
 (*[update screen roomname filenname hours battery doors] Updates a screen with
-appropriate image [filename] from the directory [roomname]. The update includes
-hours completed as an int [hours], battery percentage as an int [battery], and
-doors bool tuple [doors]. *)
+ * appropriate image [filename] from the directory [roomname]. The update
+ * includes hours completed as an int [hours], battery percentage as an int
+ * [battery], and doors bool tuple [doors]. *)
 let update screen roomname filenname hours battery doors =
   if ((!loopiloop) = 1000) then
     let () = loopiloop := 0 in
@@ -615,8 +615,7 @@ let update screen roomname filenname hours battery doors =
   else ()
 
 (*[file_name st] Constructs the filename of the image to update based off the
-state. (includes whether or not monsters are in the room to update it)
-*)
+ * state. (includes whether or not monsters are in the room to update it). *)
 let file_name st =
   let monster_val = st.room.monsterR in
   let monstername =
@@ -625,10 +624,10 @@ let file_name st =
   in st.room.nameR ^ monstername ^ ".jpg"
 
 (*[go j st screen cam_sound] Practically the REPL and screen updater for the
-engine. Go takes a json file [j] to pass on to future functions. State [st] is
-updated based off of user input and is used to update the screen [screen].
-It also updates reference values to determine when to play a sound [cam_sound]
-*)
+ * engine. Go takes a json file [j] to pass on to future functions. State [st]
+ * is updated based off of user input and is used to update the screen [screen].
+ * It also updates reference values to determine when to play a sound
+ * [cam_sound] *)
 let rec go j st screen cam_sound =
   (* updates the image after set amount of recursive calls*)
   loopiloop := !loopiloop + 1;
@@ -663,8 +662,6 @@ let rec go j st screen cam_sound =
 ******************************************************************************
 ******************************************************************************)
 
-(* [main f] is the main entry point from outside this module
- * to load a game from file [f] and start playing it. *)
 let rec main fileNameIn cam_sound flag =
   let nest_main fileName =
   if fileName = "quit" then () else

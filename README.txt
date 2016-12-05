@@ -51,7 +51,7 @@ make clean
 
 ————————————————————————————————————————————————————————————————
 
-To install for MacOS:
+To install oCamlSDL for MacOS:
 * if you have ports, install with instructions in https://vog.github.io/ocamlsdl-tutorial/
 * if you have brew,
 
@@ -63,7 +63,7 @@ opam install ocamlsdl
 
 ————————————————————————————————————————————————————————————————
 
-Background Music and Sound Credits:
+Background Music and Sound Credits (unimplemented):
 ThrillShowX: https://www.youtube.com/channel/UC6aGkyktim54QjAIVqrx2sg
 Ross Bugden - Music: https://www.youtube.com/channel/UCQKGLOK2FqmVgVwYferltKQ
 FreeSFX: http://www.freesfx.co.uk

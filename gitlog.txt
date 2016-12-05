@@ -1,0 +1,3234 @@
+commit 93efe49d18fa83fe48ac582ba227a7083082b29b
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Dec 5 06:03:50 2016 -0500
+
+    gui mli done
+
+ gui.ml  | 7 +++++++
+ gui.mli | 5 ++++-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
+
+commit bfcec6881f8704a1dc5d5c4c6b9ac6d52adfbadb
+Merge: 93d6cfd 0f83cc2
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Dec 5 06:00:42 2016 -0500
+
+    engine.mli
+
+commit 93d6cfdfddb99b555343f6379abfc333993586dd
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Dec 5 06:00:14 2016 -0500
+
+    engine.mli
+
+ engine.mli | 20 ++++++++++----------
+ main.byte  |  1 -
+ 2 files changed, 10 insertions(+), 11 deletions(-)
+
+commit 0f83cc297b60ed9eea3542b6e4b0f4252f8175da
+Merge: 4a7b94e 3c3f20e
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 05:50:26 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/cgc66/CS3110_Project
+
+commit 4a7b94ef00285dbab738acbc678962d09994be14
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 05:49:40 2016 -0500
+
+    merge conflict
+
+ MUSIC_FX (Documentation).mli |  16 -
+ _build/_digests              |  14 -
+ _build/_log                  |  20 --
+ _build/engine.cmi            | Bin 7824 -> 0 bytes
+ _build/engine.cmo            | Bin 88141 -> 0 bytes
+ _build/engine.ml             | 687 -------------------------------------------
+ _build/engine.ml.depends     |   1 -
+ _build/gui.cmi               | Bin 1318 -> 0 bytes
+ _build/gui.cmo               | Bin 25337 -> 0 bytes
+ _build/gui.ml                | 143 ---------
+ _build/gui.ml.depends        |   1 -
+ _build/gui.mli               |  39 ---
+ _build/gui.mli.depends       |   1 -
+ _build/main.byte             | Bin 4084943 -> 0 bytes
+ _build/main.cmi              | Bin 1255 -> 0 bytes
+ _build/main.cmo              | Bin 3626 -> 0 bytes
+ _build/main.ml               |  52 ----
+ _build/main.ml.depends       |   1 -
+ _build/ocamlc.where          |   1 -
+ engine(doc2).mli             | 168 -----------
+ engine(documentation).mli    | 208 -------------
+ gui.mli                      |   3 +-
+ 22 files changed, 1 insertion(+), 1354 deletions(-)
+
+commit 3c3f20e96af8a0fc7c6fe86b0c7c373d5bcb602c
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Dec 5 05:49:20 2016 -0500
+
+    cleaned build
+
+ _build/_digests          |  14 -
+ _build/_log              |  20 --
+ _build/engine.cmi        | Bin 7824 -> 0 bytes
+ _build/engine.cmo        | Bin 88141 -> 0 bytes
+ _build/engine.ml         | 687 -----------------------------------------------
+ _build/engine.ml.depends |   1 -
+ _build/gui.cmi           | Bin 1318 -> 0 bytes
+ _build/gui.cmo           | Bin 25337 -> 0 bytes
+ _build/gui.ml            | 143 ----------
+ _build/gui.ml.depends    |   1 -
+ _build/gui.mli           |  39 ---
+ _build/gui.mli.depends   |   1 -
+ _build/main.byte         | Bin 4084943 -> 0 bytes
+ _build/main.cmi          | Bin 1255 -> 0 bytes
+ _build/main.cmo          | Bin 3626 -> 0 bytes
+ _build/main.ml           |  52 ----
+ _build/main.ml.depends   |   1 -
+ _build/ocamlc.where      |   1 -
+ 18 files changed, 960 deletions(-)
+
+commit 22637f2348474dd2c66dcf21b3f04bbe01d02857
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Dec 5 05:48:37 2016 -0500
+
+    merge for gui
+
+ engine(doc2).mli          | 168 -------------------------------------
+ engine(documentation).mli | 208 ----------------------------------------------
+ gui.mli                   |   3 +-
+ 3 files changed, 1 insertion(+), 378 deletions(-)
+
+commit 93ccd12d81567ab22fec335027340bc777988f79
+Merge: 84d9a6b bc958c5
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 05:48:32 2016 -0500
+
+    solving conflicts
+
+commit 84d9a6ba419b5f02c73677067faf91710e7ad16e
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 05:46:39 2016 -0500
+
+    modifying music.mli
+
+ MUSIC_FX.mli | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+commit bc958c54cf7a94a86d476a1bb697162e9b8fca11
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Dec 5 05:46:17 2016 -0500
+
+    gui.mli working
+
+ _build/_digests          |  14 +
+ _build/_log              |  20 ++
+ _build/engine.cmi        | Bin 0 -> 7824 bytes
+ _build/engine.cmo        | Bin 0 -> 88141 bytes
+ _build/engine.ml         | 687 +++++++++++++++++++++++++++++++++++++++++++++++
+ _build/engine.ml.depends |   1 +
+ _build/gui.cmi           | Bin 0 -> 1318 bytes
+ _build/gui.cmo           | Bin 0 -> 25337 bytes
+ _build/gui.ml            | 143 ++++++++++
+ _build/gui.ml.depends    |   1 +
+ _build/gui.mli           |  39 +++
+ _build/gui.mli.depends   |   1 +
+ _build/main.byte         | Bin 0 -> 4084943 bytes
+ _build/main.cmi          | Bin 0 -> 1255 bytes
+ _build/main.cmo          | Bin 0 -> 3626 bytes
+ _build/main.ml           |  52 ++++
+ _build/main.ml.depends   |   1 +
+ _build/ocamlc.where      |   1 +
+ engine.ml                |  16 +-
+ gui.ml                   | 269 +++++++++----------
+ gui.mli                  |  10 +-
+ main.byte                |   1 +
+ 22 files changed, 1115 insertions(+), 141 deletions(-)
+
+commit a41a2873a7ce0b93811ecbc1bed4c62a4ffcf201
+Merge: 469fbc3 858dead
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Dec 5 05:41:11 2016 -0500
+
+    engine.mli fixed
+
+commit 469fbc349b7fd7c5eb5eb910bf4ecf452587cbf8
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Dec 5 05:40:48 2016 -0500
+
+    engine.mli fixed
+
+ engine.mli | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
+
+commit 858dead3b5785f5c90e21d39fee748ea47113a9f
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 05:39:58 2016 -0500
+
+    random file removal
+
+ Sound_Effects/engine_test.ml | 255 -------------------------------------------
+ 1 file changed, 255 deletions(-)
+
+commit 10d07b9b57dec0108b766bbace0ad107e52266aa
+Merge: 622d570 157ca6a
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 05:39:02 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/cgc66/CS3110_Project
+
+commit 622d5704c2d3d648f13143fb41e70ba788334401
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 05:38:51 2016 -0500
+
+    music_fx comments
+
+ MUSIC_FX.ml | 31 ++++++++++++++++++++++++++-----
+ 1 file changed, 26 insertions(+), 5 deletions(-)
+
+commit 157ca6a65a8a915a1ddb824a80abe7cb029e1022
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Dec 5 05:30:12 2016 -0500
+
+    accidentally deleted engine.mli....
+
+ engine.mli | 208 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 208 insertions(+)
+
+commit 8645ef1905b0607b2d6a3fac7e598aa076897c51
+Merge: d8da91a 00ea873
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Dec 5 05:27:54 2016 -0500
+
+    deleted extra files
+
+commit d8da91a30951a80d8e5f405b0ac1a471c326b84e
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Dec 5 05:27:23 2016 -0500
+
+    deleted extra files
+
+ Rooms.tar.gz                                       | Bin 17200550 -> 0 bytes
+ Rooms/map.png                                      | Bin 22858 -> 0 bytes
+ Rooms/menu/fail_project.jpg                        | Bin 95959 -> 0 bytes
+ Rooms/menu/project1.jpg                            | Bin 64632 -> 0 bytes
+ Rooms/menu/project2.jpg                            | Bin 64878 -> 0 bytes
+ Rooms/menu/project3.jpg                            | Bin 64657 -> 0 bytes
+ Rooms/menu/project4.jpg                            | Bin 64280 -> 0 bytes
+ Rooms/menu/project5.jpg                            | Bin 46532 -> 0 bytes
+ conniesjunk/__MACOSX/Rooms/._.DS_Store             | Bin 120 -> 0 bytes
+ conniesjunk/__MACOSX/Rooms/._main.jpg              | Bin 40336 -> 0 bytes
+ conniesjunk/__MACOSX/Rooms/CSUG_lab/._CSUG_lab.jpg | Bin 40044 -> 0 bytes
+ .../__MACOSX/Rooms/CSUG_lab/._CSUG_lab_Camel.jpg   | Bin 41799 -> 0 bytes
+ .../__MACOSX/Rooms/Copy_Room/._CopyRoom.jpg        | Bin 52395 -> 0 bytes
+ .../__MACOSX/Rooms/Copy_Room/._CopyRoom_Bed.jpg    | Bin 57745 -> 0 bytes
+ .../__MACOSX/Rooms/Copy_Room/._CopyRoom_Camel.jpg  | Bin 55190 -> 0 bytes
+ conniesjunk/__MACOSX/Rooms/Gimme!/._.DS_Store      | Bin 120 -> 0 bytes
+ conniesjunk/__MACOSX/Rooms/Gimme!/._Gimme!.jpg     | Bin 60360 -> 0 bytes
+ .../__MACOSX/Rooms/Gimme!/._Gimme!_Camel.jpg       | Bin 55817 -> 0 bytes
+ conniesjunk/__MACOSX/Rooms/Gimme!/._Gimme.jpg      | Bin 42137 -> 0 bytes
+ .../__MACOSX/Rooms/Gimme!/._Gimme_Camel.jpg        | Bin 44956 -> 0 bytes
+ .../__MACOSX/Rooms/Grad_Lounge/._Grad_Lounge.jpg   | Bin 47565 -> 0 bytes
+ .../Rooms/Grad_Lounge/._Grad_Lounge_camel.jpg      | Bin 47876 -> 0 bytes
+ conniesjunk/__MACOSX/Rooms/Hallway/._hallway.jpg   | Bin 50543 -> 0 bytes
+ .../__MACOSX/Rooms/Hallway/._hallway_Bed.jpg       | Bin 51815 -> 0 bytes
+ .../__MACOSX/Rooms/Hallway/._hallway_Camel.jpg     | Bin 52490 -> 0 bytes
+ .../__MACOSX/Rooms/Lab_Space/._Lab_Space.jpg       | Bin 51439 -> 0 bytes
+ .../__MACOSX/Rooms/Lab_Space/._Lab_Space_Camel.jpg | Bin 53392 -> 0 bytes
+ .../__MACOSX/Rooms/Lecture_Hall/._Lecture_Hall.jpg | Bin 44325 -> 0 bytes
+ .../Rooms/Lecture_Hall/._Lecture_Hall_Camel.jpg    | Bin 48551 -> 0 bytes
+ .../Rooms/Main_Entrance/._Main_Entrance.jpg        | Bin 36796 -> 0 bytes
+ .../Rooms/Main_Entrance/._Main_Entrance_Bed.jpg    | Bin 42045 -> 0 bytes
+ .../Rooms/Main_Entrance/._Main_Entrance_Camel.jpg  | Bin 50303 -> 0 bytes
+ .../__MACOSX/Rooms/Prof's_Office/._profOffices.jpg | Bin 50995 -> 0 bytes
+ .../Rooms/Prof's_Office/._profOffices_Bed.jpg      | Bin 51514 -> 0 bytes
+ .../Rooms/Prof's_Office/._profOffices_Camel.jpg    | Bin 51346 -> 0 bytes
+ .../__MACOSX/Rooms/Study_Spaces/._.DS_Store        | Bin 120 -> 0 bytes
+ .../__MACOSX/Rooms/Study_Spaces/._StudySpaces.jpg  | Bin 50476 -> 0 bytes
+ .../Rooms/Study_Spaces/._StudySpaces_Bed.jpg       | Bin 53572 -> 0 bytes
+ .../Rooms/Study_Spaces/._StudySpaces_Camel.jpg     | Bin 51059 -> 0 bytes
+ conniesjunk/map2.png                               | Bin 18525 -> 0 bytes
+ engineAsync.ml                                     | 455 ---------------------
+ test.ml                                            |  22 -
+ 42 files changed, 477 deletions(-)
+
+commit 00ea873d8135387323431257042984ef31ce4a54
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 05:23:22 2016 -0500
+
+    commenting and removing unecessary files
+
+ MUSIC_FX.ml                 |   8 ++++++++
+ Rooms/menu/fail_project.jpg | Bin 95959 -> 0 bytes
+ Rooms/menu/project1.jpg     | Bin 64632 -> 0 bytes
+ Rooms/menu/project2.jpg     | Bin 64878 -> 0 bytes
+ Rooms/menu/project3.jpg     | Bin 64657 -> 0 bytes
+ Rooms/menu/project4.jpg     | Bin 64280 -> 0 bytes
+ Rooms/menu/project5.jpg     | Bin 46532 -> 0 bytes
+ 7 files changed, 8 insertions(+)
+
+commit ad895dd198a36db73c56c23daa566a4c0e2540b0
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Dec 5 05:17:47 2016 -0500
+
+    cleaned gui
+
+ gui.ml  | 134 ++++++++++++++++++++++++----------------------------------------
+ gui.mli |   7 ++--
+ 2 files changed, 54 insertions(+), 87 deletions(-)
+
+commit 35f5fee5e2c61058dee65d716ea6e3cf169fd29d
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 05:15:27 2016 -0500
+
+    documenting main.ml
+
+ MUSIC_FX (Documentation).mli | 16 ++++++++++++++++
+ MUSIC_FX.mli                 | 16 ----------------
+ main.ml                      |  8 +++++++-
+ 3 files changed, 23 insertions(+), 17 deletions(-)
+
+commit 260cbd7ed9fa16049095c398f844f828e8cb1e16
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 05:11:36 2016 -0500
+
+    readme edits and more documentation
+
+ GUI (Documentation) .mli      | 24 ------------------------
+ MUSIC_FX (Documentation) .mli | 16 ----------------
+ MUSIC_FX.mli                  | 16 ++++++++++++++++
+ README.txt                    | 23 +++++++++++------------
+ 4 files changed, 27 insertions(+), 52 deletions(-)
+
+commit 09df3db2087fc396b42818a2cc0a3fd02a142d58
+Merge: a5c3a66 a6023a7
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 04:53:55 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/cgc66/CS3110_Project
+
+commit a5c3a66e67eb1820a50e19874f9b4fd98f647efb
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 04:53:30 2016 -0500
+
+    gui module written
+
+ gui.ml  |  9 +++------
+ gui.mli | 36 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 39 insertions(+), 6 deletions(-)
+
+commit a6023a77e36ca539d55f7357a976a9765764eee8
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Dec 5 04:51:37 2016 -0500
+
+    cleaned
+
+ engine.ml | 114 ++++++++++++++++++++++++++------------------------------------
+ main.ml   |  31 ++---------------
+ 2 files changed, 49 insertions(+), 96 deletions(-)
+
+commit 0839b7afe2fb0c99dc2099e5d6f4c31cd9da5ee8
+Merge: 70e5b5c 1d960c1
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Dec 5 04:06:21 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/cgc66/CS3110_Project
+
+commit 70e5b5ceb608b8c9c3a7c6ce5332e534cb57de67
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Dec 5 04:05:55 2016 -0500
+
+    killscreen applied to battery drainage
+
+ README.txt | 10 ++++++++--
+ engine.ml  | 13 +++++++------
+ gui.ml     | 22 +++++++++++++++-------
+ 3 files changed, 30 insertions(+), 15 deletions(-)
+
+commit 1d960c15b12bd1e533f8d7e312059967952e5fd1
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 03:55:38 2016 -0500
+
+    added commentary
+
+ main.ml | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
+
+commit 5bd70f798c5ffb1daaf889f8fd057916dd236152
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 03:50:40 2016 -0500
+
+    update text to have hints
+
+ menu/project1.jpg | Bin 64632 -> 92474 bytes
+ menu/project2.jpg | Bin 64878 -> 80436 bytes
+ menu/project3.jpg | Bin 64657 -> 86704 bytes
+ menu/project4.jpg | Bin 64280 -> 77131 bytes
+ 4 files changed, 0 insertions(+), 0 deletions(-)
+
+commit ecef673f589857c31c9f18d6268e969f933b6d0d
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 03:25:14 2016 -0500
+
+    Made changes for input for images
+
+ menu/menu.jpg     | Bin 224841 -> 226958 bytes
+ menu/project5.jpg | Bin 251247 -> 256823 bytes
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 632ffbec692695a02efd100531911e9272d69d7f
+Merge: 220f0c3 b161842
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 03:13:09 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/cgc66/CS3110_Project
+
+commit 220f0c327979c1c7b86f60d388dfcae290a66e70
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 03:12:57 2016 -0500
+
+    fixing repeated images
+
+ .DS_Store                           | Bin 6148 -> 6148 bytes
+ Rooms/CSOffices/CSOffices.jpg       | Bin 394252 -> 463199 bytes
+ Rooms/CSOffices/CSOffices_Bed.jpg   | Bin 392062 -> 468686 bytes
+ Rooms/CSOffices/CSOffices_Camel.jpg | Bin 395961 -> 459555 bytes
+ 4 files changed, 0 insertions(+), 0 deletions(-)
+
+commit b161842f8c2f287961d28769d2d181d555060114
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Dec 5 03:04:58 2016 -0500
+
+    merge??
+
+ engine.ml | 4 ++--
+ main.ml   | 1 +
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+commit b59277b0cb750ca443dcebfcc15064327e0d9ec5
+Merge: 16e183b fece48d
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 03:03:49 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/cgc66/CS3110_Project
+
+commit 16e183b30a6896dacbe11b4301ba19ddf7a7b969
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 03:03:35 2016 -0500
+
+    fixed wrong image
+
+ Rooms/kitchen/kitchen.jpg | Bin 462989 -> 1119447 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit fece48df7433079c571f1c816afbc81fb1a6db9b
+Merge: 7d43a3d 5896133
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Dec 5 02:56:16 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/cgc66/CS3110_Project
+
+commit 7d43a3d513e476a63d22e17358bd14674fca6263
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Dec 5 02:55:41 2016 -0500
+
+    returned foxy
+
+ GUI (Documentation) .mli |  11 ++++
+ engine.ml                |  51 +++++++++++++++---
+ gui.ml                   | 134 ++++++++++++++++++++++++-----------------------
+ main.ml                  |  12 ++---
+ 4 files changed, 129 insertions(+), 79 deletions(-)
+
+commit 5896133c5711baf51b3b306557517d586e6b3d54
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 02:54:42 2016 -0500
+
+    added missing ducky image and modified music module
+
+ MUSIC_FX.ml                             |  29 +++++++++++++++++++++--------
+ Rooms/profOffices/profOffices_Ducky.jpg | Bin 0 -> 397139 bytes
+ 2 files changed, 21 insertions(+), 8 deletions(-)
+
+commit 50f78b9fa66b61615fc307caeaf5c4543c9f86cf
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 02:41:49 2016 -0500
+
+    documentation and adjusting final things with music module
+
+ MUSIC_FX (Documentation) .mli | 16 ++++++++++++++++
+ MUSIC_FX.ml                   | 13 +++++++++++++
+ main.ml                       |  4 ++--
+ 3 files changed, 31 insertions(+), 2 deletions(-)
+
+commit 564887b6382245b9ad5cf1c56985606e108a1d79
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Dec 5 02:22:09 2016 -0500
+
+    documented foxy
+
+ engine(documentation).mli | 13 +++++++++++++
+ engine.ml                 |  4 ++--
+ 2 files changed, 15 insertions(+), 2 deletions(-)
+
+commit 2c450155ae6be29e7444ef5c817e3a1ca777d6e5
+Merge: f78e02e 54e44a7
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 02:10:38 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/cgc66/CS3110_Project
+
+commit f78e02e97633ccf9791260352e52a1dd2d6af45e
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 02:10:20 2016 -0500
+
+    fixed map again
+
+ map.png | Bin 31546 -> 32189 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 54e44a7db05fc509b4b3b4fffc8d5c5c30f79d7f
+Merge: bc17ef0 33c73b4
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Dec 5 02:04:18 2016 -0500
+
+    merge
+
+commit bc17ef0bc2e9e336c9e5699b66c8db47e6853573
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Dec 5 02:03:26 2016 -0500
+
+    removed music comments
+
+ _build/MUSIC_FX.cmi        | Bin 3276 -> 0 bytes
+ _build/MUSIC_FX.cmo        | Bin 15957 -> 0 bytes
+ _build/MUSIC_FX.ml         |  97 -------
+ _build/MUSIC_FX.ml.depends |   1 -
+ _build/_digests            |  13 -
+ _build/_log                |  25 --
+ _build/engine.cmi          | Bin 8009 -> 0 bytes
+ _build/engine.cmo          | Bin 88298 -> 0 bytes
+ _build/engine.ml           | 655 ---------------------------------------------
+ _build/engine.ml.depends   |   1 -
+ _build/gui.cmi             | Bin 2095 -> 0 bytes
+ _build/gui.cmo             | Bin 25108 -> 0 bytes
+ _build/gui.ml              | 173 ------------
+ _build/gui.ml.depends      |   1 -
+ _build/main.byte           | Bin 45559460 -> 0 bytes
+ _build/main.cmi            | Bin 2420 -> 0 bytes
+ _build/main.cmo            | Bin 9676 -> 0 bytes
+ _build/main.ml             |  60 -----
+ _build/main.ml.depends     |   1 -
+ _build/ocamlc.where        |   1 -
+ engine.ml                  |   8 +-
+ main.byte                  |   1 -
+ 22 files changed, 4 insertions(+), 1033 deletions(-)
+
+commit 33c73b41c0af5661a467377366e8801456fc97af
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 02:01:58 2016 -0500
+
+    sound function
+
+ main.ml | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit 29de346560993c167942ef6c5b507d4e96102ded
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Dec 5 02:01:11 2016 -0500
+
+    removed printouts
+
+ README.txt                 |   2 +-
+ _build/MUSIC_FX.cmi        | Bin 0 -> 3276 bytes
+ _build/MUSIC_FX.cmo        | Bin 0 -> 15957 bytes
+ _build/MUSIC_FX.ml         |  97 +++++++
+ _build/MUSIC_FX.ml.depends |   1 +
+ _build/_digests            |  13 +
+ _build/_log                |  25 ++
+ _build/engine.cmi          | Bin 0 -> 8009 bytes
+ _build/engine.cmo          | Bin 0 -> 88298 bytes
+ _build/engine.ml           | 655 +++++++++++++++++++++++++++++++++++++++++++++
+ _build/engine.ml.depends   |   1 +
+ _build/gui.cmi             | Bin 0 -> 2095 bytes
+ _build/gui.cmo             | Bin 0 -> 25108 bytes
+ _build/gui.ml              | 173 ++++++++++++
+ _build/gui.ml.depends      |   1 +
+ _build/main.byte           | Bin 0 -> 45559460 bytes
+ _build/main.cmi            | Bin 0 -> 2420 bytes
+ _build/main.cmo            | Bin 0 -> 9676 bytes
+ _build/main.ml             |  60 +++++
+ _build/main.ml.depends     |   1 +
+ _build/ocamlc.where        |   1 +
+ engine.ml                  |  75 ++----
+ main.byte                  |   1 +
+ 23 files changed, 1049 insertions(+), 57 deletions(-)
+
+commit 16213e1431e91ad966d8a192333479dd7f586ec2
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 02:01:09 2016 -0500
+
+    warning image
+
+ menu/not_for_losers.jpg | Bin 0 -> 92193 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 6bf689cdf3c1478fa62b0f29cbb381613a6122f5
+Merge: 2918447 8c2b785
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 01:52:20 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/cgc66/CS3110_Project
+
+commit 2918447670ebbc57b61c82835d9cd23914d08942
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 01:52:03 2016 -0500
+
+    Fixed error on map and fixed songs
+
+ main.ml |   9 +++++----
+ map.png | Bin 31444 -> 31546 bytes
+ 2 files changed, 5 insertions(+), 4 deletions(-)
+
+commit 8c2b7859efb79cbe66bd4fb7659b604e79b5e66e
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Dec 5 01:47:00 2016 -0500
+
+    json change for camel2.0
+
+ conniesjunk/map2.png | Bin 0 -> 18525 bytes
+ engine.ml            |   7 ++++---
+ gui.ml               |  39 +++++++++++++++++++++++++++------------
+ map.json             |   2 +-
+ map2.png             | Bin 18525 -> 0 bytes
+ menu/finish_game.jpg | Bin 251247 -> 0 bytes
+ menu/project1.jpg    | Bin 53059 -> 64632 bytes
+ menu/project2.jpg    | Bin 53388 -> 64878 bytes
+ menu/project3.jpg    | Bin 53471 -> 64657 bytes
+ menu/project4.jpg    | Bin 53088 -> 64280 bytes
+ menu/project5.jpg    | Bin 46532 -> 251247 bytes
+ 11 files changed, 32 insertions(+), 16 deletions(-)
+
+commit 076bcc076a9b2f2eaa37a7aa3aab120bf5b33eee
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 01:35:58 2016 -0500
+
+    resize AGAIN
+
+ map.png | Bin 47739 -> 31444 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 1962c0451fa080604d04e5bc386f721606422772
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 01:34:25 2016 -0500
+
+    resize again
+
+ map.png | Bin 29795 -> 47739 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 61c925775893eb3a2564af422c00fa16f7c26a5a
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 01:31:54 2016 -0500
+
+    resize map
+
+ map.png | Bin 30638 -> 29795 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 4a978ff09c5264de678783319c49d8bf1f7ac0b0
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 01:28:40 2016 -0500
+
+    added new map
+
+ map.png | Bin 0 -> 30638 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit ab0ccc043b0f386a5401b57a7f7f7bc2ea218bcd
+Merge: c421d8f 5c4c583
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 01:06:22 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/cgc66/CS3110_Project
+
+commit c421d8f60f11642146c700dd912b94429b6d0db7
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 01:06:09 2016 -0500
+
+    added more edits to begin level screens
+
+ Rooms/menu/project1.jpg | Bin 53059 -> 64632 bytes
+ Rooms/menu/project2.jpg | Bin 53388 -> 64878 bytes
+ Rooms/menu/project3.jpg | Bin 53471 -> 64657 bytes
+ Rooms/menu/project4.jpg | Bin 53088 -> 64280 bytes
+ 4 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 5c4c583e720faf8ecd93c8fd0f17e53d3f026559
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Dec 5 01:05:41 2016 -0500
+
+    merging stough
+
+ engine.ml             |   4 +++-
+ gui.ml                |  11 +++++++++++
+ menu/fail_project.jpg | Bin 0 -> 95959 bytes
+ menu/project1.jpg     | Bin 0 -> 53059 bytes
+ menu/project2.jpg     | Bin 0 -> 53388 bytes
+ menu/project3.jpg     | Bin 0 -> 53471 bytes
+ menu/project4.jpg     | Bin 0 -> 53088 bytes
+ menu/project5.jpg     | Bin 0 -> 46532 bytes
+ 8 files changed, 14 insertions(+), 1 deletion(-)
+
+commit a8f7ae3896f967bf23738dfacc7aa8f0ee03a848
+Merge: 61eff1e fc96dc9
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Dec 5 00:41:06 2016 -0500
+
+    merge
+
+commit 61eff1e1c39f563d5f548b20f38f124a6a04c234
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Dec 5 00:40:22 2016 -0500
+
+    monsterKill
+
+ engine(documentation).mli |  3 ++-
+ engine.ml                 | 22 ++++++++++++++++++++--
+ 2 files changed, 22 insertions(+), 3 deletions(-)
+
+commit fc96dc9d54f8b9b79ed72cfaf25cb1d3c00553d7
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 00:38:00 2016 -0500
+
+    Trying to properly quit with music
+
+ MUSIC_FX.ml | 4 ++++
+ main.ml     | 9 ++++-----
+ 2 files changed, 8 insertions(+), 5 deletions(-)
+
+commit 69b1cba4abb033e5064c0ad1d648d1535dc8a6b5
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Dec 5 00:20:18 2016 -0500
+
+    added fail_game song and changes to music and engine
+
+ MUSIC_FX.ml                 |   9 +++------
+ Sound_Effects/fail_game.wav | Bin 0 -> 33115624 bytes
+ engine.ml                   |   6 +++---
+ main.ml                     |   4 ++--
+ 4 files changed, 8 insertions(+), 11 deletions(-)
+
+commit caad4b88bb69b539ecd2ffd64e16ea48cb6ae73c
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Dec 5 00:01:54 2016 -0500
+
+    whoops I pushed garbage
+
+ engine.ml | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
+
+commit e94141f3ed27e6c2a8eb4075f0c5a991f15ca3f6
+Merge: c7136e5 7123bd6
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Sun Dec 4 23:54:16 2016 -0500
+
+    merge
+
+commit c7136e55a31b7a6489b17732e105cac70027254e
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Sun Dec 4 23:52:21 2016 -0500
+
+    merge
+
+ engine(documentation).mli |  3 +--
+ engine.ml                 | 26 +++++++++++++++-----------
+ map.json                  | 12 ++++++++++--
+ 3 files changed, 26 insertions(+), 15 deletions(-)
+
+commit 7123bd6f4cc4d07c8025f1310ab81614bffd71c4
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Dec 4 23:50:44 2016 -0500
+
+    doors close
+
+ _build/MUSIC_FX.cmi        | Bin 1806 -> 0 bytes
+ _build/MUSIC_FX.cmo        | Bin 13168 -> 0 bytes
+ _build/MUSIC_FX.ml         |  96 -------
+ _build/MUSIC_FX.ml.depends |   1 -
+ _build/_digests            |  13 -
+ _build/_log                |  20 --
+ _build/engine.cmi          | Bin 7884 -> 0 bytes
+ _build/engine.cmo          | Bin 91439 -> 0 bytes
+ _build/engine.ml           | 650 ---------------------------------------------
+ _build/engine.ml.depends   |   1 -
+ _build/gui.cmi             | Bin 1800 -> 0 bytes
+ _build/gui.cmo             | Bin 20480 -> 0 bytes
+ _build/gui.ml              | 147 ----------
+ _build/gui.ml.depends      |   1 -
+ _build/main.byte           | Bin 45193849 -> 0 bytes
+ _build/main.cmi            | Bin 2379 -> 0 bytes
+ _build/main.cmo            | Bin 8252 -> 0 bytes
+ _build/main.ml             |  61 -----
+ _build/main.ml.depends     |   1 -
+ _build/ocamlc.where        |   1 -
+ main.byte                  |   1 -
+ 21 files changed, 993 deletions(-)
+
+commit fb74d4899b6c2cbff90b84b7bf7d7a239842fd29
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Dec 4 23:50:11 2016 -0500
+
+    doors close
+
+ Rooms/gradLounge/gradLounge_Camel.jpg | Bin 0 -> 448756 bytes
+ Rooms/gradLounge/gradLounge_camel.jpg | Bin 448756 -> 0 bytes
+ Rooms/menu/finish_game.jpg            | Bin 251247 -> 0 bytes
+ Rooms/menu/instructions.jpg           | Bin 281282 -> 0 bytes
+ Rooms/menu/menu.jpg                   | Bin 224841 -> 0 bytes
+ Rooms/menu/story.jpg                  | Bin 350885 -> 0 bytes
+ _build/MUSIC_FX.cmi                   | Bin 0 -> 1806 bytes
+ _build/MUSIC_FX.cmo                   | Bin 0 -> 13168 bytes
+ _build/MUSIC_FX.ml                    |  96 +++++
+ _build/MUSIC_FX.ml.depends            |   1 +
+ _build/_digests                       |  13 +
+ _build/_log                           |  20 ++
+ _build/engine.cmi                     | Bin 0 -> 7884 bytes
+ _build/engine.cmo                     | Bin 0 -> 91439 bytes
+ _build/engine.ml                      | 650 ++++++++++++++++++++++++++++++++++
+ _build/engine.ml.depends              |   1 +
+ _build/gui.cmi                        | Bin 0 -> 1800 bytes
+ _build/gui.cmo                        | Bin 0 -> 20480 bytes
+ _build/gui.ml                         | 147 ++++++++
+ _build/gui.ml.depends                 |   1 +
+ _build/main.byte                      | Bin 0 -> 45193849 bytes
+ _build/main.cmi                       | Bin 0 -> 2379 bytes
+ _build/main.cmo                       | Bin 0 -> 8252 bytes
+ _build/main.ml                        |  61 ++++
+ _build/main.ml.depends                |   1 +
+ _build/ocamlc.where                   |   1 +
+ engine.ml                             |  94 +----
+ gui.ml                                |  17 +-
+ main.byte                             |   1 +
+ main.ml                               |  24 +-
+ map.json                              |   2 +-
+ menu/finish_game.jpg                  | Bin 0 -> 251247 bytes
+ menu/instructions.jpg                 | Bin 0 -> 281282 bytes
+ menu/menu.jpg                         | Bin 0 -> 224841 bytes
+ menu/story.jpg                        | Bin 0 -> 350885 bytes
+ 35 files changed, 1025 insertions(+), 105 deletions(-)
+
+commit fcbf135c74088b2012b310988884d71a72f5f881
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Sun Dec 4 23:14:35 2016 -0500
+
+    Added more pictures for gui and trying to fix quit for music
+
+ Rooms/menu/fail_project.jpg | Bin 0 -> 95959 bytes
+ Rooms/menu/project1.jpg     | Bin 0 -> 53059 bytes
+ Rooms/menu/project2.jpg     | Bin 0 -> 53388 bytes
+ Rooms/menu/project3.jpg     | Bin 0 -> 53471 bytes
+ Rooms/menu/project4.jpg     | Bin 0 -> 53088 bytes
+ Rooms/menu/project5.jpg     | Bin 0 -> 46532 bytes
+ main.ml                     |   2 +-
+ 7 files changed, 1 insertion(+), 1 deletion(-)
+
+commit cb1013aa5f418a4ad9efbedd4ff2b1d39cf2a335
+Merge: f7f3706 fa5160f
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Sun Dec 4 23:10:04 2016 -0500
+
+    foxy finished?
+
+commit f7f370659f02b082f3c5e208eaf67fa75ba75e3b
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Sun Dec 4 23:04:08 2016 -0500
+
+    foxy done?
+
+ engine.ml | 76 ++++++++++++++++++++++++++++++++++++++++++++++++++++++---------
+ map.json  | 10 ++++++++-
+ 2 files changed, 75 insertions(+), 11 deletions(-)
+
+commit fa5160fab52381b82e90da846a846d6230e82252
+Merge: 60c3dd3 872906e
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Sun Dec 4 22:31:15 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/cgc66/CS3110_Project
+
+commit 60c3dd3447ff31d8ba6ad8c23e5a869cef533865
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Sun Dec 4 22:30:56 2016 -0500
+
+    main menu screens plus monsters and end game screns, etc.
+
+ Rooms/.DS_Store                    | Bin 6148 -> 6148 bytes
+ Rooms/gameOver/game_over_Bed.jpg   | Bin 0 -> 500331 bytes
+ Rooms/gameOver/game_over_Camel.jpg | Bin 0 -> 488967 bytes
+ Rooms/gameOver/game_over_Ducky.jpg | Bin 0 -> 462207 bytes
+ Rooms/menu/finish_game.jpg         | Bin 0 -> 251247 bytes
+ 5 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 872906e0cb90249c41cda90e1beca145fc222a1b
+Merge: decab97 2e7c1a4
+Author: Ruoyan Qin <rq25@cornell.edu>
+Date:   Sun Dec 4 21:45:05 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/cgc66/CS3110_Project
+
+commit decab97a99c1e04fa471258e3c5a71b781f4f26e
+Author: Ruoyan Qin <rq25@cornell.edu>
+Date:   Sun Dec 4 21:44:57 2016 -0500
+
+    added more tests
+
+ engine_test.ml | 144 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 144 insertions(+)
+
+commit 2e7c1a4a6b98b7ea4d716984bf23dfe3d8b537c0
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Sun Dec 4 21:32:19 2016 -0500
+
+    Added a function that will close all audio when quitting
+
+ MUSIC_FX.ml |  4 ++++
+ engine.ml   | 14 +++++++-------
+ 2 files changed, 11 insertions(+), 7 deletions(-)
+
+commit b35398257d1e5903886fb3c7cbb1782b14d1cfc8
+Merge: 0b6a4d9 2fc96e6
+Author: Ruoyan Qin <rq25@cornell.edu>
+Date:   Sun Dec 4 21:31:24 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/cgc66/CS3110_Project
+
+commit 0b6a4d912e0102a274a58ff54c5f7083ac751c6b
+Author: Ruoyan Qin <rq25@cornell.edu>
+Date:   Sun Dec 4 21:31:15 2016 -0500
+
+    added some cmd tests
+
+ engine_test.ml | 294 ++++++++++++++++++++++++++++-----------------------------
+ 1 file changed, 144 insertions(+), 150 deletions(-)
+
+commit 2fc96e6260ba2ab23564e5c1c44a758fa1cec3c5
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Dec 4 21:27:51 2016 -0500
+
+    modified looks of everything
+
+ Rooms/ClarksonOffice/ClarksonOffice.jpg           | Bin 0 -> 226347 bytes
+ Rooms/ClarksonOffice/ClarksonOffice_Ducky.jpg     | Bin 0 -> 231774 bytes
+ Rooms/Clarksons_Office/Clarksons_Office.jpg       | Bin 226347 -> 0 bytes
+ Rooms/Clarksons_Office/Clarksons_Office_Ducky.jpg | Bin 231774 -> 0 bytes
+ gui.ml                                            |  28 +++++++++++++++-------
+ map2.png                                          | Bin 13613 -> 18525 bytes
+ 6 files changed, 20 insertions(+), 8 deletions(-)
+
+commit 10d90683377af5a9fa5c4e2a3dd09073db3d3f97
+Merge: 313b0c9 fab562e
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Sun Dec 4 21:21:06 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/cgc66/CS3110_Project
+
+commit 313b0c99b476202223083b086ee936222c28d733
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Sun Dec 4 21:20:54 2016 -0500
+
+    added screens for main menu, instructions, and story
+
+ .DS_Store                   | Bin 6148 -> 6148 bytes
+ Rooms/menu/instructions.jpg | Bin 0 -> 281282 bytes
+ Rooms/menu/menu.jpg         | Bin 0 -> 224841 bytes
+ Rooms/menu/story.jpg        | Bin 0 -> 350885 bytes
+ 4 files changed, 0 insertions(+), 0 deletions(-)
+
+commit fab562e00aa4f98b3e6eca4adf6425960f440ad4
+Merge: b8b82f2 3e1c2e6
+Author: Ruoyan Qin <rq25@cornell.edu>
+Date:   Sun Dec 4 21:15:39 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/cgc66/CS3110_Project
+
+commit b8b82f24185b3d6f2a7bd890994c21b6c8ad699d
+Author: Ruoyan Qin <rq25@cornell.edu>
+Date:   Sun Dec 4 21:15:30 2016 -0500
+
+    before adding eval tests
+
+ _build/_digests                                    |  10 -
+ _build/_log                                        |  16 -
+ _build/engine.cmi                                  | Bin 7586 -> 0 bytes
+ _build/engine.cmo                                  | Bin 89725 -> 0 bytes
+ _build/engine.ml                                   | 650 ---------------------
+ _build/engine.ml.depends                           |   1 -
+ _build/engine_test.byte                            | Bin 4983142 -> 0 bytes
+ _build/engine_test.cmi                             | Bin 1990 -> 0 bytes
+ _build/engine_test.cmo                             | Bin 14274 -> 0 bytes
+ _build/engine_test.ml                              | 395 -------------
+ _build/engine_test.ml.depends                      |   1 -
+ _build/gui.cmi                                     | Bin 1681 -> 0 bytes
+ _build/gui.cmo                                     | Bin 17873 -> 0 bytes
+ _build/gui.ml                                      | 130 -----
+ _build/gui.ml.depends                              |   1 -
+ ...it- test suite-Ruoyans-MacBook-Pro.local#00.log |  77 ---
+ ...it- test suite-Ruoyans-MacBook-Pro.local#01.log |   6 -
+ ...it- test suite-Ruoyans-MacBook-Pro.local#02.log |   6 -
+ _build/oUnit- test suite.cache                     | Bin 385 -> 0 bytes
+ _build/ocamlc.where                                |   1 -
+ engine_test.byte                                   |   1 -
+ engine_test.ml                                     |  17 +-
+ 22 files changed, 15 insertions(+), 1297 deletions(-)
+
+commit bbe2b4f34b32e4141553d77c7b885669d81bc0ae
+Author: Ruoyan Qin <rq25@cornell.edu>
+Date:   Sun Dec 4 20:57:38 2016 -0500
+
+    added level0 & level1 json tests
+
+ Makefile                                           |   4 +
+ Sound_Effects/engine_test.ml                       | 255 ++++++++
+ _build/_digests                                    |  10 +
+ _build/_log                                        |  16 +
+ _build/engine.cmi                                  | Bin 0 -> 7586 bytes
+ _build/engine.cmo                                  | Bin 0 -> 89725 bytes
+ _build/engine.ml                                   | 650 +++++++++++++++++++++
+ _build/engine.ml.depends                           |   1 +
+ _build/engine_test.byte                            | Bin 0 -> 4983142 bytes
+ _build/engine_test.cmi                             | Bin 0 -> 1990 bytes
+ _build/engine_test.cmo                             | Bin 0 -> 14274 bytes
+ _build/engine_test.ml                              | 395 +++++++++++++
+ _build/engine_test.ml.depends                      |   1 +
+ _build/gui.cmi                                     | Bin 0 -> 1681 bytes
+ _build/gui.cmo                                     | Bin 0 -> 17873 bytes
+ _build/gui.ml                                      | 130 +++++
+ _build/gui.ml.depends                              |   1 +
+ ...it- test suite-Ruoyans-MacBook-Pro.local#00.log |  77 +++
+ ...it- test suite-Ruoyans-MacBook-Pro.local#01.log |   6 +
+ ...it- test suite-Ruoyans-MacBook-Pro.local#02.log |   6 +
+ _build/oUnit- test suite.cache                     | Bin 0 -> 385 bytes
+ _build/ocamlc.where                                |   1 +
+ engine_test.byte                                   |   1 +
+ engine_test.ml                                     | 395 +++++++++++++
+ test.json                                          | 168 +++++-
+ 25 files changed, 2099 insertions(+), 18 deletions(-)
+
+commit cb0ac2fa886a4c58175a3ea9f882466656427b87
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Dec 4 19:48:31 2016 -0500
+
+    gui menu option
+
+ gui.ml | 40 +++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 39 insertions(+), 1 deletion(-)
+
+commit 206ba6605cb3be6355989dbe3eaec5eca7c022db
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Sun Dec 4 19:46:54 2016 -0500
+
+    all pictures for new monster
+
+ Rooms/copyRoom/copyRoom_Ducky.jpg     | Bin 0 -> 422341 bytes
+ Rooms/gradLounge/gradLounge_Ducky.jpg | Bin 0 -> 450803 bytes
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+
+commit f908e1469b69995b53b4c8539409363c56795bb7
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Sun Dec 4 19:40:23 2016 -0500
+
+    added new monster and more rooms, added sound effects along with background music
+
+ MUSIC_FX.ml                                       |  11 +++++++++--
+ Rooms/.DS_Store                                   | Bin 10244 -> 6148 bytes
+ Rooms/Clarksons_Office/Clarksons_Office.jpg       | Bin 0 -> 226347 bytes
+ Rooms/Clarksons_Office/Clarksons_Office_Ducky.jpg | Bin 0 -> 231774 bytes
+ Rooms/Gimme!/Gimme!_Ducky.jpg                     | Bin 0 -> 274384 bytes
+ Rooms/kitchen/kitchen_Bed.jpg                     | Bin 468519 -> 375860 bytes
+ Rooms/kitchen/kitchen_Camel.jpg                   | Bin 424993 -> 505418 bytes
+ engine.ml                                         |  21 +++++++++++----------
+ main.ml                                           |  21 +++++++++++++++++++--
+ 9 files changed, 39 insertions(+), 14 deletions(-)
+
+commit 45b96754964feea7314393993b9bfbdd72c31abb
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Sun Dec 4 17:55:20 2016 -0500
+
+    Fixed background music problem, changed makefile, added async_parallel
+
+ MUSIC_FX.ml | 16 +++++++++-------
+ Makefile    |  2 +-
+ main.ml     | 15 +++++++++------
+ 3 files changed, 19 insertions(+), 14 deletions(-)
+
+commit a540b838f4216a1c90c33e9f23cf5d69010b80db
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Dec 4 16:37:14 2016 -0500
+
+    moved scheduler to bottom in main
+
+ main.ml | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit 0c87d7a58f85835b2c977bb4b6363362af939d56
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Dec 4 16:36:12 2016 -0500
+
+    adding async for music control
+
+ Makefile                                           |   4 ++--
+ Rooms/Gimme!/Gimme.jpg                             | Bin 1746169 -> 0 bytes
+ Rooms/Gimme!/Gimme_Camel.jpg                       | Bin 1765589 -> 0 bytes
+ Rooms/Main/main_both_closed.jpg                    | Bin 215275 -> 0 bytes
+ Rooms/Main/main_left_closed.jpg                    | Bin 211760 -> 0 bytes
+ Rooms/Main/main_right_closed.jpg                   | Bin 212612 -> 0 bytes
+ Rooms/kitchen/kitchen.jpg                          | Bin 0 -> 462989 bytes
+ Rooms/kitchen/kitchen_Bed.jpg                      | Bin 0 -> 468519 bytes
+ Rooms/kitchen/kitchen_Camel.jpg                    | Bin 0 -> 424993 bytes
+ Rooms/main.jpg                                     | Bin 208905 -> 0 bytes
+ Rooms/main/main.jpg                                | Bin 0 -> 208905 bytes
+ Rooms/main/main_both_closed.jpg                    | Bin 0 -> 215275 bytes
+ Rooms/main/main_left_closed.jpg                    | Bin 0 -> 211760 bytes
+ Rooms/main/main_right_closed.jpg                   | Bin 0 -> 212612 bytes
+ conniesjunk/__MACOSX/Rooms/._.DS_Store             | Bin 0 -> 120 bytes
+ conniesjunk/__MACOSX/Rooms/._main.jpg              | Bin 0 -> 40336 bytes
+ conniesjunk/__MACOSX/Rooms/CSUG_lab/._CSUG_lab.jpg | Bin 0 -> 40044 bytes
+ .../__MACOSX/Rooms/CSUG_lab/._CSUG_lab_Camel.jpg   | Bin 0 -> 41799 bytes
+ .../__MACOSX/Rooms/Copy_Room/._CopyRoom.jpg        | Bin 0 -> 52395 bytes
+ .../__MACOSX/Rooms/Copy_Room/._CopyRoom_Bed.jpg    | Bin 0 -> 57745 bytes
+ .../__MACOSX/Rooms/Copy_Room/._CopyRoom_Camel.jpg  | Bin 0 -> 55190 bytes
+ conniesjunk/__MACOSX/Rooms/Gimme!/._.DS_Store      | Bin 0 -> 120 bytes
+ conniesjunk/__MACOSX/Rooms/Gimme!/._Gimme!.jpg     | Bin 0 -> 60360 bytes
+ .../__MACOSX/Rooms/Gimme!/._Gimme!_Camel.jpg       | Bin 0 -> 55817 bytes
+ conniesjunk/__MACOSX/Rooms/Gimme!/._Gimme.jpg      | Bin 0 -> 42137 bytes
+ .../__MACOSX/Rooms/Gimme!/._Gimme_Camel.jpg        | Bin 0 -> 44956 bytes
+ .../__MACOSX/Rooms/Grad_Lounge/._Grad_Lounge.jpg   | Bin 0 -> 47565 bytes
+ .../Rooms/Grad_Lounge/._Grad_Lounge_camel.jpg      | Bin 0 -> 47876 bytes
+ conniesjunk/__MACOSX/Rooms/Hallway/._hallway.jpg   | Bin 0 -> 50543 bytes
+ .../__MACOSX/Rooms/Hallway/._hallway_Bed.jpg       | Bin 0 -> 51815 bytes
+ .../__MACOSX/Rooms/Hallway/._hallway_Camel.jpg     | Bin 0 -> 52490 bytes
+ .../__MACOSX/Rooms/Lab_Space/._Lab_Space.jpg       | Bin 0 -> 51439 bytes
+ .../__MACOSX/Rooms/Lab_Space/._Lab_Space_Camel.jpg | Bin 0 -> 53392 bytes
+ .../__MACOSX/Rooms/Lecture_Hall/._Lecture_Hall.jpg | Bin 0 -> 44325 bytes
+ .../Rooms/Lecture_Hall/._Lecture_Hall_Camel.jpg    | Bin 0 -> 48551 bytes
+ .../Rooms/Main_Entrance/._Main_Entrance.jpg        | Bin 0 -> 36796 bytes
+ .../Rooms/Main_Entrance/._Main_Entrance_Bed.jpg    | Bin 0 -> 42045 bytes
+ .../Rooms/Main_Entrance/._Main_Entrance_Camel.jpg  | Bin 0 -> 50303 bytes
+ .../__MACOSX/Rooms/Prof's_Office/._profOffices.jpg | Bin 0 -> 50995 bytes
+ .../Rooms/Prof's_Office/._profOffices_Bed.jpg      | Bin 0 -> 51514 bytes
+ .../Rooms/Prof's_Office/._profOffices_Camel.jpg    | Bin 0 -> 51346 bytes
+ .../__MACOSX/Rooms/Study_Spaces/._.DS_Store        | Bin 0 -> 120 bytes
+ .../__MACOSX/Rooms/Study_Spaces/._StudySpaces.jpg  | Bin 0 -> 50476 bytes
+ .../Rooms/Study_Spaces/._StudySpaces_Bed.jpg       | Bin 0 -> 53572 bytes
+ .../Rooms/Study_Spaces/._StudySpaces_Camel.jpg     | Bin 0 -> 51059 bytes
+ engine.ml                                          |  16 ++++++++++---
+ gui.ml                                             |  26 ++++++++-------------
+ main.ml                                            |  15 +++++++++---
+ map2.png                                           | Bin 0 -> 13613 bytes
+ 49 files changed, 37 insertions(+), 24 deletions(-)
+
+commit 3e1c2e6ba59add5c4b06eef0a5ebe83f2a5afc16
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Sun Dec 4 15:59:41 2016 -0500
+
+    partial foxy
+
+ README.txt |  2 ++
+ engine.ml  | 15 +++++++++++++--
+ 2 files changed, 15 insertions(+), 2 deletions(-)
+
+commit be85fe20e938e1d8541a2b780c1086adfb347073
+Merge: eb69536 cb0ac2f
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Sun Dec 4 15:46:54 2016 -0500
+
+    foxy
+
+commit eb69536f6071b131b8677969f7f4d7e3cf9ef6c2
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Sun Dec 4 15:46:08 2016 -0500
+
+    foxy
+
+ engine.ml | 3 ---
+ 1 file changed, 3 deletions(-)
+
+commit 7048c1e5cb5245c166a7a37e807332b38d9348f7
+Merge: c0d4777 ba4bdbe
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Sun Dec 4 15:38:57 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/cgc66/CS3110_Project
+
+commit c0d47775a1e89a8f9644c7021be30d8222eec76f
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Sun Dec 4 15:38:42 2016 -0500
+
+    added laptop, closed/open doors to main picture
+
+ Rooms/Main/main_both_closed.jpg  | Bin 0 -> 215275 bytes
+ Rooms/Main/main_left_closed.jpg  | Bin 0 -> 211760 bytes
+ Rooms/Main/main_right_closed.jpg | Bin 0 -> 212612 bytes
+ Rooms/main.jpg                   | Bin 182177 -> 208905 bytes
+ 4 files changed, 0 insertions(+), 0 deletions(-)
+
+commit ba4bdbe1026544b9587fe08a8eddaf789d8e90e7
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Sun Dec 4 15:37:40 2016 -0500
+
+    can't camera into main
+
+ engine.ml | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+
+commit f6627cffc8f4c21e4749fcfd0bffcd53d0046fd4
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Sun Dec 4 15:16:31 2016 -0500
+
+    changed image names
+
+ Rooms.tar.gz                                | Bin 42923862 -> 17200550 bytes
+ Rooms/.DS_Store                             | Bin 0 -> 10244 bytes
+ Rooms/CSOffices/CSOffices.jpg               | Bin 0 -> 394252 bytes
+ Rooms/CSOffices/CSOffices_Bed.jpg           | Bin 0 -> 392062 bytes
+ Rooms/CSOffices/CSOffices_Camel.jpg         | Bin 0 -> 395961 bytes
+ Rooms/CSUGLab/CSUGLab.jpg                   | Bin 0 -> 393260 bytes
+ Rooms/CSUGLab/CSUGLab_Bed.jpg               | Bin 0 -> 398557 bytes
+ Rooms/CSUGLab/CSUGLab_Camel.jpg             | Bin 0 -> 408342 bytes
+ Rooms/CSUG_lab/CSUG_lab.jpg                 | Bin 393260 -> 0 bytes
+ Rooms/CSUG_lab/CSUG_lab_Bed.jpg             | Bin 398557 -> 0 bytes
+ Rooms/CSUG_lab/CSUG_lab_Camel.jpg           | Bin 408342 -> 0 bytes
+ Rooms/CS_Offices/CSOffices.jpg              | Bin 394252 -> 0 bytes
+ Rooms/CS_Offices/CSOffices_Bed.jpg          | Bin 392062 -> 0 bytes
+ Rooms/CS_Offices/CSOffices_Camel.jpg        | Bin 395961 -> 0 bytes
+ Rooms/Gimme!/.DS_Store                      | Bin 0 -> 6148 bytes
+ Rooms/Gimme!/Gimme.jpg                      | Bin 0 -> 1746169 bytes
+ Rooms/Gimme!/Gimme_Camel.jpg                | Bin 0 -> 1765589 bytes
+ Rooms/Grad_Lounge/Grad_Lounge.jpg           | Bin 448215 -> 0 bytes
+ Rooms/Grad_Lounge/Grad_Lounge_Bed.jpg       | Bin 450704 -> 0 bytes
+ Rooms/Grad_Lounge/Grad_Lounge_camel.jpg     | Bin 448756 -> 0 bytes
+ Rooms/Lab_Space/Lab_Space.jpg               | Bin 462989 -> 0 bytes
+ Rooms/Lab_Space/Lab_Space_Bed.jpg           | Bin 468519 -> 0 bytes
+ Rooms/Lab_Space/Lab_Space_Camel.jpg         | Bin 424993 -> 0 bytes
+ Rooms/Lecture_Hall/Lecture_Hall.jpg         | Bin 453933 -> 0 bytes
+ Rooms/Lecture_Hall/Lecture_Hall_Bed.jpg     | Bin 457405 -> 0 bytes
+ Rooms/Lecture_Hall/Lecture_Hall_Camel.jpg   | Bin 382708 -> 0 bytes
+ Rooms/Main_Entrance/Main_Entrance.jpg       | Bin 427078 -> 0 bytes
+ Rooms/Main_Entrance/Main_Entrance_Bed.jpg   | Bin 436589 -> 0 bytes
+ Rooms/Main_Entrance/Main_Entrance_Camel.jpg | Bin 437415 -> 0 bytes
+ Rooms/copyRoom/copyRoom.jpg                 | Bin 0 -> 414135 bytes
+ Rooms/copyRoom/copyRoom_Bed.jpg             | Bin 0 -> 431291 bytes
+ Rooms/copyRoom/copyRoom_Camel.jpg           | Bin 0 -> 426235 bytes
+ Rooms/gradLounge/gradLounge.jpg             | Bin 0 -> 448215 bytes
+ Rooms/gradLounge/gradLounge_Bed.jpg         | Bin 0 -> 450704 bytes
+ Rooms/gradLounge/gradLounge_camel.jpg       | Bin 0 -> 448756 bytes
+ Rooms/hallway/hallway.jpg                   | Bin 0 -> 400124 bytes
+ Rooms/hallway/hallway_Bed.jpg               | Bin 0 -> 404442 bytes
+ Rooms/hallway/hallway_Camel.jpg             | Bin 0 -> 403244 bytes
+ Rooms/labSpace/labSpace.jpg                 | Bin 0 -> 462989 bytes
+ Rooms/labSpace/labSpace_Bed.jpg             | Bin 0 -> 468519 bytes
+ Rooms/labSpace/labSpace_Camel.jpg           | Bin 0 -> 424993 bytes
+ Rooms/lectureHall/lectureHall.jpg           | Bin 0 -> 453933 bytes
+ Rooms/lectureHall/lectureHall_Bed.jpg       | Bin 0 -> 457405 bytes
+ Rooms/lectureHall/lectureHall_Camel.jpg     | Bin 0 -> 382708 bytes
+ Rooms/main.jpg                              | Bin 0 -> 182177 bytes
+ Rooms/mainEntrance/mainEntrance.jpg         | Bin 0 -> 427078 bytes
+ Rooms/mainEntrance/mainEntrance_Bed.jpg     | Bin 0 -> 436589 bytes
+ Rooms/mainEntrance/mainEntrance_Camel.jpg   | Bin 0 -> 437415 bytes
+ Rooms/map.png                               | Bin 0 -> 22858 bytes
+ Rooms/profOffices/profOffices.jpg           | Bin 0 -> 396271 bytes
+ Rooms/profOffices/profOffices_Bed.jpg       | Bin 0 -> 393986 bytes
+ Rooms/profOffices/profOffices_Camel.jpg     | Bin 0 -> 397796 bytes
+ Rooms/studySpaces/.DS_Store                 | Bin 0 -> 6148 bytes
+ Rooms/studySpaces/studySpaces.jpg           | Bin 0 -> 394629 bytes
+ Rooms/studySpaces/studySpaces_Bed.jpg       | Bin 0 -> 405007 bytes
+ Rooms/studySpaces/studySpaces_Camel.jpg     | Bin 0 -> 398094 bytes
+ 56 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 3fc5ba05e30fd7daa257cbe05083f77cb7288324
+Merge: d9141d3 8f09bc6
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Sun Dec 4 15:09:42 2016 -0500
+
+    merging??
+
+commit d9141d30ce99889e5063bf1890ad5cf01479457a
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Sun Dec 4 15:03:20 2016 -0500
+
+    changed penalties and probabilities
+
+ engine.ml | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+commit 8f09bc6bc2aaa9aa3437cb64cb17295a0a105a76
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Sun Dec 4 14:59:13 2016 -0500
+
+    Fixed a compile error with module MUSIC_FX
+
+ MUSIC_FX.ml | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+commit 2b40b101fb4dab4f82487c04668c360eee21166d
+Merge: 201add1 937a063
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Sun Dec 4 14:56:21 2016 -0500
+
+    fixing conflict with images
+
+commit 201add1768b1d17d0352a204788ffc452cb525f7
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Sun Dec 4 14:53:00 2016 -0500
+
+    Resized images and added more bed monster images
+
+ Rooms/CSUG_lab/CSUG_lab.jpg                 | Bin 2207785 -> 393260 bytes
+ Rooms/CSUG_lab/CSUG_lab_Bed.jpg             | Bin 0 -> 398557 bytes
+ Rooms/CSUG_lab/CSUG_lab_Camel.jpg           | Bin 2229222 -> 408342 bytes
+ Rooms/CS_Offices/CSOffices.jpg              | Bin 2101713 -> 394252 bytes
+ Rooms/CS_Offices/CSOffices_Bed.jpg          | Bin 2066070 -> 392062 bytes
+ Rooms/CS_Offices/CSOffices_Camel.jpg        | Bin 2119759 -> 395961 bytes
+ Rooms/Gimme!/Gimme!.jpg                     | Bin 461681 -> 451987 bytes
+ Rooms/Gimme!/Gimme!_Bed.jpg                 | Bin 0 -> 454105 bytes
+ Rooms/Gimme!/Gimme!_Camel.jpg               | Bin 452968 -> 460336 bytes
+ Rooms/Grad_Lounge/Grad_Lounge.jpg           | Bin 2542480 -> 448215 bytes
+ Rooms/Grad_Lounge/Grad_Lounge_Bed.jpg       | Bin 0 -> 450704 bytes
+ Rooms/Grad_Lounge/Grad_Lounge_camel.jpg     | Bin 2537980 -> 448756 bytes
+ Rooms/Lab_Space/Lab_Space.jpg               | Bin 374825 -> 462989 bytes
+ Rooms/Lab_Space/Lab_Space_Bed.jpg           | Bin 0 -> 468519 bytes
+ Rooms/Lab_Space/Lab_Space_Camel.jpg         | Bin 388062 -> 424993 bytes
+ Rooms/Lecture_Hall/Lecture_Hall.jpg         | Bin 5259901 -> 453933 bytes
+ Rooms/Lecture_Hall/Lecture_Hall_Bed.jpg     | Bin 0 -> 457405 bytes
+ Rooms/Lecture_Hall/Lecture_Hall_Camel.jpg   | Bin 5917451 -> 382708 bytes
+ Rooms/Main_Entrance/Main_Entrance.jpg       | Bin 2007764 -> 427078 bytes
+ Rooms/Main_Entrance/Main_Entrance_Bed.jpg   | Bin 2211829 -> 436589 bytes
+ Rooms/Main_Entrance/Main_Entrance_Camel.jpg | Bin 2445079 -> 437415 bytes
+ 21 files changed, 0 insertions(+), 0 deletions(-)
+
+commit c7117cb88607449b08102519571b364f6525ae41
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Sun Dec 4 03:46:24 2016 -0500
+
+    changed name of file
+
+ Sound_Effects/metal_off_switch.wav | Bin 46148 -> 0 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 26bdd98c29a8793ff4649cde92267beea932501b
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Sun Dec 4 03:45:50 2016 -0500
+
+    Added more sound effects and opened module in engine. Also added credits to readme
+
+ MUSIC_FX.ml                |  56 +++++++++++++++++++++++++++++++++++++--------
+ Makefile                   |   2 +-
+ README.txt                 |   7 +++++-
+ Sound_Effects/cam_mode.wav | Bin 0 -> 46148 bytes
+ engine.ml                  |  11 +++++----
+ gui.ml                     |   2 +-
+ 6 files changed, 61 insertions(+), 17 deletions(-)
+
+commit 7dbe225947c83c7692fe9e63c5ac26a5fcd0bad7
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Sun Dec 4 01:05:10 2016 -0500
+
+    Sound Effects
+
+ Sound_Effects/close_door.wav       | Bin 0 -> 114732 bytes
+ Sound_Effects/metal_off_switch.wav | Bin 0 -> 46148 bytes
+ Sound_Effects/open_door.wav        | Bin 0 -> 147500 bytes
+ Sound_Effects/switch_screens.wav   | Bin 0 -> 34816 bytes
+ 4 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 937a06386477a48e179fe915e15d45a1fcd8317a
+Merge: 67548c9 c7117cb
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Sun Dec 4 00:30:29 2016 -0500
+
+    merge
+
+commit 67548c98e413de9531f105454af481e443a6b332
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Sun Dec 4 00:27:01 2016 -0500
+
+    fixed image file names, removed Rooms foler and left only the tar.gz folder
+
+ README.txt                                  |   3 ++-
+ Rooms.tar.gz                                | Bin 0 -> 42923862 bytes
+ Rooms.zip                                   | Bin 44262239 -> 0 bytes
+ Rooms/CSUG_lab/CSUG_lab.jpg                 | Bin 2207785 -> 0 bytes
+ Rooms/CSUG_lab/CSUG_lab_Camel.jpg           | Bin 2229222 -> 0 bytes
+ Rooms/CS_Offices/CSOffices.jpg              | Bin 2101713 -> 0 bytes
+ Rooms/CS_Offices/CSOffices_Bed.jpg          | Bin 2066070 -> 0 bytes
+ Rooms/CS_Offices/CSOffices_Camel.jpg        | Bin 2119759 -> 0 bytes
+ Rooms/Copy_Room/CopyRoom.jpg                | Bin 414135 -> 0 bytes
+ Rooms/Copy_Room/CopyRoom_Bed.jpg            | Bin 431291 -> 0 bytes
+ Rooms/Copy_Room/CopyRoom_Camel.jpg          | Bin 426235 -> 0 bytes
+ Rooms/Gimme!/Gimme!.jpg                     | Bin 461681 -> 0 bytes
+ Rooms/Gimme!/Gimme!_Camel.jpg               | Bin 452968 -> 0 bytes
+ Rooms/Gimme!/Gimme.jpg                      | Bin 1746169 -> 0 bytes
+ Rooms/Gimme!/Gimme_Camel.jpg                | Bin 1765589 -> 0 bytes
+ Rooms/Grad_Lounge/Grad_Lounge.jpg           | Bin 2542480 -> 0 bytes
+ Rooms/Grad_Lounge/Grad_Lounge_camel.jpg     | Bin 2537980 -> 0 bytes
+ Rooms/Hallway/Hallway.jpg                   | Bin 400124 -> 0 bytes
+ Rooms/Hallway/Hallway_Bed.jpg               | Bin 404442 -> 0 bytes
+ Rooms/Hallway/Hallway_Camel.jpg             | Bin 403244 -> 0 bytes
+ Rooms/Lab_Space/Lab_Space.jpg               | Bin 374825 -> 0 bytes
+ Rooms/Lab_Space/Lab_Space_Camel.jpg         | Bin 388062 -> 0 bytes
+ Rooms/Lecture_Hall/Lecture_Hall.jpg         | Bin 5259901 -> 0 bytes
+ Rooms/Lecture_Hall/Lecture_Hall_Camel.jpg   | Bin 5917451 -> 0 bytes
+ Rooms/Main_Entrance/Main_Entrance.jpg       | Bin 2007764 -> 0 bytes
+ Rooms/Main_Entrance/Main_Entrance_Bed.jpg   | Bin 2211829 -> 0 bytes
+ Rooms/Main_Entrance/Main_Entrance_Camel.jpg | Bin 2445079 -> 0 bytes
+ Rooms/Prof's_Office/profOffices.jpg         | Bin 396271 -> 0 bytes
+ Rooms/Prof's_Office/profOffices_Bed.jpg     | Bin 393986 -> 0 bytes
+ Rooms/Prof's_Office/profOffices_Camel.jpg   | Bin 397796 -> 0 bytes
+ Rooms/Study_Spaces/StudySpaces.jpg          | Bin 394629 -> 0 bytes
+ Rooms/Study_Spaces/StudySpaces_Bed.jpg      | Bin 405007 -> 0 bytes
+ Rooms/Study_Spaces/StudySpaces_Camel.jpg    | Bin 398094 -> 0 bytes
+ Rooms/main.jpg                              | Bin 182177 -> 0 bytes
+ gui.ml                                      |   2 +-
+ map.json                                    |   2 +-
+ map.png                                     | Bin 22858 -> 0 bytes
+ 37 files changed, 4 insertions(+), 3 deletions(-)
+
+commit 5e78e351b5808a313056fe1abcfc65d5e682cc6f
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Sat Dec 3 20:49:34 2016 -0500
+
+    compressed rooms folder with resized images
+
+ Rooms.zip | Bin 0 -> 44262239 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 9926f957c4464d23fe9734ec007cc0c8fa443f08
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Sat Dec 3 20:45:05 2016 -0500
+
+    resized room images to 800x600
+
+ Rooms/Copy_Room/CopyRoom.jpg              | Bin 258458 -> 414135 bytes
+ Rooms/Copy_Room/CopyRoom_Bed.jpg          | Bin 597041 -> 431291 bytes
+ Rooms/Copy_Room/CopyRoom_Camel.jpg        | Bin 600081 -> 426235 bytes
+ Rooms/Gimme!/Gimme!.jpg                   | Bin 0 -> 461681 bytes
+ Rooms/Gimme!/Gimme!_Camel.jpg             | Bin 0 -> 452968 bytes
+ Rooms/Hallway/Hallway.jpg                 | Bin 2001561 -> 400124 bytes
+ Rooms/Hallway/Hallway_Bed.jpg             | Bin 2109287 -> 404442 bytes
+ Rooms/Hallway/Hallway_Camel.jpg           | Bin 2165379 -> 403244 bytes
+ Rooms/Prof's_Office/profOffices.jpg       | Bin 0 -> 396271 bytes
+ Rooms/Prof's_Office/profOffices_Bed.jpg   | Bin 0 -> 393986 bytes
+ Rooms/Prof's_Office/profOffices_Camel.jpg | Bin 0 -> 397796 bytes
+ Rooms/Study_Spaces/StudySpaces.jpg        | Bin 2104090 -> 394629 bytes
+ Rooms/Study_Spaces/StudySpaces_Bed.jpg    | Bin 2094470 -> 405007 bytes
+ Rooms/Study_Spaces/StudySpaces_Camel.jpg  | Bin 2083772 -> 398094 bytes
+ 14 files changed, 0 insertions(+), 0 deletions(-)
+
+commit cb5121e115fb0b145d23c39366dc11192576ed1a
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Sat Dec 3 20:11:50 2016 -0500
+
+    fixing changes
+
+ MUSIC_FX.ml                 |   2 ++
+ Rooms/CSOffices.jpg         | Bin 2101713 -> 0 bytes
+ Rooms/CSOffices_Bed.jpg     | Bin 2066070 -> 0 bytes
+ Rooms/CSOffices_Camel.jpg   | Bin 2119759 -> 0 bytes
+ Rooms/copyRoom.jpg          | Bin 166553 -> 0 bytes
+ Rooms/copyRoom_Bed.jpg      | Bin 2199228 -> 0 bytes
+ Rooms/copyRoom_Camel.jpg    | Bin 2219130 -> 0 bytes
+ Rooms/hallway.jpg           | Bin 2001561 -> 0 bytes
+ Rooms/hallway_Bed.jpg       | Bin 2109287 -> 0 bytes
+ Rooms/hallway_Camel.jpg     | Bin 2165379 -> 0 bytes
+ Rooms/room3.jpg             | Bin 2007764 -> 0 bytes
+ Rooms/room3_bed.jpg         | Bin 2211829 -> 0 bytes
+ Rooms/room3_camel.jpg       | Bin 2445079 -> 0 bytes
+ Rooms/studySpaces.jpg       | Bin 2104090 -> 0 bytes
+ Rooms/studySpaces_Bed.jpg   | Bin 2094470 -> 0 bytes
+ Rooms/studySpaces_Camel.jpg | Bin 2083772 -> 0 bytes
+ Timea.ttf                   | Bin 29356 -> 0 bytes
+ Xenotron.ttf                | Bin 44464 -> 0 bytes
+ 18 files changed, 2 insertions(+)
+
+commit f390139bdd93cf17a7207ec049a02c1f71f3f631
+Merge: 57085b8 0aea5ff
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Sat Dec 3 20:07:26 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/cgc66/CS3110_Project
+
+commit 57085b85422f1286614e3362812ad402a752fc9a
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Sat Dec 3 20:06:58 2016 -0500
+
+    added image files, reorganized folder, new musc and fonts
+
+ .DS_Store                                   | Bin 6148 -> 6148 bytes
+ Fonts/Amatic-Bold.ttf                       | Bin 0 -> 118784 bytes
+ Fonts/AmaticSC-Regular.ttf                  | Bin 0 -> 40000 bytes
+ Fonts/Timea.ttf                             | Bin 0 -> 29356 bytes
+ Fonts/Xenotron.ttf                          | Bin 0 -> 44464 bytes
+ MUSIC_FX.ml                                 |  45 ++++++++++++++++++++++++++++
+ Rooms/CSUG_lab/CSUG_lab.jpg                 | Bin 0 -> 2207785 bytes
+ Rooms/CSUG_lab/CSUG_lab_Camel.jpg           | Bin 0 -> 2229222 bytes
+ Rooms/CS_Offices/CSOffices.jpg              | Bin 0 -> 2101713 bytes
+ Rooms/CS_Offices/CSOffices_Bed.jpg          | Bin 0 -> 2066070 bytes
+ Rooms/CS_Offices/CSOffices_Camel.jpg        | Bin 0 -> 2119759 bytes
+ Rooms/Copy_Room/CopyRoom.jpg                | Bin 0 -> 258458 bytes
+ Rooms/Copy_Room/CopyRoom_Bed.jpg            | Bin 0 -> 597041 bytes
+ Rooms/Copy_Room/CopyRoom_Camel.jpg          | Bin 0 -> 600081 bytes
+ Rooms/Gimme!/Gimme.jpg                      | Bin 0 -> 1746169 bytes
+ Rooms/Gimme!/Gimme_Camel.jpg                | Bin 0 -> 1765589 bytes
+ Rooms/Grad_Lounge/Grad_Lounge.jpg           | Bin 0 -> 2542480 bytes
+ Rooms/Grad_Lounge/Grad_Lounge_camel.jpg     | Bin 0 -> 2537980 bytes
+ Rooms/Hallway/Hallway.jpg                   | Bin 0 -> 2001561 bytes
+ Rooms/Hallway/Hallway_Bed.jpg               | Bin 0 -> 2109287 bytes
+ Rooms/Hallway/Hallway_Camel.jpg             | Bin 0 -> 2165379 bytes
+ Rooms/Lab_Space/Lab_Space.jpg               | Bin 0 -> 374825 bytes
+ Rooms/Lab_Space/Lab_Space_Camel.jpg         | Bin 0 -> 388062 bytes
+ Rooms/Lecture_Hall/Lecture_Hall.jpg         | Bin 0 -> 5259901 bytes
+ Rooms/Lecture_Hall/Lecture_Hall_Camel.jpg   | Bin 0 -> 5917451 bytes
+ Rooms/Main_Entrance/Main_Entrance.jpg       | Bin 0 -> 2007764 bytes
+ Rooms/Main_Entrance/Main_Entrance_Bed.jpg   | Bin 0 -> 2211829 bytes
+ Rooms/Main_Entrance/Main_Entrance_Camel.jpg | Bin 0 -> 2445079 bytes
+ Rooms/Study_Spaces/StudySpaces.jpg          | Bin 0 -> 2104090 bytes
+ Rooms/Study_Spaces/StudySpaces_Bed.jpg      | Bin 0 -> 2094470 bytes
+ Rooms/Study_Spaces/StudySpaces_Camel.jpg    | Bin 0 -> 2083772 bytes
+ Rooms/main.jpg                              | Bin 2485858 -> 182177 bytes
+ Sound_Effects/Background1.wav               | Bin 0 -> 23708648 bytes
+ Sound_Effects/Background2.wav               | Bin 0 -> 46747908 bytes
+ Sound_Effects/Background3.wav               | Bin 0 -> 33115624 bytes
+ 35 files changed, 45 insertions(+)
+
+commit 0aea5ffd46ec04302fba8ba7b7a05c7d31c0edae
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Sat Dec 3 19:19:51 2016 -0500
+
+    got rid of map window, edited README
+
+ README.txt | 2 +-
+ engine.ml  | 5 -----
+ 2 files changed, 1 insertion(+), 6 deletions(-)
+
+commit 744067d6e185ef1f97d61666b9ddfdb800c049b7
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 19:15:47 2016 -0500
+
+    now displays images, slight json updates
+
+ engine.ml | 50 ++++++++++++++++++++++---------------
+ gui.ml    | 85 ++++++++++++++++++++++++++++++++++-----------------------------
+ map.json  |  2 +-
+ 3 files changed, 77 insertions(+), 60 deletions(-)
+
+commit aa55f0e157c632a96e0d9ed3d74e04da676d6048
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Sat Dec 3 18:59:47 2016 -0500
+
+    fixed check_time and monster timeToMove storage
+
+ README.txt |  6 ++++--
+ engine.ml  | 18 +++++++++---------
+ map.json   | 22 +++++++++++++++++-----
+ 3 files changed, 30 insertions(+), 16 deletions(-)
+
+commit 6a34cfeb53db97f37643cc338f79d2cefdcab5a9
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Sat Dec 3 18:18:14 2016 -0500
+
+    updated map.png
+
+ map.png | Bin 22683 -> 22858 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 66ee61f309f0aa469ef2c5dd015b78838f669e01
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Sat Dec 3 17:20:00 2016 -0500
+
+    added record field, changed game play details
+
+ engine(documentation).mli |   3 +-
+ engine.ml                 | 262 +++++++++++++++++++++++++---------------------
+ main.ml                   |   4 +-
+ map.jpg                   | Bin 26991 -> 0 bytes
+ 4 files changed, 148 insertions(+), 121 deletions(-)
+
+commit 3724809616548a7fa97dac699aa05f81b8e93390
+Merge: f5ef8bb fe69fdb
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 15:36:00 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/cgc66/CS3110_Project
+
+commit f5ef8bb7486cb4083159ea81ce7caf51285eec35
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 15:32:18 2016 -0500
+
+    ocamlinit update
+
+ .ocamlinit | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+commit fe69fdbb17039d18f8ef0a15326dc1d080689c21
+Author: Ruoyan Qin <rq25@cornell.edu>
+Date:   Fri Dec 2 09:51:57 2016 -0500
+
+    edited readme for mac installation
+
+ README.txt | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+commit a5c6c0024fc64aa018086e2414b18dec498bc6c2
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Fri Dec 2 07:56:56 2016 -0500
+
+    new AI, fully working and playable text-based version
+
+ Makefile                  |   4 +-
+ README.txt                |   3 +-
+ engine(documentation).mli |  31 +++++----
+ engine.ml                 | 170 +++++++++++++++++++++++++++++++++-------------
+ gui.ml                    |  10 +--
+ main.ml                   |  39 +++++++++--
+ map.json                  |  21 ++++--
+ 7 files changed, 202 insertions(+), 76 deletions(-)
+
+commit 9729443505bc20302660ed337373b4afe38c62e1
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Fri Dec 2 03:50:22 2016 -0500
+
+    a quiet gui is nice too
+
+ gui.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 9179505d97f34cb8e9baca56b2e4c81114e1e840
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Fri Dec 2 03:46:08 2016 -0500
+
+    a silent engine is very good and very terrifying
+
+ engine.ml | 30 +++++++++++++++++++++---------
+ gui.ml    |  4 ++--
+ 2 files changed, 23 insertions(+), 11 deletions(-)
+
+commit b72f8bdd65db15a5f8c9caf0810adde550822a23
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Fri Dec 2 02:10:23 2016 -0500
+
+    changed map, fixed lost game to ignore cmds
+
+ .ocamlinit                |   6 +--
+ README.txt                |   5 ++-
+ engine(documentation).mli |   1 +
+ engine.ml                 | 110 +++++++++++++++++++++-------------------------
+ gui.ml                    |   3 +-
+ map.json                  |  32 ++++++++------
+ map.png                   | Bin 25019 -> 22683 bytes
+ 7 files changed, 78 insertions(+), 79 deletions(-)
+
+commit 7ec152965e306d7e03d8057c5e33651800b7f9c0
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Thu Dec 1 18:35:40 2016 -0500
+
+    updated commands instructions
+
+ Makefile                                        |    4 +-
+ Practice.ml                                     |   57 -
+ README.txt                                      |    7 +-
+ engine.ml                                       |   24 +-
+ ocamlsdl-0.9.1/AUTHORS                          |    5 +
+ ocamlsdl-0.9.1/COPYING                          |  504 ++
+ ocamlsdl-0.9.1/INSTALL                          |   24 +
+ ocamlsdl-0.9.1/INSTALL.win32                    |   42 +
+ ocamlsdl-0.9.1/META.in                          |   30 +
+ ocamlsdl-0.9.1/Makefile                         |   63 +
+ ocamlsdl-0.9.1/NEWS                             |   79 +
+ ocamlsdl-0.9.1/README                           |   96 +
+ ocamlsdl-0.9.1/README.macosx                    |   77 +
+ ocamlsdl-0.9.1/aclocal.m4                       |  199 +
+ ocamlsdl-0.9.1/configure                        | 6980 +++++++++++++++++++++++
+ ocamlsdl-0.9.1/configure.in                     |  146 +
+ ocamlsdl-0.9.1/doc/html/Sdl.html                |   95 +
+ ocamlsdl-0.9.1/doc/html/Sdlcdrom.html           |  228 +
+ ocamlsdl-0.9.1/doc/html/Sdlevent.Old.html       |   65 +
+ ocamlsdl-0.9.1/doc/html/Sdlevent.html           |  683 +++
+ ocamlsdl-0.9.1/doc/html/Sdlgfx.html             |   34 +
+ ocamlsdl-0.9.1/doc/html/Sdljoystick.html        |  101 +
+ ocamlsdl-0.9.1/doc/html/Sdlkey.html             | 1727 ++++++
+ ocamlsdl-0.9.1/doc/html/Sdlloader.html          |   48 +
+ ocamlsdl-0.9.1/doc/html/Sdlmixer.html           |  410 ++
+ ocamlsdl-0.9.1/doc/html/Sdlmouse.html           |  186 +
+ ocamlsdl-0.9.1/doc/html/Sdltimer.html           |   43 +
+ ocamlsdl-0.9.1/doc/html/Sdlttf.html             |  162 +
+ ocamlsdl-0.9.1/doc/html/Sdlvideo.html           |  618 ++
+ ocamlsdl-0.9.1/doc/html/Sdlwm.html              |   67 +
+ ocamlsdl-0.9.1/doc/html/index.html              |   84 +
+ ocamlsdl-0.9.1/doc/html/index_attributes.html   |   29 +
+ ocamlsdl-0.9.1/doc/html/index_class_types.html  |   29 +
+ ocamlsdl-0.9.1/doc/html/index_classes.html      |   29 +
+ ocamlsdl-0.9.1/doc/html/index_exceptions.html   |   75 +
+ ocamlsdl-0.9.1/doc/html/index_methods.html      |   29 +
+ ocamlsdl-0.9.1/doc/html/index_module_types.html |   29 +
+ ocamlsdl-0.9.1/doc/html/index_modules.html      |   98 +
+ ocamlsdl-0.9.1/doc/html/index_types.html        |  248 +
+ ocamlsdl-0.9.1/doc/html/index_values.html       | 1215 ++++
+ ocamlsdl-0.9.1/doc/html/style.css               |   34 +
+ ocamlsdl-0.9.1/doc/html/type_Sdl.html           |   50 +
+ ocamlsdl-0.9.1/doc/html/type_Sdlcdrom.html      |   63 +
+ ocamlsdl-0.9.1/doc/html/type_Sdlevent.Old.html  |   40 +
+ ocamlsdl-0.9.1/doc/html/type_Sdlevent.html      |  156 +
+ ocamlsdl-0.9.1/doc/html/type_Sdlgfx.html        |  122 +
+ ocamlsdl-0.9.1/doc/html/type_Sdljoystick.html   |   54 +
+ ocamlsdl-0.9.1/doc/html/type_Sdlkey.html        |  292 +
+ ocamlsdl-0.9.1/doc/html/type_Sdlloader.html     |   29 +
+ ocamlsdl-0.9.1/doc/html/type_Sdlmixer.html      |  112 +
+ ocamlsdl-0.9.1/doc/html/type_Sdlmouse.html      |   62 +
+ ocamlsdl-0.9.1/doc/html/type_Sdltimer.html      |   24 +
+ ocamlsdl-0.9.1/doc/html/type_Sdlttf.html        |   73 +
+ ocamlsdl-0.9.1/doc/html/type_Sdlvideo.html      |  220 +
+ ocamlsdl-0.9.1/doc/html/type_Sdlwm.html         |   32 +
+ ocamlsdl-0.9.1/doc/ocamlsdl-mingw.txt           |   51 +
+ ocamlsdl-0.9.1/doc/ocamlsdl.info                | 3555 ++++++++++++
+ ocamlsdl-0.9.1/doc/ocamlsdl.texi                | 4317 ++++++++++++++
+ ocamlsdl-0.9.1/makefile.config.gcc.in           |   46 +
+ ocamlsdl-0.9.1/makefile.config.msvc             |   32 +
+ ocamlsdl-0.9.1/makefile.platform.in             |   11 +
+ ocamlsdl-0.9.1/makefile.rules                   |   20 +
+ ocamlsdl-0.9.1/src/.depend                      |   42 +
+ ocamlsdl-0.9.1/src/.depend_c                    |   21 +
+ ocamlsdl-0.9.1/src/Makefile                     |  136 +
+ ocamlsdl-0.9.1/src/common.c                     |  107 +
+ ocamlsdl-0.9.1/src/common.h                     |  120 +
+ ocamlsdl-0.9.1/src/config.h.in                  |   12 +
+ ocamlsdl-0.9.1/src/config.h.msvc                |   12 +
+ ocamlsdl-0.9.1/src/mlsdl_main.c                 |  168 +
+ ocamlsdl-0.9.1/src/sdl.ml                       |   79 +
+ ocamlsdl-0.9.1/src/sdl.mli                      |   83 +
+ ocamlsdl-0.9.1/src/sdl_stub.c                   |  169 +
+ ocamlsdl-0.9.1/src/sdlcdrom.ml                  |   95 +
+ ocamlsdl-0.9.1/src/sdlcdrom.mli                 |  119 +
+ ocamlsdl-0.9.1/src/sdlcdrom_stub.c              |  211 +
+ ocamlsdl-0.9.1/src/sdlevent.ml                  |  312 +
+ ocamlsdl-0.9.1/src/sdlevent.mli                 |  282 +
+ ocamlsdl-0.9.1/src/sdlevent_stub.c              |  469 ++
+ ocamlsdl-0.9.1/src/sdlgfx.ml                    |   55 +
+ ocamlsdl-0.9.1/src/sdlgfx.mli                   |   55 +
+ ocamlsdl-0.9.1/src/sdlgfx_stub.c                |  422 ++
+ ocamlsdl-0.9.1/src/sdlgl.ml                     |   26 +
+ ocamlsdl-0.9.1/src/sdlgl.mli                    |   29 +
+ ocamlsdl-0.9.1/src/sdlgl_stub.c                 |   85 +
+ ocamlsdl-0.9.1/src/sdlinit_flag.c               |   13 +
+ ocamlsdl-0.9.1/src/sdlinit_flag.h               |   14 +
+ ocamlsdl-0.9.1/src/sdljoystick.ml               |   66 +
+ ocamlsdl-0.9.1/src/sdljoystick.mli              |  106 +
+ ocamlsdl-0.9.1/src/sdljoystick_stub.c           |   85 +
+ ocamlsdl-0.9.1/src/sdlkey.ml                    |  351 ++
+ ocamlsdl-0.9.1/src/sdlkey.mli                   |  321 ++
+ ocamlsdl-0.9.1/src/sdlkey_stub.c                |   51 +
+ ocamlsdl-0.9.1/src/sdlloader.ml                 |   38 +
+ ocamlsdl-0.9.1/src/sdlloader.mli                |   14 +
+ ocamlsdl-0.9.1/src/sdlloader_stub.c             |   84 +
+ ocamlsdl-0.9.1/src/sdlmixer.ml                  |  150 +
+ ocamlsdl-0.9.1/src/sdlmixer.mli                 |  288 +
+ ocamlsdl-0.9.1/src/sdlmixer_stub.c              |  610 ++
+ ocamlsdl-0.9.1/src/sdlmouse.ml                  |   94 +
+ ocamlsdl-0.9.1/src/sdlmouse.mli                 |   83 +
+ ocamlsdl-0.9.1/src/sdlmouse_stub.c              |  142 +
+ ocamlsdl-0.9.1/src/sdlmouse_stub.h              |    2 +
+ ocamlsdl-0.9.1/src/sdlrwops_stub.c              |  117 +
+ ocamlsdl-0.9.1/src/sdlrwops_stub.h              |    6 +
+ ocamlsdl-0.9.1/src/sdltimer.ml                  |   26 +
+ ocamlsdl-0.9.1/src/sdltimer.mli                 |   28 +
+ ocamlsdl-0.9.1/src/sdltimer_stub.c              |   42 +
+ ocamlsdl-0.9.1/src/sdlttf.ml                    |  106 +
+ ocamlsdl-0.9.1/src/sdlttf.mli                   |  134 +
+ ocamlsdl-0.9.1/src/sdlttf_stub.c                |  391 ++
+ ocamlsdl-0.9.1/src/sdlvideo.ml                  |  293 +
+ ocamlsdl-0.9.1/src/sdlvideo.mli                 |  438 ++
+ ocamlsdl-0.9.1/src/sdlvideo_flag.c              |   21 +
+ ocamlsdl-0.9.1/src/sdlvideo_flag.h              |   22 +
+ ocamlsdl-0.9.1/src/sdlvideo_stub.c              |  829 +++
+ ocamlsdl-0.9.1/src/sdlvideo_stub.h              |   52 +
+ ocamlsdl-0.9.1/src/sdlwm.ml                     |   19 +
+ ocamlsdl-0.9.1/src/sdlwm.mli                    |   37 +
+ ocamlsdl-0.9.1/src/sdlwm_stub.c                 |   47 +
+ ocamlsdl-0.9.1/support/config.guess             | 1501 +++++
+ ocamlsdl-0.9.1/support/config.sub               | 1705 ++++++
+ ocamlsdl-0.9.1/support/install-sh               |  520 ++
+ ocamlsdl-0.9.1/support/ocaml.m4                 |  240 +
+ ocamlsdl-0.9.1/xpm_to_ml                        |   21 +
+ 125 files changed, 36211 insertions(+), 69 deletions(-)
+
+commit d6b48f3061cc409e641f841e567d9ae79cf030d6
+Author: Ubuntu <ubuntu@csvm>
+Date:   Thu Dec 1 18:16:57 2016 -0500
+
+    I'm back baby, repl FINALLY kinda WORKS
+
+ _build/_digests          |  10 -
+ _build/_log              |  19 --
+ _build/engine.cmi        | Bin 7295 -> 0 bytes
+ _build/engine.cmo        | Bin 68835 -> 0 bytes
+ _build/engine.ml         | 519 -----------------------------------------------
+ _build/engine.ml.depends |   1 -
+ _build/gui.cmi           | Bin 961 -> 0 bytes
+ _build/gui.cmo           | Bin 12198 -> 0 bytes
+ _build/gui.ml            |  92 ---------
+ _build/gui.ml.depends    |   1 -
+ _build/main.byte         | Bin 45162172 -> 0 bytes
+ _build/main.cmi          | Bin 1900 -> 0 bytes
+ _build/main.cmo          | Bin 4804 -> 0 bytes
+ _build/main.ml           |  14 --
+ _build/main.ml.depends   |   1 -
+ _build/ocamlc.where      |   1 -
+ main.byte                |   1 -
+ 17 files changed, 659 deletions(-)
+
+commit 8af02bfa1e800ce83cd8ad7cb721594bf607ad93
+Author: Ubuntu <ubuntu@csvm>
+Date:   Thu Dec 1 18:16:40 2016 -0500
+
+    I'm back baby, repl FINALLY kinda WORKS
+
+ GUI.ml                                          |   25 -
+ Makefile                                        |    2 +-
+ Practice.ml                                     |   57 +
+ Xenotron.ttf                                    |  Bin 0 -> 44464 bytes
+ _build/_digests                                 |   10 +
+ _build/_log                                     |   19 +
+ _build/engine.cmi                               |  Bin 0 -> 7295 bytes
+ _build/engine.cmo                               |  Bin 0 -> 68835 bytes
+ _build/engine.ml                                |  519 ++
+ _build/engine.ml.depends                        |    1 +
+ _build/gui.cmi                                  |  Bin 0 -> 961 bytes
+ _build/gui.cmo                                  |  Bin 0 -> 12198 bytes
+ _build/gui.ml                                   |   92 +
+ _build/gui.ml.depends                           |    1 +
+ _build/main.byte                                |  Bin 0 -> 45162172 bytes
+ _build/main.cmi                                 |  Bin 0 -> 1900 bytes
+ _build/main.cmo                                 |  Bin 0 -> 4804 bytes
+ _build/main.ml                                  |   14 +
+ _build/main.ml.depends                          |    1 +
+ _build/ocamlc.where                             |    1 +
+ engine.ml                                       |    7 +-
+ engineAsync.ml                                  |    1 +
+ gui.ml                                          |   92 +
+ main.byte                                       |    1 +
+ map.jpg                                         |  Bin 0 -> 26991 bytes
+ ocamlsdl-0.9.1/AUTHORS                          |    5 -
+ ocamlsdl-0.9.1/COPYING                          |  504 --
+ ocamlsdl-0.9.1/INSTALL                          |   24 -
+ ocamlsdl-0.9.1/INSTALL.win32                    |   42 -
+ ocamlsdl-0.9.1/META                             |   30 -
+ ocamlsdl-0.9.1/META.in                          |   30 -
+ ocamlsdl-0.9.1/Makefile                         |   63 -
+ ocamlsdl-0.9.1/NEWS                             |   79 -
+ ocamlsdl-0.9.1/README                           |   96 -
+ ocamlsdl-0.9.1/README.macosx                    |   77 -
+ ocamlsdl-0.9.1/aclocal.m4                       |  199 -
+ ocamlsdl-0.9.1/config.log                       |  587 --
+ ocamlsdl-0.9.1/config.status                    | 1043 ----
+ ocamlsdl-0.9.1/configure                        | 6980 -----------------------
+ ocamlsdl-0.9.1/configure.in                     |  146 -
+ ocamlsdl-0.9.1/doc/html/Sdl.html                |   95 -
+ ocamlsdl-0.9.1/doc/html/Sdlcdrom.html           |  228 -
+ ocamlsdl-0.9.1/doc/html/Sdlevent.Old.html       |   65 -
+ ocamlsdl-0.9.1/doc/html/Sdlevent.html           |  683 ---
+ ocamlsdl-0.9.1/doc/html/Sdlgfx.html             |   34 -
+ ocamlsdl-0.9.1/doc/html/Sdljoystick.html        |  101 -
+ ocamlsdl-0.9.1/doc/html/Sdlkey.html             | 1727 ------
+ ocamlsdl-0.9.1/doc/html/Sdlloader.html          |   48 -
+ ocamlsdl-0.9.1/doc/html/Sdlmixer.html           |  410 --
+ ocamlsdl-0.9.1/doc/html/Sdlmouse.html           |  186 -
+ ocamlsdl-0.9.1/doc/html/Sdltimer.html           |   43 -
+ ocamlsdl-0.9.1/doc/html/Sdlttf.html             |  162 -
+ ocamlsdl-0.9.1/doc/html/Sdlvideo.html           |  618 --
+ ocamlsdl-0.9.1/doc/html/Sdlwm.html              |   67 -
+ ocamlsdl-0.9.1/doc/html/index.html              |   84 -
+ ocamlsdl-0.9.1/doc/html/index_attributes.html   |   29 -
+ ocamlsdl-0.9.1/doc/html/index_class_types.html  |   29 -
+ ocamlsdl-0.9.1/doc/html/index_classes.html      |   29 -
+ ocamlsdl-0.9.1/doc/html/index_exceptions.html   |   75 -
+ ocamlsdl-0.9.1/doc/html/index_methods.html      |   29 -
+ ocamlsdl-0.9.1/doc/html/index_module_types.html |   29 -
+ ocamlsdl-0.9.1/doc/html/index_modules.html      |   98 -
+ ocamlsdl-0.9.1/doc/html/index_types.html        |  248 -
+ ocamlsdl-0.9.1/doc/html/index_values.html       | 1215 ----
+ ocamlsdl-0.9.1/doc/html/style.css               |   34 -
+ ocamlsdl-0.9.1/doc/html/type_Sdl.html           |   50 -
+ ocamlsdl-0.9.1/doc/html/type_Sdlcdrom.html      |   63 -
+ ocamlsdl-0.9.1/doc/html/type_Sdlevent.Old.html  |   40 -
+ ocamlsdl-0.9.1/doc/html/type_Sdlevent.html      |  156 -
+ ocamlsdl-0.9.1/doc/html/type_Sdlgfx.html        |  122 -
+ ocamlsdl-0.9.1/doc/html/type_Sdljoystick.html   |   54 -
+ ocamlsdl-0.9.1/doc/html/type_Sdlkey.html        |  292 -
+ ocamlsdl-0.9.1/doc/html/type_Sdlloader.html     |   29 -
+ ocamlsdl-0.9.1/doc/html/type_Sdlmixer.html      |  112 -
+ ocamlsdl-0.9.1/doc/html/type_Sdlmouse.html      |   62 -
+ ocamlsdl-0.9.1/doc/html/type_Sdltimer.html      |   24 -
+ ocamlsdl-0.9.1/doc/html/type_Sdlttf.html        |   73 -
+ ocamlsdl-0.9.1/doc/html/type_Sdlvideo.html      |  220 -
+ ocamlsdl-0.9.1/doc/html/type_Sdlwm.html         |   32 -
+ ocamlsdl-0.9.1/doc/ocamlsdl-mingw.txt           |   51 -
+ ocamlsdl-0.9.1/doc/ocamlsdl.info                | 3555 ------------
+ ocamlsdl-0.9.1/doc/ocamlsdl.texi                | 4317 --------------
+ ocamlsdl-0.9.1/makefile.config.gcc              |   46 -
+ ocamlsdl-0.9.1/makefile.config.gcc.in           |   46 -
+ ocamlsdl-0.9.1/makefile.config.msvc             |   32 -
+ ocamlsdl-0.9.1/makefile.platform                |   11 -
+ ocamlsdl-0.9.1/makefile.platform.in             |   11 -
+ ocamlsdl-0.9.1/makefile.rules                   |   20 -
+ ocamlsdl-0.9.1/src/.depend                      |   42 -
+ ocamlsdl-0.9.1/src/.depend_c                    |   21 -
+ ocamlsdl-0.9.1/src/Makefile                     |  136 -
+ ocamlsdl-0.9.1/src/common.c                     |  107 -
+ ocamlsdl-0.9.1/src/common.h                     |  120 -
+ ocamlsdl-0.9.1/src/common.o                     |  Bin 10368 -> 0 bytes
+ ocamlsdl-0.9.1/src/config.h                     |   13 -
+ ocamlsdl-0.9.1/src/config.h.in                  |   12 -
+ ocamlsdl-0.9.1/src/config.h.msvc                |   12 -
+ ocamlsdl-0.9.1/src/dllsdlgfxstub.so             |  Bin 48024 -> 0 bytes
+ ocamlsdl-0.9.1/src/dllsdlloaderstub.so          |  Bin 20608 -> 0 bytes
+ ocamlsdl-0.9.1/src/dllsdlmixerstub.so           |  Bin 46576 -> 0 bytes
+ ocamlsdl-0.9.1/src/dllsdlstub.so                |  Bin 174648 -> 0 bytes
+ ocamlsdl-0.9.1/src/dllsdlttfstub.so             |  Bin 38888 -> 0 bytes
+ ocamlsdl-0.9.1/src/libsdlgfxstub.a              |  Bin 55386 -> 0 bytes
+ ocamlsdl-0.9.1/src/libsdlloaderstub.a           |  Bin 17378 -> 0 bytes
+ ocamlsdl-0.9.1/src/libsdlmixerstub.a            |  Bin 53836 -> 0 bytes
+ ocamlsdl-0.9.1/src/libsdlstub.a                 |  Bin 301576 -> 0 bytes
+ ocamlsdl-0.9.1/src/libsdlttfstub.a              |  Bin 45488 -> 0 bytes
+ ocamlsdl-0.9.1/src/mlsdl_main.c                 |  168 -
+ ocamlsdl-0.9.1/src/sdl.a                        |  Bin 135940 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdl.cma                      |  Bin 112325 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdl.cmi                      |  Bin 1514 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdl.cmo                      |  Bin 5557 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdl.cmx                      |  Bin 1191 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdl.cmxa                     |  Bin 3040 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdl.ml                       |   79 -
+ ocamlsdl-0.9.1/src/sdl.mli                      |   83 -
+ ocamlsdl-0.9.1/src/sdl.o                        |  Bin 9840 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdl_stub.c                   |  169 -
+ ocamlsdl-0.9.1/src/sdl_stub.o                   |  Bin 18568 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlcdrom.cmi                 |  Bin 2063 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlcdrom.cmo                 |  Bin 6907 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlcdrom.cmx                 |  Bin 1427 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlcdrom.ml                  |   95 -
+ ocamlsdl-0.9.1/src/sdlcdrom.mli                 |  119 -
+ ocamlsdl-0.9.1/src/sdlcdrom.o                   |  Bin 10928 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlcdrom_stub.c              |  211 -
+ ocamlsdl-0.9.1/src/sdlcdrom_stub.o              |  Bin 20976 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlevent.cmi                 |  Bin 6868 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlevent.cmo                 |  Bin 26459 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlevent.cmx                 |  Bin 2615 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlevent.ml                  |  312 -
+ ocamlsdl-0.9.1/src/sdlevent.mli                 |  282 -
+ ocamlsdl-0.9.1/src/sdlevent.o                   |  Bin 25944 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlevent_stub.c              |  469 --
+ ocamlsdl-0.9.1/src/sdlevent_stub.o              |  Bin 55536 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlgfx.a                     |  Bin 4230 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlgfx.cma                   |  Bin 8789 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlgfx.cmi                   |  Bin 6672 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlgfx.cmo                   |  Bin 8668 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlgfx.cmx                   |  Bin 284 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlgfx.cmxa                  |  Bin 390 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlgfx.ml                    |   55 -
+ ocamlsdl-0.9.1/src/sdlgfx.mli                   |   55 -
+ ocamlsdl-0.9.1/src/sdlgfx.o                     |  Bin 3904 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlgfx_stub.c                |  422 --
+ ocamlsdl-0.9.1/src/sdlgfx_stub.o                |  Bin 54640 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlgl.ml                     |   26 -
+ ocamlsdl-0.9.1/src/sdlgl.mli                    |   29 -
+ ocamlsdl-0.9.1/src/sdlgl_stub.c                 |   85 -
+ ocamlsdl-0.9.1/src/sdlinit_flag.c               |   13 -
+ ocamlsdl-0.9.1/src/sdlinit_flag.h               |   14 -
+ ocamlsdl-0.9.1/src/sdljoystick.cmi              |  Bin 1885 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdljoystick.cmo              |  Bin 6183 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdljoystick.cmx              |  Bin 1818 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdljoystick.ml               |   66 -
+ ocamlsdl-0.9.1/src/sdljoystick.mli              |  106 -
+ ocamlsdl-0.9.1/src/sdljoystick.o                |  Bin 12256 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdljoystick_stub.c           |   85 -
+ ocamlsdl-0.9.1/src/sdljoystick_stub.o           |  Bin 17760 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlkey.cmi                   |  Bin 7784 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlkey.cmo                   |  Bin 22122 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlkey.cmx                   |  Bin 1916 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlkey.ml                    |  351 --
+ ocamlsdl-0.9.1/src/sdlkey.mli                   |  321 --
+ ocamlsdl-0.9.1/src/sdlkey.o                     |  Bin 12864 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlkey_stub.c                |   51 -
+ ocamlsdl-0.9.1/src/sdlkey_stub.o                |  Bin 13152 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlloader.a                  |  Bin 5830 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlloader.cma                |  Bin 3166 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlloader.cmi                |  Bin 679 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlloader.cmo                |  Bin 3037 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlloader.cmx                |  Bin 648 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlloader.cmxa               |  Bin 497 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlloader.ml                 |   38 -
+ ocamlsdl-0.9.1/src/sdlloader.mli                |   14 -
+ ocamlsdl-0.9.1/src/sdlloader.o                  |  Bin 5360 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlloader_stub.c             |   84 -
+ ocamlsdl-0.9.1/src/sdlloader_stub.o             |  Bin 17104 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlmixer.a                   |  Bin 31752 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlmixer.cma                 |  Bin 16043 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlmixer.cmi                 |  Bin 5939 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlmixer.cmo                 |  Bin 15916 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlmixer.cmx                 |  Bin 5007 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlmixer.cmxa                |  Bin 392 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlmixer.ml                  |  150 -
+ ocamlsdl-0.9.1/src/sdlmixer.mli                 |  288 -
+ ocamlsdl-0.9.1/src/sdlmixer.o                   |  Bin 29904 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlmixer_stub.c              |  610 --
+ ocamlsdl-0.9.1/src/sdlmixer_stub.o              |  Bin 52328 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlmouse.cmi                 |  Bin 2199 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlmouse.cmo                 |  Bin 11282 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlmouse.cmx                 |  Bin 1289 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlmouse.ml                  |   94 -
+ ocamlsdl-0.9.1/src/sdlmouse.mli                 |   83 -
+ ocamlsdl-0.9.1/src/sdlmouse.o                   |  Bin 11368 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlmouse_stub.c              |  142 -
+ ocamlsdl-0.9.1/src/sdlmouse_stub.h              |    2 -
+ ocamlsdl-0.9.1/src/sdlmouse_stub.o              |  Bin 22296 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlrwops_stub.c              |  117 -
+ ocamlsdl-0.9.1/src/sdlrwops_stub.h              |    6 -
+ ocamlsdl-0.9.1/src/sdlrwops_stub.o              |  Bin 15200 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdltimer.cmi                 |  Bin 335 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdltimer.cmo                 |  Bin 1815 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdltimer.cmx                 |  Bin 330 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdltimer.ml                  |   26 -
+ ocamlsdl-0.9.1/src/sdltimer.mli                 |   28 -
+ ocamlsdl-0.9.1/src/sdltimer.o                   |  Bin 2800 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdltimer_stub.c              |   42 -
+ ocamlsdl-0.9.1/src/sdltimer_stub.o              |  Bin 7112 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlttf.a                     |  Bin 18596 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlttf.cma                   |  Bin 10721 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlttf.cmi                   |  Bin 3703 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlttf.cmo                   |  Bin 10600 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlttf.cmx                   |  Bin 2846 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlttf.cmxa                  |  Bin 447 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlttf.ml                    |  106 -
+ ocamlsdl-0.9.1/src/sdlttf.mli                   |  134 -
+ ocamlsdl-0.9.1/src/sdlttf.o                     |  Bin 17560 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlttf_stub.c                |  391 --
+ ocamlsdl-0.9.1/src/sdlttf_stub.o                |  Bin 44704 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlvideo.cmi                 |  Bin 10761 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlvideo.cmo                 |  Bin 29179 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlvideo.cmx                 |  Bin 6220 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlvideo.ml                  |  293 -
+ ocamlsdl-0.9.1/src/sdlvideo.mli                 |  438 --
+ ocamlsdl-0.9.1/src/sdlvideo.o                   |  Bin 36384 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlvideo_flag.c              |   21 -
+ ocamlsdl-0.9.1/src/sdlvideo_flag.h              |   22 -
+ ocamlsdl-0.9.1/src/sdlvideo_stub.c              |  829 ---
+ ocamlsdl-0.9.1/src/sdlvideo_stub.h              |   52 -
+ ocamlsdl-0.9.1/src/sdlvideo_stub.o              |  Bin 101200 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlwm.cmi                    |  Bin 854 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlwm.cmo                    |  Bin 2964 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlwm.cmx                    |  Bin 844 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlwm.ml                     |   19 -
+ ocamlsdl-0.9.1/src/sdlwm.mli                    |   37 -
+ ocamlsdl-0.9.1/src/sdlwm.o                      |  Bin 5240 -> 0 bytes
+ ocamlsdl-0.9.1/src/sdlwm_stub.c                 |   47 -
+ ocamlsdl-0.9.1/src/sdlwm_stub.o                 |  Bin 15304 -> 0 bytes
+ ocamlsdl-0.9.1/support/config.guess             | 1501 -----
+ ocamlsdl-0.9.1/support/config.sub               | 1705 ------
+ ocamlsdl-0.9.1/support/install-sh               |  520 --
+ ocamlsdl-0.9.1/support/ocaml.m4                 |  240 -
+ ocamlsdl-0.9.1/xpm_to_ml                        |   21 -
+ 244 files changed, 813 insertions(+), 37948 deletions(-)
+
+commit 19ce83a0f8064f43e83b0ea54a555585a8156142
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Thu Dec 1 18:09:02 2016 -0500
+
+    for Jovan
+
+ Makefile | 1 +
+ main.ml  | 1 +
+ 2 files changed, 2 insertions(+)
+
+commit 5996d45b9a345e17d0e438b50f1389e455892d30
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Thu Dec 1 17:59:22 2016 -0500
+
+    SDL folder
+
+ README.txt                                      |   33 +-
+ main.ml                                         |    8 -
+ ocamlsdl-0.9.1/AUTHORS                          |    5 +
+ ocamlsdl-0.9.1/COPYING                          |  504 ++
+ ocamlsdl-0.9.1/INSTALL                          |   24 +
+ ocamlsdl-0.9.1/INSTALL.win32                    |   42 +
+ ocamlsdl-0.9.1/META                             |   30 +
+ ocamlsdl-0.9.1/META.in                          |   30 +
+ ocamlsdl-0.9.1/Makefile                         |   63 +
+ ocamlsdl-0.9.1/NEWS                             |   79 +
+ ocamlsdl-0.9.1/README                           |   96 +
+ ocamlsdl-0.9.1/README.macosx                    |   77 +
+ ocamlsdl-0.9.1/aclocal.m4                       |  199 +
+ ocamlsdl-0.9.1/config.log                       |  587 ++
+ ocamlsdl-0.9.1/config.status                    | 1043 ++++
+ ocamlsdl-0.9.1/configure                        | 6980 +++++++++++++++++++++++
+ ocamlsdl-0.9.1/configure.in                     |  146 +
+ ocamlsdl-0.9.1/doc/html/Sdl.html                |   95 +
+ ocamlsdl-0.9.1/doc/html/Sdlcdrom.html           |  228 +
+ ocamlsdl-0.9.1/doc/html/Sdlevent.Old.html       |   65 +
+ ocamlsdl-0.9.1/doc/html/Sdlevent.html           |  683 +++
+ ocamlsdl-0.9.1/doc/html/Sdlgfx.html             |   34 +
+ ocamlsdl-0.9.1/doc/html/Sdljoystick.html        |  101 +
+ ocamlsdl-0.9.1/doc/html/Sdlkey.html             | 1727 ++++++
+ ocamlsdl-0.9.1/doc/html/Sdlloader.html          |   48 +
+ ocamlsdl-0.9.1/doc/html/Sdlmixer.html           |  410 ++
+ ocamlsdl-0.9.1/doc/html/Sdlmouse.html           |  186 +
+ ocamlsdl-0.9.1/doc/html/Sdltimer.html           |   43 +
+ ocamlsdl-0.9.1/doc/html/Sdlttf.html             |  162 +
+ ocamlsdl-0.9.1/doc/html/Sdlvideo.html           |  618 ++
+ ocamlsdl-0.9.1/doc/html/Sdlwm.html              |   67 +
+ ocamlsdl-0.9.1/doc/html/index.html              |   84 +
+ ocamlsdl-0.9.1/doc/html/index_attributes.html   |   29 +
+ ocamlsdl-0.9.1/doc/html/index_class_types.html  |   29 +
+ ocamlsdl-0.9.1/doc/html/index_classes.html      |   29 +
+ ocamlsdl-0.9.1/doc/html/index_exceptions.html   |   75 +
+ ocamlsdl-0.9.1/doc/html/index_methods.html      |   29 +
+ ocamlsdl-0.9.1/doc/html/index_module_types.html |   29 +
+ ocamlsdl-0.9.1/doc/html/index_modules.html      |   98 +
+ ocamlsdl-0.9.1/doc/html/index_types.html        |  248 +
+ ocamlsdl-0.9.1/doc/html/index_values.html       | 1215 ++++
+ ocamlsdl-0.9.1/doc/html/style.css               |   34 +
+ ocamlsdl-0.9.1/doc/html/type_Sdl.html           |   50 +
+ ocamlsdl-0.9.1/doc/html/type_Sdlcdrom.html      |   63 +
+ ocamlsdl-0.9.1/doc/html/type_Sdlevent.Old.html  |   40 +
+ ocamlsdl-0.9.1/doc/html/type_Sdlevent.html      |  156 +
+ ocamlsdl-0.9.1/doc/html/type_Sdlgfx.html        |  122 +
+ ocamlsdl-0.9.1/doc/html/type_Sdljoystick.html   |   54 +
+ ocamlsdl-0.9.1/doc/html/type_Sdlkey.html        |  292 +
+ ocamlsdl-0.9.1/doc/html/type_Sdlloader.html     |   29 +
+ ocamlsdl-0.9.1/doc/html/type_Sdlmixer.html      |  112 +
+ ocamlsdl-0.9.1/doc/html/type_Sdlmouse.html      |   62 +
+ ocamlsdl-0.9.1/doc/html/type_Sdltimer.html      |   24 +
+ ocamlsdl-0.9.1/doc/html/type_Sdlttf.html        |   73 +
+ ocamlsdl-0.9.1/doc/html/type_Sdlvideo.html      |  220 +
+ ocamlsdl-0.9.1/doc/html/type_Sdlwm.html         |   32 +
+ ocamlsdl-0.9.1/doc/ocamlsdl-mingw.txt           |   51 +
+ ocamlsdl-0.9.1/doc/ocamlsdl.info                | 3555 ++++++++++++
+ ocamlsdl-0.9.1/doc/ocamlsdl.texi                | 4317 ++++++++++++++
+ ocamlsdl-0.9.1/makefile.config.gcc              |   46 +
+ ocamlsdl-0.9.1/makefile.config.gcc.in           |   46 +
+ ocamlsdl-0.9.1/makefile.config.msvc             |   32 +
+ ocamlsdl-0.9.1/makefile.platform                |   11 +
+ ocamlsdl-0.9.1/makefile.platform.in             |   11 +
+ ocamlsdl-0.9.1/makefile.rules                   |   20 +
+ ocamlsdl-0.9.1/src/.depend                      |   42 +
+ ocamlsdl-0.9.1/src/.depend_c                    |   21 +
+ ocamlsdl-0.9.1/src/Makefile                     |  136 +
+ ocamlsdl-0.9.1/src/common.c                     |  107 +
+ ocamlsdl-0.9.1/src/common.h                     |  120 +
+ ocamlsdl-0.9.1/src/common.o                     |  Bin 0 -> 10368 bytes
+ ocamlsdl-0.9.1/src/config.h                     |   13 +
+ ocamlsdl-0.9.1/src/config.h.in                  |   12 +
+ ocamlsdl-0.9.1/src/config.h.msvc                |   12 +
+ ocamlsdl-0.9.1/src/dllsdlgfxstub.so             |  Bin 0 -> 48024 bytes
+ ocamlsdl-0.9.1/src/dllsdlloaderstub.so          |  Bin 0 -> 20608 bytes
+ ocamlsdl-0.9.1/src/dllsdlmixerstub.so           |  Bin 0 -> 46576 bytes
+ ocamlsdl-0.9.1/src/dllsdlstub.so                |  Bin 0 -> 174648 bytes
+ ocamlsdl-0.9.1/src/dllsdlttfstub.so             |  Bin 0 -> 38888 bytes
+ ocamlsdl-0.9.1/src/libsdlgfxstub.a              |  Bin 0 -> 55386 bytes
+ ocamlsdl-0.9.1/src/libsdlloaderstub.a           |  Bin 0 -> 17378 bytes
+ ocamlsdl-0.9.1/src/libsdlmixerstub.a            |  Bin 0 -> 53836 bytes
+ ocamlsdl-0.9.1/src/libsdlstub.a                 |  Bin 0 -> 301576 bytes
+ ocamlsdl-0.9.1/src/libsdlttfstub.a              |  Bin 0 -> 45488 bytes
+ ocamlsdl-0.9.1/src/mlsdl_main.c                 |  168 +
+ ocamlsdl-0.9.1/src/sdl.a                        |  Bin 0 -> 135940 bytes
+ ocamlsdl-0.9.1/src/sdl.cma                      |  Bin 0 -> 112325 bytes
+ ocamlsdl-0.9.1/src/sdl.cmi                      |  Bin 0 -> 1514 bytes
+ ocamlsdl-0.9.1/src/sdl.cmo                      |  Bin 0 -> 5557 bytes
+ ocamlsdl-0.9.1/src/sdl.cmx                      |  Bin 0 -> 1191 bytes
+ ocamlsdl-0.9.1/src/sdl.cmxa                     |  Bin 0 -> 3040 bytes
+ ocamlsdl-0.9.1/src/sdl.ml                       |   79 +
+ ocamlsdl-0.9.1/src/sdl.mli                      |   83 +
+ ocamlsdl-0.9.1/src/sdl.o                        |  Bin 0 -> 9840 bytes
+ ocamlsdl-0.9.1/src/sdl_stub.c                   |  169 +
+ ocamlsdl-0.9.1/src/sdl_stub.o                   |  Bin 0 -> 18568 bytes
+ ocamlsdl-0.9.1/src/sdlcdrom.cmi                 |  Bin 0 -> 2063 bytes
+ ocamlsdl-0.9.1/src/sdlcdrom.cmo                 |  Bin 0 -> 6907 bytes
+ ocamlsdl-0.9.1/src/sdlcdrom.cmx                 |  Bin 0 -> 1427 bytes
+ ocamlsdl-0.9.1/src/sdlcdrom.ml                  |   95 +
+ ocamlsdl-0.9.1/src/sdlcdrom.mli                 |  119 +
+ ocamlsdl-0.9.1/src/sdlcdrom.o                   |  Bin 0 -> 10928 bytes
+ ocamlsdl-0.9.1/src/sdlcdrom_stub.c              |  211 +
+ ocamlsdl-0.9.1/src/sdlcdrom_stub.o              |  Bin 0 -> 20976 bytes
+ ocamlsdl-0.9.1/src/sdlevent.cmi                 |  Bin 0 -> 6868 bytes
+ ocamlsdl-0.9.1/src/sdlevent.cmo                 |  Bin 0 -> 26459 bytes
+ ocamlsdl-0.9.1/src/sdlevent.cmx                 |  Bin 0 -> 2615 bytes
+ ocamlsdl-0.9.1/src/sdlevent.ml                  |  312 +
+ ocamlsdl-0.9.1/src/sdlevent.mli                 |  282 +
+ ocamlsdl-0.9.1/src/sdlevent.o                   |  Bin 0 -> 25944 bytes
+ ocamlsdl-0.9.1/src/sdlevent_stub.c              |  469 ++
+ ocamlsdl-0.9.1/src/sdlevent_stub.o              |  Bin 0 -> 55536 bytes
+ ocamlsdl-0.9.1/src/sdlgfx.a                     |  Bin 0 -> 4230 bytes
+ ocamlsdl-0.9.1/src/sdlgfx.cma                   |  Bin 0 -> 8789 bytes
+ ocamlsdl-0.9.1/src/sdlgfx.cmi                   |  Bin 0 -> 6672 bytes
+ ocamlsdl-0.9.1/src/sdlgfx.cmo                   |  Bin 0 -> 8668 bytes
+ ocamlsdl-0.9.1/src/sdlgfx.cmx                   |  Bin 0 -> 284 bytes
+ ocamlsdl-0.9.1/src/sdlgfx.cmxa                  |  Bin 0 -> 390 bytes
+ ocamlsdl-0.9.1/src/sdlgfx.ml                    |   55 +
+ ocamlsdl-0.9.1/src/sdlgfx.mli                   |   55 +
+ ocamlsdl-0.9.1/src/sdlgfx.o                     |  Bin 0 -> 3904 bytes
+ ocamlsdl-0.9.1/src/sdlgfx_stub.c                |  422 ++
+ ocamlsdl-0.9.1/src/sdlgfx_stub.o                |  Bin 0 -> 54640 bytes
+ ocamlsdl-0.9.1/src/sdlgl.ml                     |   26 +
+ ocamlsdl-0.9.1/src/sdlgl.mli                    |   29 +
+ ocamlsdl-0.9.1/src/sdlgl_stub.c                 |   85 +
+ ocamlsdl-0.9.1/src/sdlinit_flag.c               |   13 +
+ ocamlsdl-0.9.1/src/sdlinit_flag.h               |   14 +
+ ocamlsdl-0.9.1/src/sdljoystick.cmi              |  Bin 0 -> 1885 bytes
+ ocamlsdl-0.9.1/src/sdljoystick.cmo              |  Bin 0 -> 6183 bytes
+ ocamlsdl-0.9.1/src/sdljoystick.cmx              |  Bin 0 -> 1818 bytes
+ ocamlsdl-0.9.1/src/sdljoystick.ml               |   66 +
+ ocamlsdl-0.9.1/src/sdljoystick.mli              |  106 +
+ ocamlsdl-0.9.1/src/sdljoystick.o                |  Bin 0 -> 12256 bytes
+ ocamlsdl-0.9.1/src/sdljoystick_stub.c           |   85 +
+ ocamlsdl-0.9.1/src/sdljoystick_stub.o           |  Bin 0 -> 17760 bytes
+ ocamlsdl-0.9.1/src/sdlkey.cmi                   |  Bin 0 -> 7784 bytes
+ ocamlsdl-0.9.1/src/sdlkey.cmo                   |  Bin 0 -> 22122 bytes
+ ocamlsdl-0.9.1/src/sdlkey.cmx                   |  Bin 0 -> 1916 bytes
+ ocamlsdl-0.9.1/src/sdlkey.ml                    |  351 ++
+ ocamlsdl-0.9.1/src/sdlkey.mli                   |  321 ++
+ ocamlsdl-0.9.1/src/sdlkey.o                     |  Bin 0 -> 12864 bytes
+ ocamlsdl-0.9.1/src/sdlkey_stub.c                |   51 +
+ ocamlsdl-0.9.1/src/sdlkey_stub.o                |  Bin 0 -> 13152 bytes
+ ocamlsdl-0.9.1/src/sdlloader.a                  |  Bin 0 -> 5830 bytes
+ ocamlsdl-0.9.1/src/sdlloader.cma                |  Bin 0 -> 3166 bytes
+ ocamlsdl-0.9.1/src/sdlloader.cmi                |  Bin 0 -> 679 bytes
+ ocamlsdl-0.9.1/src/sdlloader.cmo                |  Bin 0 -> 3037 bytes
+ ocamlsdl-0.9.1/src/sdlloader.cmx                |  Bin 0 -> 648 bytes
+ ocamlsdl-0.9.1/src/sdlloader.cmxa               |  Bin 0 -> 497 bytes
+ ocamlsdl-0.9.1/src/sdlloader.ml                 |   38 +
+ ocamlsdl-0.9.1/src/sdlloader.mli                |   14 +
+ ocamlsdl-0.9.1/src/sdlloader.o                  |  Bin 0 -> 5360 bytes
+ ocamlsdl-0.9.1/src/sdlloader_stub.c             |   84 +
+ ocamlsdl-0.9.1/src/sdlloader_stub.o             |  Bin 0 -> 17104 bytes
+ ocamlsdl-0.9.1/src/sdlmixer.a                   |  Bin 0 -> 31752 bytes
+ ocamlsdl-0.9.1/src/sdlmixer.cma                 |  Bin 0 -> 16043 bytes
+ ocamlsdl-0.9.1/src/sdlmixer.cmi                 |  Bin 0 -> 5939 bytes
+ ocamlsdl-0.9.1/src/sdlmixer.cmo                 |  Bin 0 -> 15916 bytes
+ ocamlsdl-0.9.1/src/sdlmixer.cmx                 |  Bin 0 -> 5007 bytes
+ ocamlsdl-0.9.1/src/sdlmixer.cmxa                |  Bin 0 -> 392 bytes
+ ocamlsdl-0.9.1/src/sdlmixer.ml                  |  150 +
+ ocamlsdl-0.9.1/src/sdlmixer.mli                 |  288 +
+ ocamlsdl-0.9.1/src/sdlmixer.o                   |  Bin 0 -> 29904 bytes
+ ocamlsdl-0.9.1/src/sdlmixer_stub.c              |  610 ++
+ ocamlsdl-0.9.1/src/sdlmixer_stub.o              |  Bin 0 -> 52328 bytes
+ ocamlsdl-0.9.1/src/sdlmouse.cmi                 |  Bin 0 -> 2199 bytes
+ ocamlsdl-0.9.1/src/sdlmouse.cmo                 |  Bin 0 -> 11282 bytes
+ ocamlsdl-0.9.1/src/sdlmouse.cmx                 |  Bin 0 -> 1289 bytes
+ ocamlsdl-0.9.1/src/sdlmouse.ml                  |   94 +
+ ocamlsdl-0.9.1/src/sdlmouse.mli                 |   83 +
+ ocamlsdl-0.9.1/src/sdlmouse.o                   |  Bin 0 -> 11368 bytes
+ ocamlsdl-0.9.1/src/sdlmouse_stub.c              |  142 +
+ ocamlsdl-0.9.1/src/sdlmouse_stub.h              |    2 +
+ ocamlsdl-0.9.1/src/sdlmouse_stub.o              |  Bin 0 -> 22296 bytes
+ ocamlsdl-0.9.1/src/sdlrwops_stub.c              |  117 +
+ ocamlsdl-0.9.1/src/sdlrwops_stub.h              |    6 +
+ ocamlsdl-0.9.1/src/sdlrwops_stub.o              |  Bin 0 -> 15200 bytes
+ ocamlsdl-0.9.1/src/sdltimer.cmi                 |  Bin 0 -> 335 bytes
+ ocamlsdl-0.9.1/src/sdltimer.cmo                 |  Bin 0 -> 1815 bytes
+ ocamlsdl-0.9.1/src/sdltimer.cmx                 |  Bin 0 -> 330 bytes
+ ocamlsdl-0.9.1/src/sdltimer.ml                  |   26 +
+ ocamlsdl-0.9.1/src/sdltimer.mli                 |   28 +
+ ocamlsdl-0.9.1/src/sdltimer.o                   |  Bin 0 -> 2800 bytes
+ ocamlsdl-0.9.1/src/sdltimer_stub.c              |   42 +
+ ocamlsdl-0.9.1/src/sdltimer_stub.o              |  Bin 0 -> 7112 bytes
+ ocamlsdl-0.9.1/src/sdlttf.a                     |  Bin 0 -> 18596 bytes
+ ocamlsdl-0.9.1/src/sdlttf.cma                   |  Bin 0 -> 10721 bytes
+ ocamlsdl-0.9.1/src/sdlttf.cmi                   |  Bin 0 -> 3703 bytes
+ ocamlsdl-0.9.1/src/sdlttf.cmo                   |  Bin 0 -> 10600 bytes
+ ocamlsdl-0.9.1/src/sdlttf.cmx                   |  Bin 0 -> 2846 bytes
+ ocamlsdl-0.9.1/src/sdlttf.cmxa                  |  Bin 0 -> 447 bytes
+ ocamlsdl-0.9.1/src/sdlttf.ml                    |  106 +
+ ocamlsdl-0.9.1/src/sdlttf.mli                   |  134 +
+ ocamlsdl-0.9.1/src/sdlttf.o                     |  Bin 0 -> 17560 bytes
+ ocamlsdl-0.9.1/src/sdlttf_stub.c                |  391 ++
+ ocamlsdl-0.9.1/src/sdlttf_stub.o                |  Bin 0 -> 44704 bytes
+ ocamlsdl-0.9.1/src/sdlvideo.cmi                 |  Bin 0 -> 10761 bytes
+ ocamlsdl-0.9.1/src/sdlvideo.cmo                 |  Bin 0 -> 29179 bytes
+ ocamlsdl-0.9.1/src/sdlvideo.cmx                 |  Bin 0 -> 6220 bytes
+ ocamlsdl-0.9.1/src/sdlvideo.ml                  |  293 +
+ ocamlsdl-0.9.1/src/sdlvideo.mli                 |  438 ++
+ ocamlsdl-0.9.1/src/sdlvideo.o                   |  Bin 0 -> 36384 bytes
+ ocamlsdl-0.9.1/src/sdlvideo_flag.c              |   21 +
+ ocamlsdl-0.9.1/src/sdlvideo_flag.h              |   22 +
+ ocamlsdl-0.9.1/src/sdlvideo_stub.c              |  829 +++
+ ocamlsdl-0.9.1/src/sdlvideo_stub.h              |   52 +
+ ocamlsdl-0.9.1/src/sdlvideo_stub.o              |  Bin 0 -> 101200 bytes
+ ocamlsdl-0.9.1/src/sdlwm.cmi                    |  Bin 0 -> 854 bytes
+ ocamlsdl-0.9.1/src/sdlwm.cmo                    |  Bin 0 -> 2964 bytes
+ ocamlsdl-0.9.1/src/sdlwm.cmx                    |  Bin 0 -> 844 bytes
+ ocamlsdl-0.9.1/src/sdlwm.ml                     |   19 +
+ ocamlsdl-0.9.1/src/sdlwm.mli                    |   37 +
+ ocamlsdl-0.9.1/src/sdlwm.o                      |  Bin 0 -> 5240 bytes
+ ocamlsdl-0.9.1/src/sdlwm_stub.c                 |   47 +
+ ocamlsdl-0.9.1/src/sdlwm_stub.o                 |  Bin 0 -> 15304 bytes
+ ocamlsdl-0.9.1/support/config.guess             | 1501 +++++
+ ocamlsdl-0.9.1/support/config.sub               | 1705 ++++++
+ ocamlsdl-0.9.1/support/install-sh               |  520 ++
+ ocamlsdl-0.9.1/support/ocaml.m4                 |  240 +
+ ocamlsdl-0.9.1/xpm_to_ml                        |   21 +
+ 221 files changed, 37948 insertions(+), 11 deletions(-)
+
+commit e01844da003d8e86d4efab20fd50f49f74901d9a
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Thu Dec 1 17:09:19 2016 -0500
+
+    updated .mli with changes
+
+ engine(documentation).mli | 28 +++++++++++++++++++++++++++-
+ engine.ml                 | 15 ++++++++++++++-
+ 2 files changed, 41 insertions(+), 2 deletions(-)
+
+commit 3408146aec60a9dcedca2403aa0864ca04659852
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Thu Dec 1 16:53:44 2016 -0500
+
+    renamed .jpgs, fixed map, allowed quit, stopped double printing
+
+ Rooms/CSOffices.jpg         | Bin 0 -> 2101713 bytes
+ Rooms/CSOffices_Bed.jpg     | Bin 0 -> 2066070 bytes
+ Rooms/CSOffices_Camel.jpg   | Bin 0 -> 2119759 bytes
+ Rooms/copyRoom.jpg          | Bin 0 -> 166553 bytes
+ Rooms/copyRoom_Bed.jpg      | Bin 0 -> 2199228 bytes
+ Rooms/copyRoom_Camel.jpg    | Bin 0 -> 2219130 bytes
+ Rooms/hallway.jpg           | Bin 0 -> 2001561 bytes
+ Rooms/hallway_Bed.jpg       | Bin 0 -> 2109287 bytes
+ Rooms/hallway_Camel.jpg     | Bin 0 -> 2165379 bytes
+ Rooms/main.jpg              | Bin 0 -> 2485858 bytes
+ Rooms/room0.jpg             | Bin 2485858 -> 0 bytes
+ Rooms/room1.jpg             | Bin 166553 -> 0 bytes
+ Rooms/room1_bed.jpg         | Bin 2199228 -> 0 bytes
+ Rooms/room1_camel.jpg       | Bin 2219130 -> 0 bytes
+ Rooms/room2.jpg             | Bin 2104090 -> 0 bytes
+ Rooms/room2_bed.jpg         | Bin 2094470 -> 0 bytes
+ Rooms/room2_camel.jpg       | Bin 2083772 -> 0 bytes
+ Rooms/room4.jpg             | Bin 2101713 -> 0 bytes
+ Rooms/room4_bed.jpg         | Bin 2066070 -> 0 bytes
+ Rooms/room4_camel.jpg       | Bin 2119759 -> 0 bytes
+ Rooms/room5.jpg             | Bin 2001561 -> 0 bytes
+ Rooms/room5_bed.jpg         | Bin 2109287 -> 0 bytes
+ Rooms/room5_camel.jpg       | Bin 2165379 -> 0 bytes
+ Rooms/studySpaces.jpg       | Bin 0 -> 2104090 bytes
+ Rooms/studySpaces_Bed.jpg   | Bin 0 -> 2094470 bytes
+ Rooms/studySpaces_Camel.jpg | Bin 0 -> 2083772 bytes
+ engine.ml                   |  59 ++++++++++++++++++++++++++++++--------------
+ main.ml                     |   2 +-
+ map.json                    |   4 +--
+ 29 files changed, 43 insertions(+), 22 deletions(-)
+
+commit 1a48be22032e2fb91efaf7b064197d75c0e990cc
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Thu Dec 1 14:25:35 2016 -0500
+
+    new main message, refs for constants
+
+ engine.ml | 30 ++++++++++++++++++++----------
+ main.ml   | 12 ++++++++----
+ test.json |  2 +-
+ 3 files changed, 29 insertions(+), 15 deletions(-)
+
+commit 47a2ce8fc127539d6b3eed35ae1d18613a6819db
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Thu Dec 1 12:15:58 2016 -0500
+
+    fast poll update
+
+ engine.ml | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+commit c569935aa7bda8b78944a098d32df5fd7df9062f
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Wed Nov 30 20:57:27 2016 -0500
+
+    cleaning up
+
+ Makefile       |   8 +-
+ README.txt     |  41 +----
+ engine.ml      | 411 ++++++++++++++++++++++++++-----------------------
+ engineAsync.ml | 454 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ engineText.ml  | 475 ---------------------------------------------------------
+ engine_test.ml | 240 -----------------------------
+ interfaces.zip | Bin 2843 -> 0 bytes
+ main.ml        |   5 +-
+ 8 files changed, 680 insertions(+), 954 deletions(-)
+
+commit dbee7e123a213efa6dce9e701db8d4f6147c477d
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Wed Nov 30 20:05:44 2016 -0500
+
+    engines engines everywhere
+
+ engine(doc2).mli          | 168 ++++++++++++++++++++++++++++++++++++++++++++++
+ engine(documentation).mli |  79 +++++++++-------------
+ engine.ml                 |  50 +++++---------
+ engineText.ml             | 103 +++++++++++-----------------
+ 4 files changed, 257 insertions(+), 143 deletions(-)
+
+commit 31b70788f2df0b523785c6c4f4217d29c296bf59
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Wed Nov 30 14:05:53 2016 -0500
+
+    added cmd check
+
+ engineText.ml | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+commit 5ab9b9b615bffe034e992907ba16f228cdcb1a56
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Wed Nov 30 12:20:20 2016 -0500
+
+    cleaned engines of all types
+
+ engine(documentation).mli | 58 +++++++++++++++++++++++------------------------
+ engine.ml                 | 14 ++++++++----
+ engineText.ml             | 18 ++++-----------
+ 3 files changed, 43 insertions(+), 47 deletions(-)
+
+commit 2032e993b9e2e3acb309eaa50e572f9f56764328
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Wed Nov 30 11:31:19 2016 -0500
+
+    cleaned GUI and its documenation
+
+ GUI (Documentation) .mli |  9 +++++----
+ GUI.ml                   | 14 +++++++-------
+ 2 files changed, 12 insertions(+), 11 deletions(-)
+
+commit ef88609aeb44992f30b27ecea0c5eead07c101d0
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Wed Nov 30 11:21:49 2016 -0500
+
+    fixed warnings on engine.ml
+
+ GUI.ml    |  3 +--
+ engine.ml | 24 +++++++++++-------------
+ 2 files changed, 12 insertions(+), 15 deletions(-)
+
+commit afa612197ed277e2f6643c8db7b9abd57c5a45b2
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Wed Nov 30 11:11:49 2016 -0500
+
+    engineText is really pretty now
+
+ engineText.ml | 107 +++++++++++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 80 insertions(+), 27 deletions(-)
+
+commit cdeacbbe0c8a57241eaf17babbc2ee1fa7f5f821
+Author: Ruoyan Qin <rq25@cornell.edu>
+Date:   Tue Nov 29 21:06:09 2016 -0500
+
+    fixed monster random room start point
+
+ engine.ml | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
+
+commit b37d0b161cd7f42c9b7d960abb2bad67ab7d3fd0
+Merge: 8d0d3bd 959acc3
+Author: Ruoyan Qin <rq25@cornell.edu>
+Date:   Tue Nov 29 20:46:40 2016 -0500
+
+    merge
+
+commit 8d0d3bdfed1d1f284215fd94db469cbff1606ec9
+Author: Ruoyan Qin <rq25@cornell.edu>
+Date:   Tue Nov 29 20:42:17 2016 -0500
+
+    cleaned build
+
+ _build/_digests          |   7 -
+ _build/_log              |  17 --
+ _build/engine.cmi        | Bin 6488 -> 0 bytes
+ _build/engine.cmo        | Bin 59262 -> 0 bytes
+ _build/engine.ml         | 469 -----------------------------------------------
+ _build/engine.ml.depends |   1 -
+ _build/main.byte         | Bin 44778905 -> 0 bytes
+ _build/main.cmi          | Bin 1676 -> 0 bytes
+ _build/main.cmo          | Bin 4023 -> 0 bytes
+ _build/main.ml           |  20 --
+ _build/main.ml.depends   |   1 -
+ _build/ocamlc.where      |   1 -
+ main.byte                |   1 -
+ 13 files changed, 517 deletions(-)
+
+commit 02eec0d3e1e85be95fae9f25a001fd47bf487240
+Author: Ruoyan Qin <rq25@cornell.edu>
+Date:   Tue Nov 29 19:02:16 2016 -0500
+
+    fixed monster moving
+
+ _build/_digests          |   7 +
+ _build/_log              |  17 ++
+ _build/engine.cmi        | Bin 0 -> 6488 bytes
+ _build/engine.cmo        | Bin 0 -> 59262 bytes
+ _build/engine.ml         | 469 +++++++++++++++++++++++++++++++++++++++++++++++
+ _build/engine.ml.depends |   1 +
+ _build/main.byte         | Bin 0 -> 44778905 bytes
+ _build/main.cmi          | Bin 0 -> 1676 bytes
+ _build/main.cmo          | Bin 0 -> 4023 bytes
+ _build/main.ml           |  20 ++
+ _build/main.ml.depends   |   1 +
+ _build/ocamlc.where      |   1 +
+ engine.ml                | 300 +++++++++++++-----------------
+ main.byte                |   1 +
+ 14 files changed, 641 insertions(+), 176 deletions(-)
+
+commit 959acc38ef05ebd1415d879c358a7d974712d805
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Tue Nov 29 18:35:31 2016 -0500
+
+    text-based engine
+
+ engineText.ml | 447 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ test.ml       |   1 +
+ 2 files changed, 448 insertions(+)
+
+commit bbb67ca45591d69b0b0c300ef47da32e9e049916
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Tue Nov 29 16:35:33 2016 -0500
+
+    fixed state update for mons
+
+ engine.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 5d0a5a7ff8684d985c6a0342844bee446b0daad0
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Tue Nov 29 16:32:42 2016 -0500
+
+    typo in map
+
+ map.json | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 24f67821b94f5f9c3428fa4f201f4e4b150125cc
+Author: Ruoyan Qin <rq25@cornell.edu>
+Date:   Tue Nov 29 15:41:27 2016 -0500
+
+    fixed update_time_batter
+
+ _build/_digests          |   7 -
+ _build/_log              |  15 --
+ _build/engine.cmi        | Bin 7160 -> 0 bytes
+ _build/engine.cmo        | Bin 64840 -> 0 bytes
+ _build/engine.ml         | 499 -----------------------------------------------
+ _build/engine.ml.depends |   1 -
+ _build/main.byte         | Bin 44784359 -> 0 bytes
+ _build/main.cmi          | Bin 1676 -> 0 bytes
+ _build/main.cmo          | Bin 4023 -> 0 bytes
+ _build/main.ml           |  20 --
+ _build/main.ml.depends   |   1 -
+ _build/ocamlc.where      |   1 -
+ engine.ml                |  38 +++-
+ main.byte                |   1 -
+ 14 files changed, 30 insertions(+), 553 deletions(-)
+
+commit b3470203a5e73a09aac51038e2f0a6d1daed0b6d
+Merge: a0c061d fac5b23
+Author: Ruoyan Qin <rq25@cornell.edu>
+Date:   Tue Nov 29 15:21:13 2016 -0500
+
+    merge. before changing update_state_monster_move
+
+commit a0c061d6a333ac8083044b13e650686873746ab0
+Author: Ruoyan Qin <rq25@cornell.edu>
+Date:   Tue Nov 29 15:12:05 2016 -0500
+
+    changed function update
+
+ engine.ml | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+commit fac5b23dac98874f8b026ed55886b7e4e55cf91f
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Tue Nov 29 14:00:56 2016 -0500
+
+    Bed monster and main room
+
+ Rooms/room0.jpg     | Bin 0 -> 2485858 bytes
+ Rooms/room1_bed.jpg | Bin 0 -> 2199228 bytes
+ Rooms/room2_bed.jpg | Bin 0 -> 2094470 bytes
+ Rooms/room3_bed.jpg | Bin 0 -> 2211829 bytes
+ Rooms/room4_bed.jpg | Bin 0 -> 2066070 bytes
+ Rooms/room5_bed.jpg | Bin 0 -> 2109287 bytes
+ 6 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 6a56f94b6cf6b5f0d6d24fdd0d9acc38ab84c2a7
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Tue Nov 29 13:53:19 2016 -0500
+
+    map overlay
+
+ GUI.ml  |   5 ++++-
+ map.png | Bin 0 -> 25019 bytes
+ 2 files changed, 4 insertions(+), 1 deletion(-)
+
+commit 1e3db9c21d9bab79a4056e6323b9d2567d2fccdd
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Tue Nov 29 12:42:34 2016 -0500
+
+    possible keyboard input code in test.ml
+
+ test.ml | 27 ++++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 7 deletions(-)
+
+commit a1a6ac30915d36b46b34ed5d009edbe9816bf0c6
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Tue Nov 29 11:50:21 2016 -0500
+
+    for Jovan to test
+
+ GUI.ml | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+commit 83873dd3a676dd1791ddc3b90e02950daa490b92
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Tue Nov 29 11:46:29 2016 -0500
+
+    text test
+
+ Timea.ttf | Bin 0 -> 29356 bytes
+ engine.ml |  16 +++++++++-------
+ test.ml   |   8 ++++++++
+ 3 files changed, 17 insertions(+), 7 deletions(-)
+
+commit 44598bc532a59bf4911ec50f7a0405cddd673651
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Tue Nov 29 11:12:40 2016 -0500
+
+    sorta fixed quit
+
+ engine.ml | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+commit 9639c2eed649f213f9f0ce04cf7f3e2aba969ab9
+Author: Ubuntu <ubuntu@csvm>
+Date:   Tue Nov 29 09:18:26 2016 -0500
+
+    image updater
+
+ GUI (Documentation) .mli |  12 ++++++++++++
+ GUI.ml                   |  19 ++++++++++++++-----
+ GUI.mli                  |  16 ----------------
+ Rooms/room1.jpg          | Bin 2224830 -> 166553 bytes
+ 4 files changed, 26 insertions(+), 21 deletions(-)
+
+commit fca3585d8e7247ab9f1f101de48be2b9264037db
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Nov 28 21:55:57 2016 -0500
+
+    Adding Room images with monster
+
+ .DS_Store             | Bin 6148 -> 6148 bytes
+ Rooms/room1.jpg       | Bin 0 -> 2224830 bytes
+ Rooms/room1_camel.jpg | Bin 0 -> 2219130 bytes
+ Rooms/room2.jpg       | Bin 0 -> 2104090 bytes
+ Rooms/room2_camel.jpg | Bin 0 -> 2083772 bytes
+ Rooms/room3.jpg       | Bin 0 -> 2007764 bytes
+ Rooms/room3_camel.jpg | Bin 0 -> 2445079 bytes
+ Rooms/room4.jpg       | Bin 0 -> 2101713 bytes
+ Rooms/room4_camel.jpg | Bin 0 -> 2119759 bytes
+ Rooms/room5.jpg       | Bin 0 -> 2001561 bytes
+ Rooms/room5_camel.jpg | Bin 0 -> 2165379 bytes
+ 11 files changed, 0 insertions(+), 0 deletions(-)
+
+commit f8af11a1907a29c8c0975a747cc9697d85ef0fe7
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Nov 28 20:50:27 2016 -0500
+
+    fixed error
+
+ engine.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 3ce544649f3185e92b8a79448ace2549fea6196b
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Nov 28 20:23:46 2016 -0500
+
+    missed a typo....
+
+ engine.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit d8532e4e227291f378f1762ccd73f245739f0e90
+Merge: 858cace 733a429
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Nov 28 19:23:21 2016 -0500
+
+    merge
+
+commit 858cacefb30a752ada621bff91ee138d69cdbccd
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Nov 28 19:03:58 2016 -0500
+
+    quit?
+
+ engine.ml | 32 +++++++++++++++-----------------
+ 1 file changed, 15 insertions(+), 17 deletions(-)
+
+commit 733a4299af2a49cbaccbb45213df11d957494f30
+Author: Ruoyan Qin <rq25@cornell.edu>
+Date:   Mon Nov 28 18:07:23 2016 -0500
+
+    getting user input and background update working
+
+ engine.ml | 35 +++++++++++++++++++++--------------
+ main.ml   |  4 ++--
+ 2 files changed, 23 insertions(+), 16 deletions(-)
+
+commit 60180432a8cb97c4f677f41ed1361976ae9c9334
+Merge: 51e19b2 9f4dddd
+Author: Ruoyan Qin <rq25@cornell.edu>
+Date:   Mon Nov 28 17:37:08 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/cgc66/CS3110_Project
+
+commit 51e19b21bc5283df47ef52416403baead5dc46b1
+Author: Ruoyan Qin <rq25@cornell.edu>
+Date:   Mon Nov 28 17:36:56 2016 -0500
+
+    refactored eval with async. moved scheduler to main.ml
+
+ engine.ml | 33 +++++++++++++++++----------------
+ main.ml   |  4 ++--
+ 2 files changed, 19 insertions(+), 18 deletions(-)
+
+commit 7ce5b1ae35a5b8ae2e92fc6efa98193098c43b73
+Author: Ruoyan Qin <rq25@cornell.edu>
+Date:   Mon Nov 28 17:00:17 2016 -0500
+
+    added ASync to user input. Trying to figure out where to put scheduler.go
+
+ .ocamlinit |   4 ---
+ engine.ml  | 107 ++++++++++++++++++++++++++++++++++++++++++-------------------
+ main.ml    |   7 ++--
+ 3 files changed, 79 insertions(+), 39 deletions(-)
+
+commit 9f4ddddbdd949470f31f0b4aca2fece29229e3c6
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Nov 28 15:16:52 2016 -0500
+
+    typing mistake
+
+ engine.ml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 4bebdd69e96278fbe9fc3886d0b2b94b2bd5ef52
+Author: Ruoyan Qin <rq25@cornell.edu>
+Date:   Mon Nov 28 15:14:21 2016 -0500
+
+    removed shadowing
+
+ engine.ml        | 66 ++++++++++++++++----------------------------------------
+ engine_test.byte |  1 -
+ 2 files changed, 19 insertions(+), 48 deletions(-)
+
+commit a9d59f5f350c37b833d0e88ba377c26c1c74f9ac
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Nov 28 14:14:21 2016 -0500
+
+    fixed ocamlbuild
+
+ Makefile | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
+
+commit 69a7036e5ef1d3ab7eca12ba134f3b1e9e781f6e
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Nov 28 12:31:09 2016 -0500
+
+    fixed make check
+
+ Makefile      | 10 ++++++++--
+ checktypes.sh |  4 ++--
+ 2 files changed, 10 insertions(+), 4 deletions(-)
+
+commit dedca6578b542169593f221ecb645b8b52088f52
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Nov 28 12:01:52 2016 -0500
+
+    merged?
+
+ Makefile                                           |   7 -
+ _build/_digests                                    |   7 -
+ _build/_log                                        |  12 -
+ _build/engine.cmi                                  | Bin 5941 -> 0 bytes
+ _build/engine.cmo                                  | Bin 48809 -> 0 bytes
+ _build/engine.ml                                   | 424 ---------------------
+ _build/engine.ml.depends                           |   1 -
+ _build/engine_test.byte                            | Bin 45204921 -> 0 bytes
+ _build/engine_test.cmi                             | Bin 2329 -> 0 bytes
+ _build/engine_test.cmo                             | Bin 4454 -> 0 bytes
+ _build/engine_test.ml                              | 240 ------------
+ _build/engine_test.ml.depends                      |   1 -
+ ...nit-test suite-Ruoyans-MacBook-Pro.local#00.log |  30 --
+ _build/ocamlc.where                                |   1 -
+ engine.ml                                          |  89 +++--
+ 15 files changed, 67 insertions(+), 745 deletions(-)
+
+commit 9870c5960f7ad39bcf24aab2b077500bbe322cf5
+Merge: 992df72 cabe385
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Nov 28 11:48:14 2016 -0500
+
+    merge
+
+commit cabe38576542fae1ae3819286b9a06260ea1d084
+Author: Ruoyan Qin <rq25@cornell.edu>
+Date:   Mon Nov 28 11:25:39 2016 -0500
+
+    edited makefile. Added pervasives scope to read_line
+
+ .ocamlinit                                         |   1 +
+ Makefile                                           |   4 +-
+ _build/_digests                                    |   7 +
+ _build/_log                                        |  12 +
+ _build/engine.cmi                                  | Bin 0 -> 5941 bytes
+ _build/engine.cmo                                  | Bin 0 -> 48809 bytes
+ _build/engine.ml                                   | 424 +++++++++++++++++++++
+ _build/engine.ml.depends                           |   1 +
+ _build/engine_test.byte                            | Bin 0 -> 45204921 bytes
+ _build/engine_test.cmi                             | Bin 0 -> 2329 bytes
+ _build/engine_test.cmo                             | Bin 0 -> 4454 bytes
+ _build/engine_test.ml                              | 240 ++++++++++++
+ _build/engine_test.ml.depends                      |   1 +
+ ...nit-test suite-Ruoyans-MacBook-Pro.local#00.log |  30 ++
+ _build/ocamlc.where                                |   1 +
+ engine.ml                                          |  65 +++-
+ engine_test.byte                                   |   1 +
+ 17 files changed, 780 insertions(+), 7 deletions(-)
+
+commit 992df72757c33584d9a5c487f64a23c6391296b9
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Nov 28 11:03:27 2016 -0500
+
+    cleaned make again
+
+ .ocamlinit                    |   2 +-
+ _build/_digests               |   4 -
+ _build/_log                   |  13 --
+ _build/engine.ml              | 396 ------------------------------------------
+ _build/engine.ml.depends      |   1 -
+ _build/engine_test.ml         | 240 -------------------------
+ _build/engine_test.ml.depends |   1 -
+ _build/ocamlc.where           |   1 -
+ 8 files changed, 1 insertion(+), 657 deletions(-)
+
+commit aabfae47de99bb7885ab80fb53faf1b4407fb96a
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Mon Nov 28 11:01:06 2016 -0500
+
+    overnight changes and fixes
+
+ engine.ml | 100 +++++++++++++++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 70 insertions(+), 30 deletions(-)
+
+commit 95ad66b681741294aabbe72bbed0bfdf37ef77b1
+Author: Ruoyan Qin <rq25@cornell.edu>
+Date:   Mon Nov 28 10:09:29 2016 -0500
+
+    implemented random_goal
+
+ .ocamlinit                    |   1 +
+ Makefile                      |   5 +-
+ _build/_digests               |   4 +
+ _build/_log                   |  13 ++
+ _build/engine.ml              | 396 ++++++++++++++++++++++++++++++++++++++++++
+ _build/engine.ml.depends      |   1 +
+ _build/engine_test.ml         | 240 +++++++++++++++++++++++++
+ _build/engine_test.ml.depends |   1 +
+ _build/ocamlc.where           |   1 +
+ engine.ml                     |  33 +++-
+ 10 files changed, 690 insertions(+), 5 deletions(-)
+
+commit 569665d48f15b62fd01bfe52e0fe2c5b2bf02b9e
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Sun Nov 27 23:07:08 2016 -0500
+
+    fixed time and battery game evals, cleaned eval loop
+
+ README.txt |  5 +---
+ engine.ml  | 91 +++++++++++++++++++++++++++++---------------------------------
+ 2 files changed, 44 insertions(+), 52 deletions(-)
+
+commit 5fd9a1383b727b82a6df9d2b9be334e21a8154e6
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Sun Nov 27 20:21:37 2016 -0500
+
+    file error handling
+
+ engine.ml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 646f5c16d8ba8e5d4ab0af593943b234c8a83e50
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Sun Nov 27 19:42:37 2016 -0500
+
+    all of engine except monster movement and updates
+
+ README.txt                |  10 ++-
+ checktypes.sh             |   1 -
+ engine(documentation).mli |  10 +--
+ engine.ml                 | 191 ++++++++++++++++++++++++++++++----------------
+ map.json                  |  24 +++---
+ test.json                 |  10 +--
+ 6 files changed, 152 insertions(+), 94 deletions(-)
+
+commit a298d6c287135a37df64cad271173d101ab26074
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Sun Nov 27 13:21:36 2016 -0500
+
+    minor misc fixes
+
+ README.txt                | 23 ++++++++++++-----------
+ engine(documentation).mli |  4 ++--
+ engine.ml                 | 15 ++++++---------
+ 3 files changed, 20 insertions(+), 22 deletions(-)
+
+commit e9ecd847b471b4d4140c9a94888a487ed1edeebc
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Sun Nov 27 13:06:38 2016 -0500
+
+    fixed make check, make play, eval loop
+
+ .ocamlinit                |   2 +-
+ README.txt                |  21 +-
+ checktypes.sh             |  10 +-
+ engine(documentation).mli |  13 ++
+ engine.ml                 | 568 +++++++++++++++++++++++-----------------------
+ engine2.ml                | 323 --------------------------
+ 6 files changed, 307 insertions(+), 630 deletions(-)
+
+commit 55edd75ef0b074b26b00540057cf9df224fdc3a5
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Fri Nov 25 02:48:43 2016 -0500
+
+    finished(?) interface
+
+ README.txt     |  9 ++++--
+ engine2.ml     | 36 ++++++++----------------
+ engine_test.ml | 87 +++++++++++++++++++++++++++++-----------------------------
+ 3 files changed, 61 insertions(+), 71 deletions(-)
+
+commit 809c8e6f7191ba648674cabe103196ffa0502945
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Thu Nov 24 12:11:43 2016 -0500
+
+    modifying 'do in engine2.ml
+
+ README.txt | 17 +++++++++++++++
+ engine2.ml | 71 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 88 insertions(+)
+
+commit 5976e94bb543b0e99e399317ab445de56d739291
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Thu Nov 24 10:16:04 2016 -0500
+
+    fixed make
+
+ .ocamlinit    |  1 +
+ README.txt    |  2 --
+ _tags         |  0
+ checkenv.sh   | 65 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ checktypes.sh | 49 ++++++++++++++++++++++++++++++++++++++++++++
+ main.ml       |  4 ++--
+ map.json      |  4 ++--
+ test.json     |  4 ++--
+ 8 files changed, 121 insertions(+), 8 deletions(-)
+
+commit f6e66dbb0884af671a7eb7c318c11357765eab67
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Thu Nov 24 00:29:36 2016 -0500
+
+    deleted _build/ files after cleaning
+
+ _build/_digests                                    |   7 -
+ _build/_log                                        |  12 -
+ _build/engine.cmi                                  | Bin 3313 -> 0 bytes
+ _build/engine.cmo                                  | Bin 39153 -> 0 bytes
+ _build/engine.ml                                   | 320 ---------------------
+ _build/engine.ml.depends                           |   1 -
+ _build/engine_test.byte                            | Bin 4456033 -> 0 bytes
+ _build/engine_test.cmi                             | Bin 1410 -> 0 bytes
+ _build/engine_test.cmo                             | Bin 4190 -> 0 bytes
+ _build/engine_test.ml                              | 239 ---------------
+ _build/engine_test.ml.depends                      |   1 -
+ ...ure test suite-Ruoyans-MacBook-Pro.local#00.log |  59 ----
+ ...ure test suite-Ruoyans-MacBook-Pro.local#01.log |   9 -
+ _build/oUnit-Adventure test suite.cache            | Bin 375 -> 0 bytes
+ _build/ocamlc.where                                |   1 -
+ engine_test.byte                                   |   1 -
+ 16 files changed, 650 deletions(-)
+
+commit 81d6922315fb755616667a3faa6e237ea6452f1a
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Thu Nov 24 00:27:17 2016 -0500
+
+    added to README.txt
+
+ README.txt | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+commit f57a369beb1b14fc7f108e88d3b076231fc5db14
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Thu Nov 24 00:25:25 2016 -0500
+
+    added engine2.ml and GUI.ml
+
+ .ocamlinit                |   4 +
+ GUI.ml                    |  10 ++
+ README.txt                |   8 +-
+ engine(documentation).mli |  34 +++---
+ engine2.ml                | 266 ++++++++++++++++++++++++++++++++++++++++++++++
+ map.json                  |   8 ++
+ test.json                 |   8 ++
+ 7 files changed, 321 insertions(+), 17 deletions(-)
+
+commit 9a8d24cc5accfc15f2bff0b83b4b99d5c06e9333
+Author: Ruoyan Qin <rq25@cornell.edu>
+Date:   Mon Nov 21 10:30:07 2016 -0500
+
+    basic framework for testing/implementing
+
+ .DS_Store                                          | Bin 0 -> 6148 bytes
+ Makefile                                           |  12 +
+ README.txt                                         |   9 +
+ _build/_digests                                    |   7 +
+ _build/_log                                        |  12 +
+ _build/engine.cmi                                  | Bin 0 -> 3313 bytes
+ _build/engine.cmo                                  | Bin 0 -> 39153 bytes
+ _build/engine.ml                                   | 320 +++++++++++++++++++++
+ _build/engine.ml.depends                           |   1 +
+ _build/engine_test.byte                            | Bin 0 -> 4456033 bytes
+ _build/engine_test.cmi                             | Bin 0 -> 1410 bytes
+ _build/engine_test.cmo                             | Bin 0 -> 4190 bytes
+ _build/engine_test.ml                              | 239 +++++++++++++++
+ _build/engine_test.ml.depends                      |   1 +
+ ...ure test suite-Ruoyans-MacBook-Pro.local#00.log |  59 ++++
+ ...ure test suite-Ruoyans-MacBook-Pro.local#01.log |   9 +
+ _build/oUnit-Adventure test suite.cache            | Bin 0 -> 375 bytes
+ _build/ocamlc.where                                |   1 +
+ engine(documentation).mli                          | 164 +++++++++++
+ engine.ml                                          | 320 +++++++++++++++++++++
+ engine.mli                                         | 167 -----------
+ engine_test.byte                                   |   1 +
+ engine_test.ml                                     | 239 +++++++++++++++
+ main.ml                                            |  17 ++
+ 24 files changed, 1411 insertions(+), 167 deletions(-)
+
+commit 1bea8f4d069e1785927ff6da5f369ff54094e2d5
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Sat Nov 12 20:10:09 2016 -0500
+
+    added test .json
+
+ test.json | 47 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 47 insertions(+)
+
+commit 288c8a9a788c317fcc4e7befd5c72e014f5633e5
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Sat Nov 12 20:04:45 2016 -0500
+
+    revised design
+
+ AIs.mli    |  34 ------------------
+ GUI.mli    |  44 ++---------------------
+ README.txt |   9 +++++
+ engine.mli | 119 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----
+ 4 files changed, 123 insertions(+), 83 deletions(-)
+
+commit fb65cc8341178a73f2c7002da61bd1246b1bd24e
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Thu Nov 10 17:10:45 2016 -0500
+
+    map .json written
+
+ interfaces.zip | Bin 0 -> 2843 bytes
+ map.json       | 148 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 148 insertions(+)
+
+commit 4162e7ef32d3650786fb9ac2744bac51eedf9dde
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Tue Nov 8 18:35:42 2016 -0500
+
+    finalized .mli's with Jovan
+
+ GUI.mli    | 71 +++++++++++++++++++++++++++++++++-----------------------------
+ README.txt |  3 +++
+ engine.mli | 19 +++++------------
+ 3 files changed, 46 insertions(+), 47 deletions(-)
+
+commit 91cf74a4d2fe0a33cc4b4d4ee97b261e84ffb329
+Merge: 5c949b2 df6891b
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Tue Nov 8 17:44:52 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/cgc66/CS3110_Project
+
+commit df6891ba3d8acc3fc926d5d4f9f39fb1a027a487
+Author: Ubuntu <ubuntu@csvm>
+Date:   Tue Nov 8 17:38:47 2016 -0500
+
+    took out the trash
+
+ README.txt    |  6 ------
+ ideas.txt     |  1 -
+ userInput.mli | 19 -------------------
+ 3 files changed, 26 deletions(-)
+
+commit 5c949b2d93dffdeaf6e405e16e68672955b97b7d
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Tue Nov 8 17:34:43 2016 -0500
+
+    removed .md file
+
+ README.md | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit a49435fc4d28e349c23cf51d59f57ca83d4f6631
+Merge: 5e50b49 cce54d7
+Author: Ubuntu <ubuntu@csvm>
+Date:   Tue Nov 8 17:28:29 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/cgc66/CS3110_Project
+
+commit 5e50b49109573c78ea91b79f597c1a0a62fb0fd6
+Author: Ubuntu <ubuntu@csvm>
+Date:   Tue Nov 8 17:27:59 2016 -0500
+
+    updated gui
+
+ GUI.mli | 58 ++++++++++++++++++++++++++++++++++------------------------
+ 1 file changed, 34 insertions(+), 24 deletions(-)
+
+commit cce54d77bfb311be71025de3bc8ae4f0b3d24920
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Tue Nov 8 17:25:24 2016 -0500
+
+    typed AIs.mli
+
+ AIs.mli | 37 +++++++++++++++++++------------------
+ 1 file changed, 19 insertions(+), 18 deletions(-)
+
+commit ff292cb9f5cd2d39d751fe141d18923d822f1067
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Tue Nov 8 17:13:33 2016 -0500
+
+    typed engine.mli and updated README.txt
+
+ README.txt | 14 +-------------
+ engine.mli | 60 +++++++++++++++++++++++++++++-------------------------------
+ 2 files changed, 30 insertions(+), 44 deletions(-)
+
+commit e72351c9a67a125bd0f7a4c3ee2ecfdfffcc4681
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Tue Nov 8 15:46:05 2016 -0500
+
+    added type room, wording edits
+
+ AIs.mli       | 16 ++++++----------
+ README.txt    |  3 ++-
+ engine.mli    | 11 ++++++++---
+ userInput.mli | 20 +++++++-------------
+ 4 files changed, 23 insertions(+), 27 deletions(-)
+
+commit 983b3fd6bc34ffa218b25c57ede2228915074598
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Tue Nov 8 15:34:33 2016 -0500
+
+    cleaned engine.mli
+
+ README.txt |  7 +++++
+ engine.mli | 97 ++++++++++++++++++++++++++++++++------------------------------
+ 2 files changed, 57 insertions(+), 47 deletions(-)
+
+commit e59d2e54d6ac1a5062fddd20be34d868531f8257
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Tue Nov 8 13:35:57 2016 -0500
+
+    small edits
+
+ README.txt | 2 +-
+ engine.mli | 8 ++++----
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+commit fc31d4032e9d97cd3c629c805a75ca83e82c02a6
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Tue Nov 8 11:04:59 2016 -0500
+
+    edited README.txt
+
+ README.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 7ee9939a3f458c391cfa9023f7b68d50489fa763
+Author: Pui Lam <pc592@cornell.edu>
+Date:   Tue Nov 8 11:03:08 2016 -0500
+
+    added/updated/edited .mlis
+
+ AIs.mli       | 37 +++++++++++++++++++++++++
+ README.txt    | 10 +++++++
+ engine.mli    | 87 +++++++++++++++++++++++++++++------------------------------
+ userInput.mli | 25 +++++++++++++++++
+ 4 files changed, 115 insertions(+), 44 deletions(-)
+
+commit e82dcfb48392dec420f48d57f735b5d9614b9c33
+Author: Ubuntu <ubuntu@csvm>
+Date:   Tue Nov 8 01:21:41 2016 -0500
+
+    Gui
+
+ GUI.mli | 39 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
+
+commit b6649dd9248166cc76a2cc31b54a43ed0ad85465
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 7 06:36:04 2016 -0500
+
+    engine.mli finish
+
+ engine.mli | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
+
+commit 10beae1c8e36f2ed5fd3f8fb9cf4e608d548638e
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 7 06:21:21 2016 -0500
+
+    engine.mli update
+
+ engine.mli | 39 ++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 36 insertions(+), 3 deletions(-)
+
+commit d38c58535d4704623eb4e90fa55254a2a4b67adf
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 5 23:10:59 2016 -0400
+
+    start
+
+ engine.mli | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
+
+commit 0e3c338dd63d54c5e71b1a4711e4e1c6eb5cc593
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Oct 17 16:25:10 2016 -0400
+
+    Made first file
+
+ ideas.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit bd4a672f023c199860467e764ed8952a9817e806
+Author: ConnieC14 <cgc66@cornell.edu>
+Date:   Mon Oct 17 16:13:40 2016 -0400
+
+    first commit
+
+ README.md | 1 +
+ 1 file changed, 1 insertion(+)

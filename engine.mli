@@ -11,14 +11,21 @@ open Yojson
 ******************************************************************************)
 
 (*
+loopiloop [int]: number of polls before updating graphics.
+foxyMove [int]: number of polls before monster with foxy AI moves when not
+  in its start room (ie it is moving to kill)
 monsterProb [int]: probability 1/monsterProb that the monster will move.
+
+foxyTime [float]: time start room goes unchecked before monster with foxy AI
+  leaves to go after the player.
 gameNight [float]: length of a night, in game time, in seconds.
   eg, 10 hours is 36000.
 levelMaxTime [float]: length of real time for each level to complete, in seconds.
   eg, 20 minutes is 1200.
 monsterTime [float]: length of real time a monster is allowed to be in the room
-  next to main before the player loses (is killed), in seconds. eg, 5.
-maxLevel [int]: the maximum number of levels in the game, -1 for starting at 0.
+  next to main before the player loses (is killed), in game time seconds,
+
+maxLevel [int]: the maximum number of levels in the game, 4 for 5 nights.
 cPen [float]: the battery penalty for using the camera.
 dPen [float]: the battery penalty for opening/closing door
 *)
@@ -128,7 +135,9 @@ val foxy : float -> map -> monster -> room
  * as corresponding to the level of the game *)
 val insert_monster : Basic.json -> int -> (string*monster) list
 
-(* [get_map j] returns a valid map from the json file. *)
+(* [get_map j lvl map] returns a valid map from the json file [j] using the
+ * [lvl] of the game to input the right monsters into a [map] with no
+ * monsters inserted in it yet. *)
 val get_map : Basic.json -> int -> map -> map
 
 (* [init_state j lvl] returns an initial state based on the current level.*)
@@ -168,7 +177,7 @@ val update_time_and_battery : state -> state
 ******************************************************************************
 ******************************************************************************)
 
-(* [update_state_monster_move monster newRoom map] returns the state with
+(* [update_state_monster_move monster newRoom state] returns the state with
  * map and monsters updated after [monster] has moved to [newRoom]. *)
 val update_state_monster_move : monster -> room -> state -> state
 
@@ -178,9 +187,9 @@ val update_state_monster_move : monster -> room -> state -> state
 ******************************************************************************
 ******************************************************************************)
 
-(* [shift_camera_view state dir] returns the state with a shifted camera view to
- * [dir] if player is viewing cameras. raises Illegal if there is no exit in
- * the direction of [dir].
+(* [shift_camera_view state dir sound] returns the state with a shifted camera
+ * view to [dir] if player is viewing cameras. raises Illegal if there is no
+ * exit in the direction of [dir].
  * requires:
  *  - [dir] is direction to shift the current camera view. *)
 val shift_camera_view : state -> dir -> bool ref -> state
@@ -202,9 +211,9 @@ val update_door_status : state -> bool -> door -> state
 ******************************************************************************
 ******************************************************************************)
 
-(* [eval j st cmd] returns a state after evaluating the command. *)
+(* [eval j st cmd sound] returns a state after evaluating the command. *)
 val eval : Basic.json -> state -> string -> bool ref -> state
 
-(* [main f] is the main entry point from outside this module
+(* [main f sound flag] is the main entry point from outside this module
  * to load a game from file [f] and start playing it. *)
 val main : string -> bool ref -> bool ref -> unit

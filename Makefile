@@ -1,11 +1,11 @@
 play:
-	ocamlbuild -use-ocamlfind -tags thread	-pkgs \
-	yojson,str,ANSITerminal,sdl,sdl.sdlimage,sdl.sdlmixer,sdl.sdlttf,sdl.sdlgfx,async,async_parallel \
+	ocamlbuild -use-ocamlfind	-pkgs \
+	yojson,str,sdl,sdl.sdlimage,sdl.sdlmixer,sdl.sdlttf,sdl.sdlgfx \
 	main.byte && ./main.byte
 
 test:
-	ocamlbuild -use-ocamlfind -tags thread	-pkgs \
-	oUnit,yojson,str,ANSITerminal,sdl,sdl.sdlimage,sdl.sdlmixer,sdl.sdlttf,sdl.sdlgfx,async,async_parallel \
+	ocamlbuild -use-ocamlfind	-pkgs \
+	oUnit,yojson,str,sdl,sdl.sdlimage,sdl.sdlmixer,sdl.sdlttf,sdl.sdlgfx \
 	engine_test.byte && ./engine_test.byte
 
 check:

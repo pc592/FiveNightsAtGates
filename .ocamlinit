@@ -1,5 +1,4 @@
 #require "yojson";;
-#require "ANSITerminal";;
 #require "sdl";;
 #require "sdl.sdlimage";;
 #require "sdl.sdlttf";;
