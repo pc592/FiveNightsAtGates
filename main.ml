@@ -52,9 +52,10 @@ let main () =
   (Engine.main (String.lowercase_ascii fileName) camera_sound flag)
 
 let _ = Parallel.init()
-let _ = Parallel.run ~where:`Local (fun y -> return (main()))
-let _ = Parallel.run ~where:`Local (fun x -> (return (Music_FX.master_song_controller
-open_door close_door camera_sound cam_mode flag)))
+let _ = Parallel.run ~where:`Local (fun () -> return (main()))
+(* let _ = Parallel.run ~where:`Local (fun () -> return (Music_FX.init_music())) *)
+let _ = Parallel.run ~where:`Local (fun () -> return (Music_FX.master_song_controller
+open_door close_door camera_sound cam_mode flag))
 
-let _ =  main()
+let _ =  Scheduler.go(); main()
 
