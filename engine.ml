@@ -70,6 +70,7 @@ type state = {
   quit: bool;
   lost: bool;
   printed: bool;
+  killMonster: string
 }
 
 (*****************************************************************************
@@ -247,7 +248,8 @@ let init_state j lvl =
   level = lvl;
   quit = false;
   lost = false;
-  printed = false
+  printed = false;
+  killMonster = ""
 }
 
 (*****************************************************************************
@@ -441,7 +443,23 @@ let rec check_time monsters st =
   | (monsName,mons)::t ->
       let monsTime = mons.timeToMoveM in
         if st.time -. monsTime >= !monsterTime then
-          {st with lost = true}
+        let checkedSt = {st with lost = true} in
+            let killMons =
+                let mainExits = (List.assoc "main" st.map).exitsR in
+                let roomOne = List.assoc (snd (List.nth mainExits 0)) st.map in
+                let roomTwo = List.assoc (snd (List.nth mainExits 1)) st.map in
+                if (roomOne.monsterR <> None) then
+                  match roomOne.monsterR with
+                  | Some mons -> mons.nameM
+                  | None -> "How did you get here?"
+                else if (roomTwo.monsterR <> None) then
+                  match roomTwo.monsterR with
+                  | Some mons -> mons.nameM
+                  | None -> "How did you get here?"
+                else "No seriously how?"
+              in
+              (* Pervasives.print_endline ("The monster that killed you was "^killMons) *)
+        {checkedSt with killMonster = killMons}
         else check_time t st
 
 

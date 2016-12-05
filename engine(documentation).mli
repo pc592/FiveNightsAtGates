@@ -73,7 +73,8 @@ type map
  *  - level [int]: The current level [1..5], aka night, the player is on
  *  - quit [bool]: whether or not the player has quit, ie if game is ongoing
  *  - lost [bool]: whether or not the player has lost to a monster
- *  - printed [bool]: whether or not a win/lose message was printed *)
+ *  - printed [bool]: whether or not a win/lose message was printed
+ *  - killMonster [string]: the monster that kills you when you die *)
 type state
 
 (*****************************************************************************
