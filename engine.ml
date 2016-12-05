@@ -14,9 +14,7 @@ open MUSIC_FX
 ******************************************************************************)
 let loopiloop = ref 0
 let monsterProb = ref 200000 (*probability 1/monsterProb that the monster will move*)
-let foxyMove = ref 0
 
-let foxyTime = ref 12000. (*time before foxy (Ducky) moves; 12000 is about 3 seconds*)
 let gameNight = ref 36000. (*10 hours in seconds; game time elapsed*)
 let levelMaxTime = ref 30. (* 1200. *) (*20 minutes in seconds; real time elapsed*)
 let monsterTime = ref 3000. (*game time seconds monster allows user before
@@ -111,28 +109,12 @@ let rec weighted_movement room map monster =
       else List.assoc name map
 
 let foxy stateTime map monster =
-  if monster.currentRoomM = "ClarksonOffice" then
-    let roomTime = (List.assoc "ClarksonOffice" map).lastCheckR in
-    if stateTime -. roomTime >= !foxyTime then
-      let () = foxyMove := 0 in
-      match monster.teleportRoomM with
-      | [] -> List.assoc "ClarksonOffice" map
-      | h::t -> List.assoc h map
-    else List.assoc "ClarksonOffice" map
-  else
-    if !foxyMove = 0 then
-      match monster.teleportRoomM with
-        | [] -> let () = foxyMove := 24000 in
-                  List.assoc "ClarksonOffice" map
-        | h::t -> let () = if h = "Gimme!" then
-                    foxyMove := 72000
-                  else
-                    foxyMove := 24000
-                  in
-                  List.assoc h map
-    else
-      let () = foxyMove := !foxyMove-1 in
-      List.assoc monster.currentRoomM map
+  let roomTime = (List.assoc monster.currentRoomM map).lastCheckR in
+  if stateTime -. roomTime >= 120. then
+    match monster.teleportRoomM with
+    | [] -> List.assoc monster.currentRoomM map
+    | h::t -> List.assoc h map
+  else List.assoc monster.currentRoomM map
 
 (* [Illegal] is raised by the game to indicate that a command is illegal. *)
 exception Illegal
@@ -400,10 +382,10 @@ let pretty_string num =
  * if no move. *)
 let move_monster monsName st =
   let randN = Random.int !monsterProb in
-  let monster = List.assoc monsName st.monsters in
-  let oldMonsR = (List.assoc monster.currentRoomM st.map) in
   let move = (randN = 0) in
-  if (monster.modusOperandiM <> "foxy") && move then
+  if move then
+    let monster = List.assoc monsName st.monsters in
+    let oldMonsR = (List.assoc monster.currentRoomM st.map) in
     let newMonsR =
       if monster.modusOperandiM = "weighted movement" then
         weighted_movement oldMonsR st.map monster
@@ -412,45 +394,7 @@ let move_monster monsName st =
     in
     let () = Pervasives.print_endline (monsName^" moved to "^newMonsR.nameR) in
       update_state_monster_move monster newMonsR st
-  else if monster.modusOperandiM = "foxy" then
-    let newMonsR = foxy st.time st.map monster in
-    let () = if newMonsR <> oldMonsR then
-      Pervasives.print_endline (monsName^" moved to "^newMonsR.nameR) in
-    let now = Unix.time() in
-    let timeMultiplier = (!gameNight)/.(!levelMaxTime) in
-    let time = ((now -. st.startTime)*.timeMultiplier) in
-    let newMap =
-      if oldMonsR.nameR = "Gimme!" && newMonsR.nameR = "ClarksonOffice" then
-          let replaceClarkson (roomName,room) =
-            if room.nameR = "ClarksonOffice" then
-              (roomName,{room with lastCheckR = time})
-            else
-              (roomName,room)
-          in
-          List.map replaceClarkson st.map
-      else
-        st.map
-    in
-    let newTelep =
-      if oldMonsR.nameR <> newMonsR.nameR then
-        match monster.teleportRoomM with
-        | [] -> ["copyRoom";"gradLounge";"profOffices";"Gimme!"]
-        | h::t -> t
-      else if monster.currentRoomM = "ClarksonOffice" then
-        ["copyRoom";"gradLounge";"profOffices";"Gimme!"]
-      else
-        monster.teleportRoomM
-    in
-    let clarksonSt =
-      if st.room.nameR = "ClarksonOffice" then
-        {st with map = newMap; room = {st.room with lastCheckR = time} }
-      else
-        {st with map = newMap}
-    in
-    let newMons = {monster with teleportRoomM = newTelep} in
-      update_state_monster_move newMons newMonsR clarksonSt
-  else
-    st
+  else st
 
 (* Helper function to iterate through monsters and move/not move. *)
 let rec move_monsters monsters st =
@@ -607,10 +551,10 @@ let rec eval j st cmd cam_sound =
         Pervasives.print_string "\n"; st
 
 let unpack opt = match opt with |Some x -> x |None -> failwith "Something royally bonkers"; raise Illegal
-let update screen roomname filenname hours battery=
+let update screen roomname filenname hours battery doors=
   if ((!loopiloop) = 1000) then
     let () = loopiloop := 0 in
-    Gui.update_disp roomname filenname screen hours battery
+    Gui.update_disp roomname filenname screen hours battery doors
   else ()
 
 let file_name st =
@@ -628,7 +572,7 @@ let rec go j st screen cam_sound =
     let newState = (eval j st cmd cam_sound) in
       let hours = (string_of_int (int_of_float (floor (st.time/.3600.)))) in
       let battery = string_of_int (int_of_float st.battery) in
-      update screen st.room.nameR (file_name st) hours battery;
+      update screen st.room.nameR (file_name st) hours battery ((snd (fst st.doorStatus)), (snd (snd st.doorStatus)));
     go j newState screen cam_sound
 
 
@@ -683,24 +627,16 @@ let commands =
  * to load a game from file [f] and start playing it. *)
 let rec main fileNameIn cam_sound =
   let nest_main fileName =
-    if fileName = "quit" then () else
-    let j = Yojson.Basic.from_file fileName in
+  if fileName = "quit" then () else
+    let j = Yojson.Basic.from_file "map.json" in
     let st = start j in
-    let _o = Sys.command "clear" in
-    Pervasives.print_endline commands;
-    Pervasives.print_endline  "Press [enter] to continue.";
-    let _n = Pervasives.read_line () in
     let _p = Sys.command "clear" in
-    let () = Pervasives.print_endline ("\n\n\n\n\n") in
     Pervasives.print_endline ("Day 0\n");
-    (* Music_FX.init_music (); *) (* need to play background music without stopping everything *)
     Gui.collect_commands ();
     let screen = Gui.create_disp () in
     go j st screen cam_sound
   in try nest_main fileNameIn with
   | Sys_error(_) ->
-    Pervasives.print_endline "\nYou must choose. Yes or No?";
-    Pervasives.print_string  "> ";
     let input = String.lowercase_ascii (Pervasives.read_line ()) in
     let fileName =
       if input = "yes" || input = "y" then

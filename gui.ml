@@ -21,7 +21,12 @@ let camera_view roomname new_image screen =
   Sdlvideo.blit_surface ~dst_rect:position_of_name ~src:name ~dst:screen ();
   Sdlvideo.update_rect screen
 
-let main_view roomname new_image screen hours battery =
+let main_view roomname screen hours battery doors=
+  let new_image = (match doors with
+      |(false,false) ->"main_both_closed.jpg"
+      |(true,false) ->"main_right_closed.jpg"
+      |(false,true) ->"main_left_closed.jpg"
+      |(true, true) -> "main.jpg") in
   let image = Sdlloader.load_image ("Rooms/" ^ roomname ^ "/" ^ new_image) in
   let position_of_image = Sdlvideo.rect 0 0 0 0 in
   let () = Sdlttf.init () in
@@ -37,10 +42,10 @@ let main_view roomname new_image screen hours battery =
 
 
 
-let update_disp roomname new_image screen hours battery=
+let update_disp roomname new_image screen hours battery doors=
   (* process click and call state? *)
   match new_image with
-  |"main.jpg" -> main_view roomname new_image screen hours battery
+  |"main.jpg" -> main_view roomname screen hours battery doors
   | _ ->     camera_view roomname new_image screen
 
 
@@ -98,9 +103,9 @@ let read_string ?(default="") event : string =
         "yes"
       | KEYDOWN {keysym=KEY_b} ->
         "yes"
-      | KEYDOWN {keysym=KEY_y} ->
+      | KEYDOWN {keysym=KEY_i} ->
         "instructions"
-      | KEYDOWN {keysym=KEY_y} ->
+      | KEYDOWN {keysym=KEY_s} ->
         "story"
       | _ ->
           read_menu ()
@@ -135,7 +140,7 @@ let read_string ?(default="") event : string =
 
   let menu () =
     let screen = create_disp () in
-      "menu_loop screen"
+      menu_loop screen
 
 
   end
