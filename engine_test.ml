@@ -393,6 +393,150 @@ let do_tests =
 	(eval j (init_state j 0) "camera" (ref false))
 	);
 
+	"close one" >:: (fun _ -> assert_equal  
+		{monsters =
+		  [("Camel",
+		    {nameM = "Camel"; levelM = 0; imageM = "Camel"; currentRoomM = "copyRoom";
+		     modusOperandiM = "random walk"; timeToMoveM = 2.*.Unix.time();
+		     teleportRoomM = ["copyRoom"]})];
+		 player = "Student";
+		 map =
+		  [("main",
+		    {nameR = "main"; imageR = "main"; valueR = 0;
+		     exitsR = [(Left, "Gimme!"); (Right, "kitchen")]; monsterR = None;
+		     lastCheckR = 0.});
+		   ("kitchen",
+		    {nameR = "kitchen"; imageR = "kitchen"; valueR = 1;
+		     exitsR = [(Left, "main"); (Down, "hallway"); (Up, "Gimme!")];
+		     monsterR = None; lastCheckR = 0.});
+		   ("hallway",
+		    {nameR = "hallway"; imageR = "hallway"; valueR = 2;
+		     exitsR = [(Up, "kitchen"); (Left, "CSOffices"); (Down, "lectureHall")];
+		     monsterR = None; lastCheckR = 0.});
+		   ("lectureHall",
+		    {nameR = "lectureHall"; imageR = "lectureHall"; valueR = 3;
+		     exitsR = [(Up, "hallway"); (Down, "CSOffices"); (Left, "copyRoom")];
+		     monsterR = None; lastCheckR = 0.});
+		   ("CSOffices",
+		    {nameR = "CSOffices"; imageR = "CSOffices"; valueR = 3;
+		     exitsR = [(Right, "lectureHall"); (Up, "hallway"); (Left, "studySpaces")];
+		     monsterR = None; lastCheckR = 0.});
+		   ("studySpaces",
+		    {nameR = "studySpaces"; imageR = "studySpaces"; valueR = 4;
+		     exitsR = [(Right, "CSOffices"); (Left, "CSUGLab"); (Up, "gradLounge")];
+		     monsterR = None; lastCheckR = 0.});
+		   ("CSUGLab",
+		    {nameR = "CSUGLab"; imageR = "CSUGLab"; valueR = 3;
+		     exitsR = [(Up, "profOffices"); (Down, "studySpaces"); (Right, "copyRoom")];
+		     monsterR = None; lastCheckR = 0.});
+		   ("copyRoom",
+		    {nameR = "copyRoom"; imageR = "copyRoom"; valueR = 4;
+		     exitsR =
+		      [(Right, "lectureHall"); (Up, "gradLounge"); (Left, "CSUGLab");
+		       (Down, "ClarksonOffice")];
+		     monsterR =
+		      Some
+		       {nameM = "Camel"; levelM = 0; imageM = "Camel";
+		        currentRoomM = "copyRoom"; modusOperandiM = "random walk";
+		        timeToMoveM = 2.*.Unix.time(); teleportRoomM = ["copyRoom"]};
+		     lastCheckR = 0.});
+		   ("ClarksonOffice",
+		    {nameR = "ClarksonOffice"; imageR = "ClarksonOffice"; valueR = 5;
+		     exitsR = [(Up, "copyRoom")]; monsterR = None; lastCheckR = 0.});
+		   ("gradLounge",
+		    {nameR = "gradLounge"; imageR = "gradLounge"; valueR = 3;
+		     exitsR = [(Up, "profOffices"); (Down, "copyRoom"); (Right, "studySpaces")];
+		     monsterR = None; lastCheckR = 0.});
+		   ("profOffices",
+		    {nameR = "profOffices"; imageR = "profOffices"; valueR = 2;
+		     exitsR = [(Right, "Gimme!"); (Left, "CSUGLab"); (Down, "gradLounge")];
+		     monsterR = None; lastCheckR = 0.});
+		   ("Gimme!",
+		    {nameR = "Gimme!"; imageR = "Gimme!"; valueR = 1;
+		     exitsR = [(Right, "main"); (Up, "kitchen"); (Left, "profOffices")];
+		     monsterR = None; lastCheckR = 0.})];
+		 startTime = Unix.time(); time = 0.; battery = 98.;
+		 doorStatus = ((One, false), (Two, true));
+		 room =
+  {nameR = "main"; imageR = "main"; valueR = 0;
+   exitsR = [(Left, "Gimme!"); (Right, "kitchen")]; monsterR = None;
+   lastCheckR = 0.};
+		 level = 0; quit = false; lost = false; printed = false}
+	(eval j (init_state j 0) "one" (ref false))
+	);
+
+
+	"camera up" >:: (fun _ -> assert_equal  
+			{monsters =
+			  [("Camel",
+			    {nameM = "Camel"; levelM = 0; imageM = "Camel"; currentRoomM = "copyRoom";
+			     modusOperandiM = "random walk"; timeToMoveM = 2.*.Unix.time();
+			     teleportRoomM = ["copyRoom"]})];
+			 player = "Student";
+			 map =
+			  [("main",
+			    {nameR = "main"; imageR = "main"; valueR = 0;
+			     exitsR = [(Left, "Gimme!"); (Right, "kitchen")]; monsterR = None;
+			     lastCheckR = 0.});
+			   ("kitchen",
+			    {nameR = "kitchen"; imageR = "kitchen"; valueR = 1;
+			     exitsR = [(Left, "main"); (Down, "hallway"); (Up, "Gimme!")];
+			     monsterR = None; lastCheckR = 0.});
+			   ("hallway",
+			    {nameR = "hallway"; imageR = "hallway"; valueR = 2;
+			     exitsR = [(Up, "kitchen"); (Left, "CSOffices"); (Down, "lectureHall")];
+			     monsterR = None; lastCheckR = 0.});
+			   ("lectureHall",
+			    {nameR = "lectureHall"; imageR = "lectureHall"; valueR = 3;
+			     exitsR = [(Up, "hallway"); (Down, "CSOffices"); (Left, "copyRoom")];
+			     monsterR = None; lastCheckR = 0.});
+			   ("CSOffices",
+			    {nameR = "CSOffices"; imageR = "CSOffices"; valueR = 3;
+			     exitsR = [(Right, "lectureHall"); (Up, "hallway"); (Left, "studySpaces")];
+			     monsterR = None; lastCheckR = 0.});
+			   ("studySpaces",
+			    {nameR = "studySpaces"; imageR = "studySpaces"; valueR = 4;
+			     exitsR = [(Right, "CSOffices"); (Left, "CSUGLab"); (Up, "gradLounge")];
+			     monsterR = None; lastCheckR = 0.});
+			   ("CSUGLab",
+			    {nameR = "CSUGLab"; imageR = "CSUGLab"; valueR = 3;
+			     exitsR = [(Up, "profOffices"); (Down, "studySpaces"); (Right, "copyRoom")];
+			     monsterR = None; lastCheckR = 0.});
+			   ("copyRoom",
+			    {nameR = "copyRoom"; imageR = "copyRoom"; valueR = 4;
+			     exitsR =
+			      [(Right, "lectureHall"); (Up, "gradLounge"); (Left, "CSUGLab");
+			       (Down, "ClarksonOffice")];
+			     monsterR =
+			      Some
+			       {nameM = "Camel"; levelM = 0; imageM = "Camel";
+			        currentRoomM = "copyRoom"; modusOperandiM = "random walk";
+			        timeToMoveM = 2.*.Unix.time(); teleportRoomM = ["copyRoom"]};
+			     lastCheckR = 0.});
+			   ("ClarksonOffice",
+			    {nameR = "ClarksonOffice"; imageR = "ClarksonOffice"; valueR = 5;
+			     exitsR = [(Up, "copyRoom")]; monsterR = None; lastCheckR = 0.});
+			   ("gradLounge",
+			    {nameR = "gradLounge"; imageR = "gradLounge"; valueR = 3;
+			     exitsR = [(Up, "profOffices"); (Down, "copyRoom"); (Right, "studySpaces")];
+			     monsterR = None; lastCheckR = 0.});
+			   ("profOffices",
+			    {nameR = "profOffices"; imageR = "profOffices"; valueR = 2;
+			     exitsR = [(Right, "Gimme!"); (Left, "CSUGLab"); (Down, "gradLounge")];
+			     monsterR = None; lastCheckR = 0.});
+			   ("Gimme!",
+			    {nameR = "Gimme!"; imageR = "Gimme!"; valueR = 1;
+			     exitsR = [(Right, "main"); (Up, "kitchen"); (Left, "profOffices")];
+			     monsterR = None; lastCheckR = 0.})];
+			 startTime = Unix.time(); time = 0.; battery = 99.99999;
+			 doorStatus = ((One, true), (Two, true));
+			 room =
+			  {nameR = "Gimme!"; imageR = "Gimme!"; valueR = 1;
+			   exitsR = [(Right, "main"); (Up, "kitchen"); (Left, "profOffices")];
+			   monsterR = None; lastCheckR = 0.};
+			 level = 0; quit = false; lost = false; printed = false}
+	(eval j (eval j (init_state j 0) "camera" (ref false)) "up" (ref false))
+	);
 ]
 
 let suite =
