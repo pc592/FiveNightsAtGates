@@ -35,4 +35,7 @@ val interim : int -> Sdlvideo.surface -> string
 the monster and then presents the game over window.*)
 val kill_screen : Sdlvideo.surface -> string -> string
 
+(* [read_string ?default event] read_string to handle the keyboard events.
+Mappings are found in the instructions.jpg in the menu folder *)
 val read_string : ?default:string -> Sdlevent.event -> string
+

@@ -85,6 +85,8 @@ let poll_event () =
 
 let collect_commands () = pump ()
 
+(* helper function that displays the menu as well as the side menus. Loops
+between all of the menus*)
 let rec menu_loop screen =
   let image = Sdlloader.load_image ("menu/" ^ "menu.jpg") in
   let position_of_image = Sdlvideo.rect 0 0 0 0 in
@@ -104,6 +106,7 @@ and instruction_story_loop screen name =
     if (not (cmd = "yes")) then instruction_story_loop screen cmd else
       menu_loop screen
 
+
 let menu () =
   let screen = create_disp () in
   let image = Sdlloader.load_image ("menu/" ^ "not_for_losers.jpg") in
@@ -113,12 +116,16 @@ let menu () =
   Sdltimer.delay 4000;
     menu_loop screen
 
+(* helper function that that loops through until the user gives the proper
+commands depending on what the menu is asking for*)
 let rec wait_for_response () =
   match (read_menu ()) with
     | "yes" -> "next"
     | "quit" -> "quit"
     | _ -> wait_for_response ()
 
+(* helper function that that loops through until the user gives the proper
+commands depending on what the menu is asking for*)
 let rec wait_for_kill () =
   match (read_menu ()) with
     | "yes" -> "restart"
