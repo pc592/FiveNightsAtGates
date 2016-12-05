@@ -10,18 +10,22 @@ module Gui = struct
 let camera_view roomname new_image screen =
   let image = Sdlloader.load_image ("Rooms/" ^ roomname ^ "/" ^ new_image) in
   let position_of_image = Sdlvideo.rect 0 0 0 0 in
+  let font = Sdlttf.open_font "Fonts/Amatic-Bold.ttf" 30 in
+  let position_of_name = Sdlvideo.rect 10 10 0 0 in
   (*Initializes the ttf reader*)
   let map = Sdlloader.load_image ("map2.png") in
-  let position_of_map = Sdlvideo.rect (600-200) (450-114) 0 0 in
+  let name = Sdlttf.render_text_blended font ("room: " ^ roomname) ~fg:Sdlvideo.red in
+  let position_of_map = Sdlvideo.rect (800-240) (0) 0 0 in
   Sdlvideo.blit_surface ~dst_rect:position_of_image ~src:image ~dst:screen ();
   Sdlvideo.blit_surface ~dst_rect:position_of_map ~src:map ~dst:screen ();
+  Sdlvideo.blit_surface ~dst_rect:position_of_name ~src:name ~dst:screen ();
   Sdlvideo.update_rect screen
 
 let main_view roomname new_image screen hours battery =
   let image = Sdlloader.load_image ("Rooms/" ^ roomname ^ "/" ^ new_image) in
   let position_of_image = Sdlvideo.rect 0 0 0 0 in
   let () = Sdlttf.init () in
-  let font = Sdlttf.open_font "Fonts/Timea.ttf" 18 in
+  let font = Sdlttf.open_font "Fonts/Amatic-Bold.ttf" 30 in
   let position_of_battery = Sdlvideo.rect 10 400 0 0 in
   let position_of_time = Sdlvideo.rect 10 10 0 0 in
   let time = Sdlttf.render_text_blended font ("Time: " ^ hours) ~fg:Sdlvideo.black in
@@ -92,6 +96,12 @@ let read_string ?(default="") event : string =
         "quit"
       | KEYDOWN {keysym=KEY_y} ->
         "yes"
+      | KEYDOWN {keysym=KEY_b} ->
+        "yes"
+      | KEYDOWN {keysym=KEY_y} ->
+        "instructions"
+      | KEYDOWN {keysym=KEY_y} ->
+        "story"
       | _ ->
           read_menu ()
 
@@ -109,16 +119,18 @@ let read_string ?(default="") event : string =
     Sdlvideo.blit_surface ~dst_rect:position_of_image ~src:image ~dst:screen ();
     Sdlvideo.update_rect screen;
     let cmd = read_menu () in
-    if cmd = "instructions" then instruction_loop screen else
-    let () = Sdl.quit () in
-     cmd
-  and instruction_loop screen =
-    let image = Sdlloader.load_image ("menu/" ^ "instructions.jpg") in
+    match cmd with
+      |"quit" -> Sdl.quit (); cmd
+      |"yes" -> Sdl.quit (); cmd
+      |_ -> instruction_story_loop screen cmd
+
+  and instruction_story_loop screen name=
+    let image = Sdlloader.load_image ("menu/" ^ name ^ ".jpg") in
             let position_of_image = Sdlvideo.rect 0 0 0 0 in
             Sdlvideo.blit_surface ~dst_rect:position_of_image ~src:image ~dst:screen ();
             Sdlvideo.update_rect screen;
             let cmd = read_menu () in
-            if (not (cmd = "yes")) then instruction_loop screen else
+            if (not (cmd = "yes")) then instruction_story_loop screen cmd else
             menu_loop screen
 
   let menu () =
