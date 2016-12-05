@@ -36,4 +36,3 @@ the monster and then presents the game over window.*)
 val kill_screen : Sdlvideo.surface -> string -> string
 
 val read_string : ?default:string -> Sdlevent.event -> string
-
